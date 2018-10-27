@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "typeRoots": ["./"],
     "lib": ["es6", "dom", "esnext"],
     "sourceMap": true,
     "allowJs": true,
@@ -14,7 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,

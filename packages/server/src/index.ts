@@ -3,7 +3,7 @@ import { prisma, Prisma } from './generated/prisma-client';
 import { GraphQLServer } from 'graphql-yoga';
 import { config } from 'dotEnv';
 import * as userQueries from './queries/user';
-import { scopes, fetchResource } from './spotify';
+import { scopes, fetchAccountResource } from './spotify';
 
 config();
 
@@ -25,8 +25,15 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: './schema.graphql',
   resolvers,
-  context: {
-    prisma,
+  context: req => {
+    const accessKey = req.request.headers.authorization;
+
+    console.log('accessKey is', accessKey);
+
+    return {
+      prisma,
+      accessKey,
+    };
   },
 });
 
@@ -51,26 +58,31 @@ server.express.get('/auth-callback', async (req, res) => {
     client_secret: process.env.CLIENT_SECRET,
   });
 
-  console.log('body is', body);
+  try {
+    const authResp = await fetchAccountResource<{
+      access_token: string;
+      refresh_token: string;
+    }>('/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body,
+    });
+    console.log('authREsp is', authResp);
 
-  const authResp = await fetchResource<{
-    access_token: string;
-    refresh_token: string;
-  }>('/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body,
-  });
+    res.redirect(
+      process.env.CLIENT_HOST +
+        `/auth?token=${authResp.access_token}&refreshToken=${
+          authResp.refresh_token
+        }
+    `,
+    );
+  } catch (err) {
+    console.log('error', err);
+    throw new Error('yo');
+  }
 
-  res.redirect(
-    process.env.CLIENT_HOST +
-      `/auth?token=${authResp.access_token}&refreshToken=${
-        authResp.refresh_token
-      }
-  `,
-  );
   res.end();
 });
 

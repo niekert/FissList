@@ -1,18 +1,30 @@
 import * as React from 'react';
-import { parse } from 'query-string';
+import { parse, OutputParams } from 'query-string';
 import { RouteComponentProps } from '@reach/router';
 
-interface Props {
+interface IProps {
   path: string;
 }
 
-function AuthCallback({ location, path }: RouteComponentProps & Props) {
-  React.useEffect(() => {
-    const query = parse(location!.search);
+function AuthCallback({
+  location,
+  navigate,
+  path,
+}: RouteComponentProps & IProps) {
+  React.useEffect(
+    () => {
+      const query: OutputParams = parse(location!.search);
 
-    console.log('query is', query);
-  });
+      if (query.token && query.refreshToken) {
+        localStorage.setItem('accessToken', query.token as string);
+        localStorage.setItem('refreshToken', query.refreshToken as string);
+      }
 
-  return <div>Wow hello</div>;
+      navigate!('/', { replace: true });
+    },
+    [location!.search],
+  );
+
+  return null;
 }
 export default AuthCallback;

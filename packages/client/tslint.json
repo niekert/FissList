@@ -4,7 +4,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false
   },
-  "defaultSeverity": "warn",
+  "defaultSeverity": "warning",
   "linterOptions": {
     "exclude": [
       "config/**/*.js",

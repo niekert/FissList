@@ -5,11 +5,25 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
 import App from './App';
 
+const authLink = setContext((_, { headers }) => {
+  const accessKey = localStorage.getItem('accessToken');
+
+  console.log('accessKey', accessKey);
+  return {
+    headers: {
+      ...headers,
+      Authorization: accessKey ? `Bearer ${accessKey}` : null,
+    },
+  };
+});
+
 const client = new ApolloClient({
   link: ApolloLink.from([
+    authLink,
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         graphQLErrors.map(({ message, locations, path }) =>

@@ -1,5 +1,20 @@
 type Query {
   allUsers: [User]!
+  getMe: SpotifyUser
+}
+
+type SpotifyUser {
+  displayName: String
+  email: String!
+  id: String!
+  href: String!
+  images: [Image]
+}
+
+type Image {
+  height: Int
+  url: String!
+  width: Int
 }
 
 type Mutation {
