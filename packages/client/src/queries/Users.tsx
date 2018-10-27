@@ -1,24 +1,27 @@
+import * as React from 'react';
 import gql from 'graphql-tag';
+import { Query, QueryResult } from 'react-apollo';
 import { ReactNode } from 'react';
+import { AllUsers } from './__generated__/AllUsers';
 
 export const USERS_QUERY = gql`
-  query users {
+  query AllUsers {
     allUsers {
       id
     }
   }
 `;
 
-export class CurrentUserQuery extends Query<CurrentUser> {}
+export class CurrentUserQuery extends Query<AllUsers> {}
 
 export default function CurrentUserQueryComponent({
   children,
 }: {
-  children?: (currentUser: QueryResult<CurrentUser>) => ReactNode;
+  children: (currentUser: QueryResult<AllUsers>) => ReactNode;
 }) {
   return (
     <CurrentUserQuery
-      query={CURRENT_USER_QUERY}
+      query={USERS_QUERY}
       errorPolicy="ignore"
       fetchPolicy="cache-and-network"
     >
