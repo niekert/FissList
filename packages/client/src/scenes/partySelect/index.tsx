@@ -58,15 +58,13 @@ function PartySelect() {
   }
 
   return (
-    <Page>
-      <StepsPanel>
-        <PosedRouter>
-          <SelectType default />
-          <NewParty path="/new" />
-          <JoinParty path="/join" />
-        </PosedRouter>
-      </StepsPanel>
-    </Page>
+    <StepsPanel>
+      <PosedRouter>
+        <SelectType default />
+        <NewParty path="/new" />
+        <JoinParty path="/join" />
+      </PosedRouter>
+    </StepsPanel>
   );
 }
 

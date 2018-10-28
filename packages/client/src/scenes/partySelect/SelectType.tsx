@@ -11,6 +11,11 @@ const PartyOptions = styled.div`
   margin: 0 auto;
 `;
 
+const IntroText = styled(Text)`
+  max-width: 420px;
+  margin: 0 auto 16px auto;
+`;
+
 interface IProps {
   // workaround for reach router
   default?: boolean;
@@ -21,19 +26,21 @@ export default function SelectType(props: IProps) {
 
   return (
     <>
-      <Title>Welcome to PartyPlay!</Title>
-      <Text textAlign="center">
-        Start a new party, or join a friends' party
-      </Text>
+      {/* TODO: Rename app title and use logo */}
+      <Title>PartyPlay</Title>
+      <IntroText textAlign="center">
+        PartyPlay helps you play the best music during your parties by letting
+        your guests decide the songs that will play next.
+      </IntroText>
       <PartyOptions>
         <OptionCard
-          title="Start a new party"
+          title="🔊 Start a new party"
           body="Woohoo! Click this button to start a new party and share the link to the party with your friends!"
           cta={'Start party'}
           onClick={() => navigate('/new')}
         />
         <OptionCard
-          title="Join a party"
+          title="🎉 Join a party"
           body="Join a friend's party by filling in the party code"
           cta={'Join party'}
           onClick={() => navigate('/join')}

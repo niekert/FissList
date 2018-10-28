@@ -8,17 +8,37 @@ interface IProps {
 }
 
 const PlaylistsWrapper = styled.ul`
-  max-height: 500px;
+  margin: 0;
   overflow: auto;
 `;
 
-const Playlist = styled.li``;
+const Playlist = styled.li`
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+`;
 
-const ThumbNail = styled.figure``;
+const Content = styled.div`
+  margin-left: 8px;
+  display: flex;
+  flex-direction: column;
+`;
 
-const Title = styled.span``;
+const Thumbnail = styled.img`
+  margin-bottom: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+`;
+
+const Title = styled.span`
+  font-weight: 600;
+  margin-bottom: 8xp;
+`;
 
 const TrackCount = styled.span``;
+
+const getThumbnail = images => {};
 
 function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
   return (
@@ -40,8 +60,11 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
                   key={playlist.id}
                   onClick={() => onClick(playlist.id)}
                 >
-                  <Title>{playlist.name}</Title>
-                  <TrackCount>12 tracks </TrackCount>
+                  <Thumbnail src={playlist.thumbnail || ''} />
+                  <Content>
+                    <Title>{playlist.name}</Title>
+                    <TrackCount>{playlist.tracks.total} tracks</TrackCount>
+                  </Content>
                 </Playlist>
               ))}
             </PlaylistsWrapper>

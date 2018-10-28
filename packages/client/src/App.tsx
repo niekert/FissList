@@ -5,11 +5,14 @@ import GetMe from 'queries/GetMe';
 import { Router } from '@reach/router';
 import Auth from './scenes/auth';
 import Landing from 'scenes/landing';
-import Header from 'scenes/header';
 import PartySelect from 'scenes/partySelect';
 import Theme from './theme';
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased
+  }
   body {
     color: red;
   }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { API_HOST } from 'app-constants';
 import ConnectSpotifyButton from 'components/ConnectSpotifyButton';
 
 function SpotifyConnect() {
@@ -7,7 +8,7 @@ function SpotifyConnect() {
 
   const onClick = () => {
     setIsConnecting(true);
-    window.open('http://localhost:4000/authorize', '_top');
+    window.open(`${API_HOST}/authorize`, '_top');
   };
 
   return <ConnectSpotifyButton onClick={onClick} />;

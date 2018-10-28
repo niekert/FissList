@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
+import { API_HOST } from 'app-constants';
 import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
@@ -38,7 +39,7 @@ const client = new ApolloClient({
       }
     }),
     new HttpLink({
-      uri: 'http://localhost:4000',
+      uri: API_HOST,
       credentials: 'same-origin',
     }),
   ]),

@@ -11,10 +11,9 @@ export const GET_OWN_PLAYLISTS = gql`
         id
         href
         name
-        images {
-          width
-          height
-          url
+        thumbnail
+        tracks {
+          total
         }
       }
     }

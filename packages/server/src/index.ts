@@ -39,7 +39,7 @@ const server = new GraphQLServer({
   },
 });
 
-const REDIRECT_URI = encodeURIComponent('http://localhost:4000/auth-callback');
+const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
 
 server.express.get('/authorize', (req, res) => {
   res.redirect(
@@ -55,7 +55,7 @@ server.express.get('/auth-callback', async (req, res) => {
   const body = new URLSearchParams({
     code,
     grant_type: 'authorization_code',
-    redirect_uri: 'http://localhost:4000/auth-callback',
+    redirect_uri: `${process.env.HOST}/auth-callback`,
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
   });

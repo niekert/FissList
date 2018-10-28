@@ -5,17 +5,16 @@
 // GraphQL query operation: GetPlaylists
 // ====================================================
 
-export interface GetPlaylists_getPlaylists_items_images {
-  width: number | null;
-  height: number | null;
-  url: string;
+export interface GetPlaylists_getPlaylists_items_tracks {
+  total: number;
 }
 
 export interface GetPlaylists_getPlaylists_items {
   id: string;
   href: string;
   name: string;
-  images: (GetPlaylists_getPlaylists_items_images | null)[] | null;
+  thumbnail: string | null;
+  tracks: GetPlaylists_getPlaylists_items_tracks;
 }
 
 export interface GetPlaylists_getPlaylists {

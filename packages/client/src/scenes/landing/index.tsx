@@ -21,6 +21,7 @@ function Landing() {
         PartyPlay allows you to create party playlists that your party guests
         control.
       </Intro>
+
       <SpotifyConnect />
     </Page>
   );

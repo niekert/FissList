@@ -40,11 +40,18 @@ type User {
   name: String!
 }
 
+type TracksLink {
+  href: String!
+  total: Int!
+}
+
 type Playlist {
   id: String!
   href: String!
   name: String!
-  images: [Image]
+  thumbnail: String
+  image: String!
+  tracks: TracksLink!
 }
 
 type Mutation {

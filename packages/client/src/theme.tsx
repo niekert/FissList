@@ -13,6 +13,7 @@ const DEFAULT_THEME = {
     cta: '#05f',
     spotify: '#1DB954',
     black: '#191414',
+    outline: '#CCD9DF',
   },
   textColors: {
     primary: 'rgba(0, 0, 0, 0.73)',

@@ -14,7 +14,7 @@ const BackButton = styled(IconButton)`
   margin: 0 auto;
 `;
 
-const CardContent = styled.div`
+const CardContent = styled(Card)`
   margin: 0 auto;
   display: flex;
   align-items: stretch;
@@ -25,7 +25,7 @@ const CardContent = styled.div`
 
 export default function PartyForm({ onSubmit, children }: IProps) {
   return (
-    <Card as="form" onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <BackButton
         type="button"
         onClick={e => {
@@ -37,6 +37,6 @@ export default function PartyForm({ onSubmit, children }: IProps) {
         <BackIcon />
       </BackButton>
       <CardContent>{children}</CardContent>
-    </Card>
+    </form>
   );
 }
