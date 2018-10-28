@@ -2,7 +2,9 @@ import { URLSearchParams } from 'url';
 import { prisma, Prisma } from './generated/prisma-client';
 import { GraphQLServer } from 'graphql-yoga';
 import { config } from 'dotEnv';
+import * as playlistQueries from './queries/playlist';
 import * as userQueries from './queries/user';
+import * as partyMutations from './mutations/party';
 import { scopes, fetchAccountResource } from './spotify';
 
 config();
@@ -14,8 +16,10 @@ interface Context {
 const resolvers = {
   Query: {
     ...userQueries,
+    ...playlistQueries,
   },
   Mutation: {
+    ...partyMutations,
     createUser(root, args, context) {
       return context.prisma.createUser({ name: args.name });
     },
@@ -27,7 +31,6 @@ const server = new GraphQLServer({
   resolvers,
   context: req => {
     const accessKey = req.request.headers.authorization;
-
 
     return {
       prisma,
@@ -68,7 +71,6 @@ server.express.get('/auth-callback', async (req, res) => {
       },
       body,
     });
-    console.log('authREsp is', authResp);
 
     res.redirect(
       process.env.CLIENT_HOST +
@@ -78,13 +80,10 @@ server.express.get('/auth-callback', async (req, res) => {
     `,
     );
   } catch (err) {
-    console.log('error', err);
-    throw new Error('yo');
+    throw new Error('Something went wrong lol');
   }
 
   res.end();
 });
-
-console.log('resolvers is', resolvers);
 
 server.start(() => console.log('Server is running on http://localhost:4000'));

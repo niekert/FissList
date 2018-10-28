@@ -3,6 +3,7 @@ import useLogout from 'hooks/logout';
 import CurrentUserContext from 'context/CurrentUser';
 import NewParty from './NewParty';
 import Page from 'components/Page';
+import { Title, Text } from 'components/Typography';
 import styled from 'styled-components';
 import OptionCard from './OptionCard';
 import Link from 'components/Link';
@@ -18,12 +19,6 @@ const StepsPanel = styled.div`
   display: flex;
   align-self: stretch;
   display: flex;
-`;
-
-const Intro = styled.p``;
-
-const Welcome = styled.h1`
-  text-align: center;
 `;
 
 const Item = posed.div({
@@ -83,13 +78,14 @@ function PartySelect() {
 
   return (
     <Page>
-      <Welcome>Welcome to PartyPlay!</Welcome>
-      <Intro>Start a new party, or join a friends' party</Intro>
-
       <StepsPanel>
         <PoseGroup>
           {activeScreen === SCREEN_TYPES.SELECT && (
             <Item key={activeScreen} type="prev">
+              <Title>Welcome to PartyPlay!</Title>
+              <Text textAlign="center">
+                Start a new party, or join a friends' party
+              </Text>
               <PartyOptions>
                 <OptionCard
                   title="Start a new party"
@@ -114,10 +110,10 @@ function PartySelect() {
                   }}
                 />
               </PartyOptions>
-              <p>
+              <Text textAlign="center">
                 Or, if you are done using PartyPlay,{' '}
                 <Link onClick={() => logout()}>Log out</Link>
-              </p>
+              </Text>
             </Item>
           )}
           {activeScreen === SCREEN_TYPES.NEW_PARTY && (

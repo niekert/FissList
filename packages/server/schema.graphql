@@ -1,8 +1,3 @@
-type Query {
-  allUsers: [User]!
-  getMe: SpotifyUser
-}
-
 type SpotifyUser {
   displayName: String
   email: String!
@@ -17,13 +12,49 @@ type Image {
   width: Int
 }
 
-type Mutation {
-  authorize: String!
-  createUser(name: String!): User
+type PagedPlaylists {
+  items: [Playlist!]!
+  href: String!
+  total: Int!
+  limit: Int!
+  next: String!
+}
+
+# Regular type definitions for Bar, Foo, Baz types...
+
+type Party {
+  id: ID!
+  name: String!
+  ownerUserId: String!
+  partyMembers: [PartyMember]
+}
+
+type PartyMember {
+  id: ID!
+  spotifyUserid: String!
 }
 
 type User {
   id: ID!
   email: String
   name: String!
+}
+
+type Playlist {
+  id: String!
+  href: String!
+  name: String!
+  images: [Image]
+}
+
+type Mutation {
+  authorize: String!
+  createParty(name: String!): Party
+  createUser(name: String!): User
+}
+
+type Query {
+  allUsers: [User]!
+  getMe: SpotifyUser
+  getPlaylists: PagedPlaylists
 }

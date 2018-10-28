@@ -2,3 +2,10 @@ type User {
   id: ID! @unique
   name: String!
 }
+
+type Party {
+  id: ID! @unique
+  name: String!
+  ownerUserId: String!
+  partyMemberIds: [String!]
+}

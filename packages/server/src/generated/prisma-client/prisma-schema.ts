@@ -1,4 +1,8 @@
-export const typeDefs = /* GraphQL */ `type AggregateUser {
+export const typeDefs = /* GraphQL */ `type AggregateParty {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -9,6 +13,12 @@ type BatchPayload {
 scalar Long
 
 type Mutation {
+  createParty(data: PartyCreateInput!): Party!
+  updateParty(data: PartyUpdateInput!, where: PartyWhereUniqueInput!): Party
+  updateManyParties(data: PartyUpdateInput!, where: PartyWhereInput): BatchPayload!
+  upsertParty(where: PartyWhereUniqueInput!, create: PartyCreateInput!, update: PartyUpdateInput!): Party!
+  deleteParty(where: PartyWhereUniqueInput!): Party
+  deleteManyParties(where: PartyWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
@@ -34,7 +44,138 @@ type PageInfo {
   endCursor: String
 }
 
+type Party {
+  id: ID!
+  name: String!
+  ownerUserId: String!
+  partyMemberIds: [String!]!
+}
+
+type PartyConnection {
+  pageInfo: PageInfo!
+  edges: [PartyEdge]!
+  aggregate: AggregateParty!
+}
+
+input PartyCreateInput {
+  name: String!
+  ownerUserId: String!
+  partyMemberIds: PartyCreatepartyMemberIdsInput
+}
+
+input PartyCreatepartyMemberIdsInput {
+  set: [String!]
+}
+
+type PartyEdge {
+  node: Party!
+  cursor: String!
+}
+
+enum PartyOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  ownerUserId_ASC
+  ownerUserId_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PartyPreviousValues {
+  id: ID!
+  name: String!
+  ownerUserId: String!
+  partyMemberIds: [String!]!
+}
+
+type PartySubscriptionPayload {
+  mutation: MutationType!
+  node: Party
+  updatedFields: [String!]
+  previousValues: PartyPreviousValues
+}
+
+input PartySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PartyWhereInput
+  AND: [PartySubscriptionWhereInput!]
+  OR: [PartySubscriptionWhereInput!]
+  NOT: [PartySubscriptionWhereInput!]
+}
+
+input PartyUpdateInput {
+  name: String
+  ownerUserId: String
+  partyMemberIds: PartyUpdatepartyMemberIdsInput
+}
+
+input PartyUpdatepartyMemberIdsInput {
+  set: [String!]
+}
+
+input PartyWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  ownerUserId: String
+  ownerUserId_not: String
+  ownerUserId_in: [String!]
+  ownerUserId_not_in: [String!]
+  ownerUserId_lt: String
+  ownerUserId_lte: String
+  ownerUserId_gt: String
+  ownerUserId_gte: String
+  ownerUserId_contains: String
+  ownerUserId_not_contains: String
+  ownerUserId_starts_with: String
+  ownerUserId_not_starts_with: String
+  ownerUserId_ends_with: String
+  ownerUserId_not_ends_with: String
+  AND: [PartyWhereInput!]
+  OR: [PartyWhereInput!]
+  NOT: [PartyWhereInput!]
+}
+
+input PartyWhereUniqueInput {
+  id: ID
+}
+
 type Query {
+  party(where: PartyWhereUniqueInput!): Party
+  parties(where: PartyWhereInput, orderBy: PartyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Party]!
+  partiesConnection(where: PartyWhereInput, orderBy: PartyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PartyConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -42,6 +183,7 @@ type Query {
 }
 
 type Subscription {
+  party(where: PartySubscriptionWhereInput): PartySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
