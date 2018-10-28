@@ -14,6 +14,7 @@ type Image {
 
 type PagedPlaylists {
   items: [Playlist!]!
+  offset: Int!
   href: String!
   total: Int!
   limit: Int!
@@ -63,5 +64,5 @@ type Mutation {
 type Query {
   allUsers: [User]!
   getMe: SpotifyUser
-  getPlaylists: PagedPlaylists
+  getPlaylists(offset: Int): PagedPlaylists
 }

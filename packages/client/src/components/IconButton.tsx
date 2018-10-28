@@ -5,7 +5,7 @@ export default styled.button`
   color: ${props => props.theme.textColors.primary};
   outline: none;
   border: none;
-  padding: none;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;

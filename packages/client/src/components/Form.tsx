@@ -6,6 +6,7 @@ export { default as Button } from './Button';
 export const Input = styled.input`
   height: 42px;
   border-radius: 3px;
+  padding: 0 ${props => props.theme.spacing[1]};
   border: 1px solid ${props => props.theme.colors.outline};
 `;
 
@@ -14,11 +15,12 @@ export const Label = styled.label<{ hasMargin: boolean }>`
   margin-bottom: ${props => (props.hasMargin ? '8px' : 0)};
 `;
 
-export const FieldSet = styled.fieldset`
+export const FieldSet = styled.fieldset<{ marginBottom?: number }>`
   display: flex;
   background: none;
   border: none;
   flex-direction: column;
+  margin-bottom: ${props => props.theme.spacing[props.marginBottom || 2]};
 `;
 
 export const InputWrapper = styled.div`
@@ -37,18 +39,20 @@ export const SubTitle = styled.span`
 interface IFormFieldProps {
   label: string;
   subTitle?: string;
+  marginBottom?: number;
   children: React.ReactNode;
   error?: React.ReactNode;
 }
 export function FormField({
   label,
+  marginBottom,
   subTitle,
   children,
   error,
   ...props
 }: IFormFieldProps) {
   return (
-    <FieldSet {...props}>
+    <FieldSet marginBottom={marginBottom} {...props}>
       <Label hasMargin={!subTitle}>{label}</Label>
       {subTitle && <SubTitle>{subTitle}</SubTitle>}
       <InputWrapper>{children}</InputWrapper>

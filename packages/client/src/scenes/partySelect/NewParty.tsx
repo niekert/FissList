@@ -2,6 +2,7 @@ import * as React from 'react';
 import PartyForm from './PartyForm';
 import gql from 'graphql-tag';
 import { Title, Text } from 'components/Typography';
+import posed, { PoseGroup } from 'react-pose';
 import styled from 'styled-components';
 import SelectPlaylist from 'scenes/selectPlaylist';
 import { Button, Input, FormField } from 'components/Form';
@@ -16,7 +17,12 @@ const NEW_PARTY_QUERY = gql`
   }
 `;
 
-const CtaSection = styled.div`
+const PosedCtaSection = posed.div({
+  visible: { transform: 'translateY(0%)', opacity: 1 },
+  hidden: { transform: 'translateY(100%)', opacity: 0 },
+});
+
+const CtaSection = styled(PosedCtaSection)`
   height: 75px;
   position: sticky;
   bottom: 0;
@@ -37,7 +43,6 @@ function NewParty() {
 
   const [hasError, setHasError] = React.useState(false);
 
-  console.log('selected', selectedPlaylist);
   const isValid = partyName.value.length > 0 && !!selectedPlaylist;
 
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -47,8 +52,6 @@ function NewParty() {
       setHasError(true);
       return;
     }
-
-    console.log('submitting form');
   };
 
   return (
@@ -62,28 +65,22 @@ function NewParty() {
           <Input type="text" {...partyName} />
         </FormField>
 
-        <FormField label="Creation type">
-          <Input type="text" {...partyName} />
-        </FormField>
-
         <FormField
           label="Base playlist"
+          marginBottom={0}
           subTitle="New songs are added to the front of the queue"
         >
           <SelectPlaylist
             selectedPlaylistId={selectedPlaylist}
             onClick={playListId => {
-              console.log('selecting playlist', playListId);
               setSelectedPlaylist(playListId);
             }}
           />
         </FormField>
       </PartyForm>
-      {isValid && (
-        <CtaSection>
-          <Cta>Start a new party</Cta>
-        </CtaSection>
-      )}
+      <CtaSection pose={isValid ? 'visible' : 'hidden'}>
+        <Cta>Start a new party</Cta>
+      </CtaSection>
     </>
   );
 }

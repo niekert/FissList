@@ -12,6 +12,10 @@ interface Tracks {
   total: number;
 }
 
+interface Args {
+  offset?: number;
+}
+
 interface Playlist {
   id: string;
   href: string;
@@ -20,9 +24,10 @@ interface Playlist {
   tracks: Tracks;
 }
 
-export async function getPlaylists(root, args, context: Context) {
+export async function getPlaylists(root, args: Args, context: Context) {
+  await new Promise(resolve => setTimeout(resolve, 1000));
   const { data, status } = await fetchResource<Paging<Playlist>>(
-    '/me/playlists?limit=15',
+    `/me/playlists?limit=15&offset=${args.offset || 0}`,
     context.accessKey,
   );
 

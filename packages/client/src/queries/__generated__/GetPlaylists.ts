@@ -19,9 +19,16 @@ export interface GetPlaylists_getPlaylists_items {
 
 export interface GetPlaylists_getPlaylists {
   href: string;
+  offset: number;
+  total: number;
+  limit: number;
   items: GetPlaylists_getPlaylists_items[];
 }
 
 export interface GetPlaylists {
   getPlaylists: GetPlaylists_getPlaylists | null;
+}
+
+export interface GetPlaylistsVariables {
+  offset?: number | null;
 }

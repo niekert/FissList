@@ -13,13 +13,17 @@ const getType = ({ buttonType = 'primary', theme }) => {
   `;
 };
 
-const Button = styled.div<{ buttonType?: 'primary' }>`
+const Button = styled.button<{ buttonType?: 'primary' }>`
   border-radius: 4px;
+  -webkit-appearance: none;
   cursor: pointer;
   height: 32px;
   display: flex;
   align-items: center;
   padding: 0 16px;
+  &:focus {
+    outline: none;
+  }
 
   ${getType};
 `;

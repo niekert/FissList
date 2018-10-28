@@ -12,6 +12,15 @@ interface IProps {
 
 const BackButton = styled(IconButton)`
   margin: 0 auto;
+
+  svg {
+    min-height: 18px;
+    min-height: 18px;
+  }
+`;
+
+const Form = styled.form`
+  margin-bottom: 0;
 `;
 
 const CardContent = styled(Card)`
@@ -25,7 +34,7 @@ const CardContent = styled(Card)`
 
 export default function PartyForm({ onSubmit, children }: IProps) {
   return (
-    <form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
       <BackButton
         type="button"
         onClick={e => {
@@ -37,6 +46,6 @@ export default function PartyForm({ onSubmit, children }: IProps) {
         <BackIcon />
       </BackButton>
       <CardContent>{children}</CardContent>
-    </form>
+    </Form>
   );
 }

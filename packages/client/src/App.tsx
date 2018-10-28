@@ -39,7 +39,7 @@ function App() {
 
             return (
               <CurrentUserContext.Provider value={result}>
-                <PartySelect />`
+                <PartySelect />
               </CurrentUserContext.Provider>
             );
           }}
