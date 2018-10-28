@@ -24,14 +24,14 @@ type Variables = {
   name: string;
 };
 
-type IProps = ChildMutateProps<{ onBack: () => void }, Response, Variables>;
+type IProps = ChildMutateProps<Response, Variables>;
 
 const Cta = styled(Button)`
   align-self: flex-start;
   margin-top: 16px;
 `;
 
-function NewParty({ onBack, mutate }: IProps) {
+function NewParty({ mutate }: IProps) {
   const partyName = useInputField('');
   const [selectedPlaylist, setSelectedPlaylist] = React.useState<string>('');
 
@@ -39,8 +39,6 @@ function NewParty({ onBack, mutate }: IProps) {
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
-    debugger;
 
     if (!partyName) {
       setHasError(true);
@@ -56,7 +54,7 @@ function NewParty({ onBack, mutate }: IProps) {
       <Text textAlign="center">
         Here you can configure a new party for your friends to join
       </Text>
-      <PartyForm onBack={onBack} onSubmit={onSubmit}>
+      <PartyForm onSubmit={onSubmit}>
         <FormField label="Party name">
           <Input type="text" {...partyName} />
         </FormField>

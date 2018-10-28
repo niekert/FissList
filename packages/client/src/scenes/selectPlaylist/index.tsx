@@ -7,7 +7,10 @@ interface IProps {
   onClick: (playlistId: string) => void;
 }
 
-const PlaylistsWrapper = styled.ul``;
+const PlaylistsWrapper = styled.ul`
+  max-height: 500px;
+  overflow: auto;
+`;
 
 const Playlist = styled.li``;
 
@@ -30,12 +33,19 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
         }
 
         if (data && data.getPlaylists) {
-          return data.getPlaylists.items.map(playlist => (
-            <Playlist key={playlist.id} onClick={() => onClick(playlist.id)}>
-              <Title>{playlist.name}</Title>
-              <TrackCount>12 tracks </TrackCount>
-            </Playlist>
-          ));
+          return (
+            <PlaylistsWrapper>
+              {data.getPlaylists.items.map(playlist => (
+                <Playlist
+                  key={playlist.id}
+                  onClick={() => onClick(playlist.id)}
+                >
+                  <Title>{playlist.name}</Title>
+                  <TrackCount>12 tracks </TrackCount>
+                </Playlist>
+              ))}
+            </PlaylistsWrapper>
+          );
         }
       }}
     </GetPlaylists>

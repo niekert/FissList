@@ -4,6 +4,7 @@ import { Card, CardTitle } from 'components/Card';
 
 interface IProps {
   onBack: () => void;
+  path?: string;
 }
 
 function JoinParty({ onBack }: IProps) {

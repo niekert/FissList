@@ -1,19 +1,14 @@
 import * as React from 'react';
-import useLogout from 'hooks/logout';
 import CurrentUserContext from 'context/CurrentUser';
+import { Location, Router } from '@reach/router';
 import NewParty from './NewParty';
 import Page from 'components/Page';
-import { Title, Text } from 'components/Typography';
+import SelectType from './SelectType';
 import styled from 'styled-components';
 import OptionCard from './OptionCard';
 import Link from 'components/Link';
 import posed, { PoseGroup } from 'react-pose';
 import JoinParty from './JoinParty';
-
-const PartyOptions = styled.div`
-  max-width: 350px;
-  margin: 0 auto;
-`;
 
 const StepsPanel = styled.div`
   display: flex;
@@ -24,6 +19,7 @@ const StepsPanel = styled.div`
 const Item = posed.div({
   enter: {
     transform: 'translateX(0px)',
+    top: 0,
     transition: { duration: 300 },
     width: '100%',
     opacity: 1,
@@ -39,38 +35,23 @@ const Item = posed.div({
   },
 });
 
-enum SCREEN_TYPES {
-  'SELECT',
-  'NEW_PARTY',
-  'JOIN_PARTY',
-}
-
-interface IAction {
-  type: 'SET_ACTIVE_SCREEN';
-  screen?: SCREEN_TYPES;
-}
-
-type State = SCREEN_TYPES;
+const PosedRouter = ({ children }) => (
+  <Location>
+    {({ location }) => (
+      <PoseGroup>
+        <Item
+          key={location.key}
+          type={location.pathname === '/' ? 'prev' : 'next'}
+        >
+          <Router location={location}>{children}</Router>
+        </Item>
+      </PoseGroup>
+    )}
+  </Location>
+);
 
 function PartySelect() {
-  // TODO: this API is unforunate.
-  // Would be nicec if we could have `useApollo` in `useUnlink`.
-  const logout = useLogout();
   const currentUser = React.useContext(CurrentUserContext);
-  const [activeScreen, dispatch] = React.useReducer(
-    (state: State, action: IAction) => {
-      switch (action.type) {
-        case 'SET_ACTIVE_SCREEN':
-          return action.screen;
-        default:
-          return state;
-      }
-    },
-    SCREEN_TYPES.SELECT,
-  );
-
-  const onBack = () =>
-    dispatch({ type: 'SET_ACTIVE_SCREEN', screen: SCREEN_TYPES.SELECT });
 
   if (!currentUser) {
     return null;
@@ -79,54 +60,11 @@ function PartySelect() {
   return (
     <Page>
       <StepsPanel>
-        <PoseGroup>
-          {activeScreen === SCREEN_TYPES.SELECT && (
-            <Item key={activeScreen} type="prev">
-              <Title>Welcome to PartyPlay!</Title>
-              <Text textAlign="center">
-                Start a new party, or join a friends' party
-              </Text>
-              <PartyOptions>
-                <OptionCard
-                  title="Start a new party"
-                  body="Woohoo! Click this button to start a new party and share the link to the party with your friends!"
-                  cta={'Start party'}
-                  onClick={() =>
-                    dispatch({
-                      type: 'SET_ACTIVE_SCREEN',
-                      screen: SCREEN_TYPES.NEW_PARTY,
-                    })
-                  }
-                />
-                <OptionCard
-                  title="Join a party"
-                  body="Join a friend's party by filling in the party code"
-                  cta={'Join party'}
-                  onClick={() => {
-                    dispatch({
-                      type: 'SET_ACTIVE_SCREEN',
-                      screen: SCREEN_TYPES.JOIN_PARTY,
-                    });
-                  }}
-                />
-              </PartyOptions>
-              <Text textAlign="center">
-                Or, if you are done using PartyPlay,{' '}
-                <Link onClick={() => logout()}>Log out</Link>
-              </Text>
-            </Item>
-          )}
-          {activeScreen === SCREEN_TYPES.NEW_PARTY && (
-            <Item key={activeScreen} type="next">
-              <NewParty onBack={onBack} />
-            </Item>
-          )}
-          {activeScreen === SCREEN_TYPES.JOIN_PARTY && (
-            <Item key={activeScreen} type="next">
-              <JoinParty onBack={onBack} />
-            </Item>
-          )}
-        </PoseGroup>
+        <PosedRouter>
+          <SelectType default />
+          <NewParty path="/new" />
+          <JoinParty path="/join" />
+        </PosedRouter>
       </StepsPanel>
     </Page>
   );

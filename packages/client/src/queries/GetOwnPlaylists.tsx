@@ -30,6 +30,8 @@ interface IProps {
 
 export default function GetPlaylists({ children }: IProps) {
   return (
-    <GetPlaylistsQuery query={GET_OWN_PLAYLISTS}>{children}</GetPlaylistsQuery>
+    <GetPlaylistsQuery query={GET_OWN_PLAYLISTS} fetchPolicy="network-only">
+      {children}
+    </GetPlaylistsQuery>
   );
 }
