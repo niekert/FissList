@@ -1,19 +1,12 @@
 import * as React from 'react';
 import Button from 'components/Button';
-import styled, { css } from 'styled-components';
+import { Card, CardTitle } from 'components/Card';
+import styled from 'styled-components';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-bottom: 16px;
-  padding: 16px;
-  border-radius: 4px;
-  box-shadow: rgba(200, 223, 245, 0.5) 0px 8px 16px 0px;
-`;
-
-const Title = styled.div`
-  font-weight: 600;
+const Wrapper = styled(Card)`
+  :hover:after {
+    opacity: 1;
+  }
 `;
 
 const Body = styled.p``;
@@ -31,10 +24,10 @@ interface IProps {
 
 export default function OptionCard({ title, body, onClick, cta }: IProps) {
   return (
-    <Wrapper>
-      <Title>{title}</Title>
+    <Wrapper onClick={onClick}>
+      <CardTitle>{title}</CardTitle>
       <Body>{body}</Body>
-      <Cta onClick={onClick}>{cta}</Cta>
+      <Cta>{cta}</Cta>
     </Wrapper>
   );
 }

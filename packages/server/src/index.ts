@@ -28,7 +28,6 @@ const server = new GraphQLServer({
   context: req => {
     const accessKey = req.request.headers.authorization;
 
-    console.log('accessKey is', accessKey);
 
     return {
       prisma,

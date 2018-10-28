@@ -12,7 +12,6 @@ import App from './App';
 const authLink = setContext((_, { headers }) => {
   const accessKey = localStorage.getItem('accessToken');
 
-  console.log('accessKey', accessKey);
   return {
     headers: {
       ...headers,

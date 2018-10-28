@@ -20,7 +20,6 @@ export default function Theme({ children }) {
   return (
     <>
       <TypographyStyle typography={typography} />
-      <GoogleFont typography={typography} />
       <ThemeProvider theme={DEFAULT_THEME}>{children}</ThemeProvider>
     </>
   );

@@ -6,7 +6,7 @@ function Header() {
     <GetMe>
       {({ data, loading, error }) => (
         <div>
-          Is loading {new String(loading)} {JSON.stringify(data)}
+          yooo Is loading {new String(loading)} {JSON.stringify(data)}
         </div>
       )}
     </GetMe>

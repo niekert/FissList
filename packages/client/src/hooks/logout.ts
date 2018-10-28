@@ -1,7 +1,8 @@
 import * as React from 'react';
-import ApolloClient from 'apollo-client';
+import CurrentUserContext from 'context/CurrentUser';
 
-function useUnlink(apolloClient: ApolloClient<any>): () => void {
+function useUnlink(): () => void {
+  const currentUser = React.useContext(CurrentUserContext);
   const [isLinked, setIsLinked] = React.useState(true);
 
   React.useEffect(
@@ -11,7 +12,9 @@ function useUnlink(apolloClient: ApolloClient<any>): () => void {
         localStorage.removeItem('accessToken');
 
         // Refetch all queries
-        apolloClient.reFetchObservableQueries();
+        if (currentUser) {
+          currentUser.refetch();
+        }
       }
     },
     [isLinked],

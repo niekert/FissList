@@ -18,13 +18,13 @@ interface IProps {
 }
 
 export default function Page({ children }: IProps) {
+  const currentUser = React.useContext(CurrentUserContext);
+
   return (
     <StyledPage>
-      <CurrentUserContext.Consumer>
-        {/* TODO@ NIek - Do we want a header? */}
-        {/* {currentUser => currentUser && <Header />} */}
-        {currentUser => currentUser && <div />}
-      </CurrentUserContext.Consumer>
+      {/* TODO - Do we want a header? */}
+      {/* {currentUser => currentUser && <Header />} */}
+      {currentUser && <div />}
       {children}
     </StyledPage>
   );
