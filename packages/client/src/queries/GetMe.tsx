@@ -23,6 +23,8 @@ interface IProps {
   children: (me: QueryResult<GetMe>) => React.ReactNode;
 }
 
+export type QueryResult = QueryResult<GetMe>;
+
 export default function GetMeQueryComponent({ children }: IProps) {
   return (
     <GetMeQuery

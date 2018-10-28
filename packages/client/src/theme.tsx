@@ -10,6 +10,7 @@ const typography = new Typography(oceanBeachTheme);
 
 const DEFAULT_THEME = {
   colors: {
+    cta: '#05f',
     spotify: '#1DB954',
     black: '#191414',
   },
