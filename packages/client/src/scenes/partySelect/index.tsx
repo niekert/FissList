@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import OptionCard from './OptionCard';
 import Link from 'components/Link';
 import posed, { PoseGroup } from 'react-pose';
+import JoinParty from './JoinParty';
 
 const PartyOptions = styled.div`
   max-width: 350px;
@@ -14,6 +15,8 @@ const PartyOptions = styled.div`
 `;
 
 const StepsPanel = styled.div`
+  display: flex;
+  align-self: stretch;
   display: flex;
 `;
 
@@ -27,6 +30,7 @@ const Item = posed.div({
   enter: {
     transform: 'translateX(0px)',
     transition: { duration: 300 },
+    width: '100%',
     opacity: 1,
   },
   exit: {
@@ -70,6 +74,9 @@ function PartySelect() {
     SCREEN_TYPES.SELECT,
   );
 
+  const onBack = () =>
+    dispatch({ type: 'SET_ACTIVE_SCREEN', screen: SCREEN_TYPES.SELECT });
+
   if (!currentUser) {
     return null;
   }
@@ -79,18 +86,6 @@ function PartySelect() {
       <Welcome>Welcome to PartyPlay!</Welcome>
       <Intro>Start a new party, or join a friends' party</Intro>
 
-      {activeScreen !== SCREEN_TYPES.SELECT && (
-        <button
-          onClick={() =>
-            dispatch({
-              type: 'SET_ACTIVE_SCREEN',
-              screen: SCREEN_TYPES.SELECT,
-            })
-          }
-        >
-          Go back
-        </button>
-      )}
       <StepsPanel>
         <PoseGroup>
           {activeScreen === SCREEN_TYPES.SELECT && (
@@ -127,12 +122,12 @@ function PartySelect() {
           )}
           {activeScreen === SCREEN_TYPES.NEW_PARTY && (
             <Item key={activeScreen} type="next">
-              <NewParty />
+              <NewParty onBack={onBack} />
             </Item>
           )}
           {activeScreen === SCREEN_TYPES.JOIN_PARTY && (
             <Item key={activeScreen} type="next">
-              Join party
+              <JoinParty onBack={onBack} />
             </Item>
           )}
         </PoseGroup>

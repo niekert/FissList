@@ -14,6 +14,9 @@ const DEFAULT_THEME = {
     spotify: '#1DB954',
     black: '#191414',
   },
+  textColors: {
+    primary: 'rgba(0, 0, 0, 0.73)',
+  },
 };
 
 export default function Theme({ children }) {
