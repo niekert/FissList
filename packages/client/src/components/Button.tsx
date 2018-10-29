@@ -16,6 +16,7 @@ const getType = ({ buttonType = 'primary', theme }) => {
 const Button = styled.button<{ buttonType?: 'primary' }>`
   border-radius: 4px;
   -webkit-appearance: none;
+  border: none;
   cursor: pointer;
   height: 32px;
   display: flex;

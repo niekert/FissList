@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
+import { Img } from 'the-platform';
 import Button from 'components/Button';
 import Spinner from 'components/Spinner';
 import { transparentize } from 'polished';
@@ -86,7 +87,9 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
                       key={playlist.id}
                       onClick={() => onClick(playlist.id)}
                     >
-                      <Thumbnail src={playlist.thumbnail || ''} />
+                      {playlist.thumbnail && (
+                        <Thumbnail src={playlist.thumbnail || ''} />
+                      )}
                       <Content>
                         <Title>{playlist.name}</Title>
                         <TrackCount>{playlist.tracks.total} tracks</TrackCount>

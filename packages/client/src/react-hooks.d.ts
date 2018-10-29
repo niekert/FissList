@@ -27,4 +27,5 @@ declare module 'react' {
   ): void;
   const useMutationEffect: typeof useEffect;
   const useLayoutEffect: typeof useEffect;
+  const Suspense: ComponentType<{ fallback: React.ReactNode }>;
 }
