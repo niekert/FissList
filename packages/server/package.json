@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "camelcase-keys": "^5.0.0",
     "concurrently": "^4.0.1",
