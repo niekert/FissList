@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Title, Text } from 'components/Typography';
 import SelectPlaylist from 'scenes/selectPlaylist';
-import posed, { PoseGroup } from 'react-pose';
+import posed from 'react-pose';
 import PartyForm from './PartyForm';
 import { Button, Input, FormField } from 'components/Form';
 import styled from 'styled-components';
