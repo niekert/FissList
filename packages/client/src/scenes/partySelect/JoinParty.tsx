@@ -3,13 +3,12 @@ import PartyForm from './PartyForm';
 import { Card, CardTitle } from 'components/Card';
 
 interface IProps {
-  onBack: () => void;
   path?: string;
 }
 
-function JoinParty({ onBack }: IProps) {
+function JoinParty(props: IProps) {
   return (
-    <PartyForm onBack={onBack}>
+    <PartyForm>
       <CardTitle>Join a party</CardTitle>
       <p>Start a new party</p>
     </PartyForm>

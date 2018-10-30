@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const Text = styled.p<{
+  marginBottom?: number;
   textAlign?: 'center' | 'left' | 'inherit' | 'right';
 }>`
   text-align: ${props => props.textAlign || 'inherit'};
-  margin-bottom: 16px;
+  margin-bottom: ${props => props.theme.spacing[props.marginBottom || 2]};
 `;
 
 export const Title = styled.h1`

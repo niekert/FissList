@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { Img } from 'the-platform';
+import posed, { PoseGroup } from 'react-pose';
 import Button from 'components/Button';
 import Spinner from 'components/Spinner';
 import { transparentize } from 'polished';
@@ -16,7 +16,22 @@ const PlaylistsWrapper = styled.ul`
   overflow: auto;
 `;
 
-const Playlist = styled.li<{ isSelected: boolean }>`
+const PosedPlaylist = posed.li({
+  enter: {
+    opacity: 1,
+    transform: 'translateY(0px)',
+    transition: ({ i }) => ({ delay: i * 100, duration: 300 }),
+  },
+  exit: {
+    opacity: 0,
+    transform: 'translateY(15px)',
+  },
+  props: {
+    i: 0,
+  },
+});
+
+const Playlist = styled(PosedPlaylist)<{ isSelected: boolean }>`
   max-width: 100%;
   padding: 8px 0;
   display: flex;
@@ -65,8 +80,6 @@ const LoadMoreButton = styled(Button)`
 
 const TrackCount = styled.span``;
 
-const getThumbnail = images => {};
-
 function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
   return (
     <GetPlaylists>
@@ -80,22 +93,27 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
           <>
             {data &&
               data.getPlaylists && (
-                <PlaylistsWrapper>
-                  {data.getPlaylists.items.map(playlist => (
-                    <Playlist
-                      isSelected={playlist.id === selectedPlaylistId}
-                      key={playlist.id}
-                      onClick={() => onClick(playlist.id)}
-                    >
-                      {playlist.thumbnail && (
-                        <Thumbnail src={playlist.thumbnail || ''} />
-                      )}
-                      <Content>
-                        <Title>{playlist.name}</Title>
-                        <TrackCount>{playlist.tracks.total} tracks</TrackCount>
-                      </Content>
-                    </Playlist>
-                  ))}
+                <PlaylistsWrapper key="wrapper">
+                  <PoseGroup>
+                    {data.getPlaylists.items.map((playlist, i) => (
+                      <Playlist
+                        isSelected={playlist.id === selectedPlaylistId}
+                        i={i - data.getPlaylists!.offset}
+                        key={playlist.id}
+                        onClick={() => onClick(playlist.id)}
+                      >
+                        {playlist.thumbnail && (
+                          <Thumbnail src={playlist.thumbnail || ''} />
+                        )}
+                        <Content>
+                          <Title>{playlist.name}</Title>
+                          <TrackCount>
+                            {playlist.tracks.total} tracks
+                          </TrackCount>
+                        </Content>
+                      </Playlist>
+                    ))}
+                  </PoseGroup>
                   {!loading &&
                     data.getPlaylists.items.length <
                       data.getPlaylists.total && (

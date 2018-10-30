@@ -10,7 +10,8 @@ export const Input = styled.input`
   border: 1px solid ${props => props.theme.colors.outline};
 `;
 
-export const Label = styled.label<{ hasMargin: boolean }>`
+// TODO: Get rid of ugly hasMargin
+export const Label = styled.label<{ hasMargin?: boolean }>`
   font-weight: 600;
   margin-bottom: ${props => (props.hasMargin ? '8px' : 0)};
 `;

@@ -5,11 +5,6 @@ import { Card } from 'components/Card';
 import IconButton from 'components/IconButton';
 import BackIcon from 'icons/BackIcon';
 
-interface IProps {
-  onSubmit: (e: React.SyntheticEvent) => void;
-  children: React.ReactNode;
-}
-
 const BackButton = styled(IconButton)`
   margin: 0 auto;
 
@@ -32,9 +27,12 @@ const CardContent = styled(Card)`
   max-width: 100%;
 `;
 
-export default function PartyForm({ onSubmit, children }: IProps) {
+interface IProps {
+  children: React.ReactNode;
+}
+export default function PartyForm({ children }: IProps) {
   return (
-    <Form onSubmit={onSubmit}>
+    <Form>
       <BackButton
         type="button"
         onClick={e => {

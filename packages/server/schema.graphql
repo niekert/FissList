@@ -27,6 +27,7 @@ type Party {
   id: ID!
   name: String!
   ownerUserId: String!
+  basePlaylistId: String!
   partyMembers: [PartyMember]
 }
 
@@ -57,7 +58,7 @@ type Playlist {
 
 type Mutation {
   authorize: String!
-  createParty(name: String!): Party
+  createParty(name: String!, basePlaylistId: String!): Party
   createUser(name: String!): User
 }
 

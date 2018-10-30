@@ -28,4 +28,8 @@ declare module 'react' {
   const useMutationEffect: typeof useEffect;
   const useLayoutEffect: typeof useEffect;
   const Suspense: ComponentType<{ fallback: React.ReactNode }>;
+
+  function memo<T extends React.ComponentType<any>>(
+    Component: T,
+  ): React.Component<T>;
 }

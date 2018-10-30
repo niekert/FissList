@@ -2,12 +2,9 @@ import * as React from 'react';
 import CurrentUserContext from 'context/CurrentUser';
 import { Location, Router } from '@reach/router';
 import NewParty from './NewParty';
-import Page from 'components/Page';
+import posed, { PoseGroup } from 'react-pose';
 import SelectType from './SelectType';
 import styled from 'styled-components';
-import OptionCard from './OptionCard';
-import Link from 'components/Link';
-import posed, { PoseGroup } from 'react-pose';
 import JoinParty from './JoinParty';
 
 const StepsPanel = styled.div`
@@ -20,7 +17,7 @@ const Item = posed.div({
   enter: {
     transform: 'translateX(0px)',
     top: 0,
-    transition: { duration: 300 },
+    transition: { duration: 250 },
     width: '100%',
     opacity: 1,
   },
@@ -50,7 +47,7 @@ const PosedRouter = ({ children }) => (
   </Location>
 );
 
-function PartySelect() {
+function PartySelect(props: { default?: boolean }) {
   const currentUser = React.useContext(CurrentUserContext);
 
   if (!currentUser) {
@@ -60,7 +57,7 @@ function PartySelect() {
   return (
     <StepsPanel>
       <PosedRouter>
-        <SelectType default />
+        <SelectType default={true} />
         <NewParty path="/new" />
         <JoinParty path="/join" />
       </PosedRouter>

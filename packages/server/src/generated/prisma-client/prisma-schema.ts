@@ -48,6 +48,7 @@ type Party {
   id: ID!
   name: String!
   ownerUserId: String!
+  basePlaylistId: String!
   partyMemberIds: [String!]!
 }
 
@@ -60,6 +61,7 @@ type PartyConnection {
 input PartyCreateInput {
   name: String!
   ownerUserId: String!
+  basePlaylistId: String!
   partyMemberIds: PartyCreatepartyMemberIdsInput
 }
 
@@ -79,6 +81,8 @@ enum PartyOrderByInput {
   name_DESC
   ownerUserId_ASC
   ownerUserId_DESC
+  basePlaylistId_ASC
+  basePlaylistId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -89,6 +93,7 @@ type PartyPreviousValues {
   id: ID!
   name: String!
   ownerUserId: String!
+  basePlaylistId: String!
   partyMemberIds: [String!]!
 }
 
@@ -113,6 +118,7 @@ input PartySubscriptionWhereInput {
 input PartyUpdateInput {
   name: String
   ownerUserId: String
+  basePlaylistId: String
   partyMemberIds: PartyUpdatepartyMemberIdsInput
 }
 
@@ -163,6 +169,20 @@ input PartyWhereInput {
   ownerUserId_not_starts_with: String
   ownerUserId_ends_with: String
   ownerUserId_not_ends_with: String
+  basePlaylistId: String
+  basePlaylistId_not: String
+  basePlaylistId_in: [String!]
+  basePlaylistId_not_in: [String!]
+  basePlaylistId_lt: String
+  basePlaylistId_lte: String
+  basePlaylistId_gt: String
+  basePlaylistId_gte: String
+  basePlaylistId_contains: String
+  basePlaylistId_not_contains: String
+  basePlaylistId_starts_with: String
+  basePlaylistId_not_starts_with: String
+  basePlaylistId_ends_with: String
+  basePlaylistId_not_ends_with: String
   AND: [PartyWhereInput!]
   OR: [PartyWhereInput!]
   NOT: [PartyWhereInput!]

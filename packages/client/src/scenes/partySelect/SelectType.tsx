@@ -27,15 +27,15 @@ export default function SelectType(props: IProps) {
   return (
     <>
       {/* TODO: Rename app title and use logo */}
-      <Title>PartyPlay</Title>
+      <Title>PampaPlay</Title>
       <IntroText textAlign="center">
-        PartyPlay helps you play the best music during your parties by letting
-        your guests decide the songs that will play next.
+        PampaPlay helps you play the best music during parties by letting your
+        guests decide the songs that will play next.
       </IntroText>
       <PartyOptions>
         <OptionCard
           title="🔊 Start a new party"
-          body="Woohoo! Click this button to start a new party and share the link to the party with your friends!"
+          body="Click this button to start a new party and get a shareable party link"
           cta={'Start party'}
           onClick={() => navigate('/new')}
         />
@@ -47,7 +47,7 @@ export default function SelectType(props: IProps) {
         />
       </PartyOptions>
       <Text textAlign="center">
-        Or, if you are done using PartyPlay,{' '}
+        Or, if you are done using PampaPlay,{' '}
         <Link onClick={() => logout()}>Log out</Link>
       </Text>
     </>

@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 
 const getType = ({ buttonType = 'primary', theme }) => {
-  // TODO: get
   return css`
     background: ${theme.colors.cta};
     color: white;

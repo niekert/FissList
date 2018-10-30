@@ -25,6 +25,7 @@ interface Playlist {
 }
 
 export async function getPlaylists(root, args: Args, context: Context) {
+  await new Promise(resolve => setTimeout(resolve, 700));
   const { data, status } = await fetchResource<Paging<Playlist>>(
     `/me/playlists?limit=15&offset=${args.offset || 0}`,
     context.accessKey,

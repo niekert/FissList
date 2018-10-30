@@ -6,6 +6,7 @@ import { Router } from '@reach/router';
 import Auth from './scenes/auth';
 import Landing from 'scenes/landing';
 import PartySelect from 'scenes/partySelect';
+import Party from 'scenes/party';
 import Theme from './theme';
 
 const GlobalStyle = createGlobalStyle`
@@ -39,7 +40,10 @@ function App() {
 
             return (
               <CurrentUserContext.Provider value={result}>
-                <PartySelect />
+                <Router>
+                  <PartySelect default={true} />
+                  <Party path="/party/:id" />
+                </Router>
               </CurrentUserContext.Provider>
             );
           }}

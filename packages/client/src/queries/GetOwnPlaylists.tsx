@@ -37,7 +37,6 @@ export default function GetPlaylists({ children }: IProps) {
     <GetPlaylistsQuery
       query={GET_OWN_PLAYLISTS}
       notifyOnNetworkStatusChange={true}
-      fetchPolicy="network-only"
     >
       {queryResult =>
         children({
