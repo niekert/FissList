@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CurrentUserContext from 'context/CurrentUser';
 import { Location, Router } from '@reach/router';
-import NewParty from './NewParty';
+import NewParty from 'scenes/newParty';
 import posed, { PoseGroup } from 'react-pose';
 import SelectType from './SelectType';
 import styled from 'styled-components';
