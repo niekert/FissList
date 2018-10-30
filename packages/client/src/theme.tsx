@@ -2,7 +2,7 @@ import * as React from 'react';
 import Typography from 'typography';
 import oceanBeachTheme from 'typography-theme-ocean-beach';
 import CodePlugin from 'typography-plugin-code';
-import { TypographyStyle, GoogleFont } from 'react-typography';
+import { TypographyStyle } from 'react-typography';
 import { ThemeProvider } from 'styled-components';
 
 oceanBeachTheme.plugins = [new CodePlugin()];

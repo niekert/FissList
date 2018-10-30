@@ -1,6 +1,5 @@
 import * as React from 'react';
 import CurrentUserContext from 'context/CurrentUser';
-import Header from 'scenes/header';
 import styled from 'styled-components';
 
 const StyledPage = styled.div`

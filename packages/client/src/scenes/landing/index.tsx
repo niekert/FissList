@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Page from 'components/Page';
-import Garland from 'illustrations/Garland';
 import styled from 'styled-components';
 import SpotifyConnect from 'scenes/spotifyConnect';
 

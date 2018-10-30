@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PartyForm from './PartyForm';
-import { Card, CardTitle } from 'components/Card';
+import { CardTitle } from 'components/Card';
 
 interface IProps {
   path?: string;

@@ -1,7 +1,6 @@
 {
-  "name": "client",
+  "name": "partyplay-client",
   "version": "0.1.0",
-  "private": true,
   "proxy": "http://localhost:4000",
   "dependencies": {
     "@reach/router": "^1.2.1",
