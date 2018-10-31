@@ -1,6 +1,6 @@
 import { Context, SpotifyUser } from '../types';
 import { GraphQLError } from 'graphql';
-import { userPlaylists } from './playlist';
+import { playlist } from './playlist';
 
 export async function me(root, args, context: Context): Promise<SpotifyUser> {
   return context.spotify.fetchCurrentUser();
@@ -9,7 +9,7 @@ export async function me(root, args, context: Context): Promise<SpotifyUser> {
 export async function meList(root, args, context: Context) {
   return {
     id: 'konjo',
-    playlist: () => userPlaylists(root, args, context),
+    playlist: () => playlist(root, { id: '4N8ULyTy9d47bSHZrG0bxJ' }, context),
   };
 }
 

@@ -45,3 +45,11 @@ export async function userPlaylists(root, args: Args, context: Context) {
     }),
   };
 }
+
+export async function playlist(root, args: { id: string }, context: Context) {
+  const { data, status } = await context.spotify.fetchResource<Playlist>(
+    `/playlists/${args.id}`,
+  );
+
+  return data;
+}

@@ -84,6 +84,7 @@ type Query {
   allUsers: [User]!
   me: SpotifyUser
   meList: User!
-  party(partyId: String!): Party
+  party(partyId: String!): Party!
+  playlist(id: String!): Playlist!
   userPlaylists(offset: Int): PagedPlaylists
 }
