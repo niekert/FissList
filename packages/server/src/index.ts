@@ -5,13 +5,9 @@ import { config } from 'dotEnv';
 import * as playlistQueries from './queries/playlist';
 import * as userQueries from './queries/user';
 import * as partyMutations from './mutations/party';
-import { scopes, fetchAccountResource } from './spotify';
+import { makeHttpService, scopes } from './spotify';
 
 config();
-
-interface Context {
-  prisma: Prisma;
-}
 
 const resolvers = {
   Query: {
@@ -26,20 +22,23 @@ const resolvers = {
   },
 };
 
+const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
+
 const server = new GraphQLServer({
   typeDefs: './schema.graphql',
   resolvers,
   context: req => {
     const accessKey = req.request.headers.authorization;
 
+    console.log('accesKey', accessKey);
+    const spotifyService = makeHttpService(accessKey);
+
     return {
       prisma,
-      accessKey,
+      spotify: spotifyService,
     };
   },
 });
-
-const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
 
 server.express.get('/authorize', (req, res) => {
   res.redirect(
@@ -61,7 +60,8 @@ server.express.get('/auth-callback', async (req, res) => {
   });
 
   try {
-    const authResp = await fetchAccountResource<{
+    const spotifyService = makeHttpService('');
+    const authResp = await spotifyService.fetchAccountResource<{
       access_token: string;
       refresh_token: string;
     }>('/token', {
@@ -72,6 +72,7 @@ server.express.get('/auth-callback', async (req, res) => {
       body,
     });
 
+    console.log('auth resp', authResp);
     res.redirect(
       process.env.CLIENT_HOST +
         `/auth?token=${authResp.access_token}&refreshToken=${

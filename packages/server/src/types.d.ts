@@ -2,7 +2,16 @@ import { Prisma } from './generated/prisma-client';
 
 export interface Context {
   prisma: Prisma;
-  accessKey?: string;
+  spotify: HttpService;
+}
+
+interface HttpService {
+  fetchAccountResource: <T>(path: string, options?: any) => Promise<T>;
+  fetchResource: <T>(
+    path: string,
+    options?: any,
+  ) => Promise<{ status: Number; data: T }>;
+  fetchCurrentUser: () => Promise<SpotifyUser>;
 }
 
 interface Paging<T> {

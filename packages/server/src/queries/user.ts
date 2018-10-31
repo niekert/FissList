@@ -1,4 +1,3 @@
-import { fetchCurrentUser } from '../spotify';
 import { Context, SpotifyUser } from '../types';
 import { GraphQLError } from 'graphql';
 
@@ -7,7 +6,7 @@ export async function getMe(
   args,
   context: Context,
 ): Promise<SpotifyUser> {
-  return fetchCurrentUser(context.accessKey);
+  return context.spotify.fetchCurrentUser();
 }
 
 export function allUsers(root, args, context: Context) {

@@ -1,5 +1,4 @@
 import { Context } from '../types';
-import { fetchCurrentUser } from '../spotify';
 
 export async function createParty(
   root,
@@ -7,7 +6,7 @@ export async function createParty(
   context: Context,
 ) {
   await new Promise(resolve => setTimeout(resolve, 700));
-  const user = await fetchCurrentUser(context.accessKey);
+  const user = await context.spotify.fetchCurrentUser();
 
   return context.prisma.createParty({
     name: args.name,
