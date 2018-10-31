@@ -4,20 +4,52 @@ import { GraphQLError } from 'graphql';
 import { HttpService } from './types';
 import * as camelcase from 'camelcase-keys';
 
+export interface Playlist {
+  name: string;
+  id: string;
+  tracks: Paging<PlaylistTrack>;
+}
+
+interface Paging<T> {
+  href: string;
+  limit: number;
+  items: [T];
+  total: number;
+  next?: string;
+  previous?: string;
+}
+
+export interface PlaylistTrack {
+  addedAt: string;
+  addedBy: string;
+  track: Track;
+  isLocal: boolean;
+}
+
+export interface Track {
+  uri: string;
+}
+
 export const scopes: string = [
   'user-read-playback-state',
   'user-read-currently-playing',
   'user-modify-playback-state',
   'user-read-private',
   'playlist-read-private',
+  'playlist-modify-private',
   'user-read-email',
+  'user-library-read',
+  'user-library-modify',
 ].join(' ');
 
 const ACCOUNTS_BASE_URL = 'https://accounts.spotify.com/api';
 const BASE_URL = 'https://api.spotify.com/v1';
 
 export function makeHttpService(accessKey: string): HttpService {
-  function fetchAccountResource<T>(path: string, options): Promise<T> {
+  function fetchAccountResource<T>(
+    path: string,
+    options: any = {},
+  ): Promise<T> {
     return fetch(`${ACCOUNTS_BASE_URL}${path}`, {
       ...options,
       headers: {
@@ -29,7 +61,7 @@ export function makeHttpService(accessKey: string): HttpService {
 
   function fetchResource<T>(
     path: string,
-    options: any = {},
+    options: FetchOp = {},
   ): Promise<{ status: Number; data: T }> {
     return fetch(`${BASE_URL}${path}`, {
       ...options,

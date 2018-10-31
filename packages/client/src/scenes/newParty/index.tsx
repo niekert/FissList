@@ -33,7 +33,7 @@ function NewParty({ path }: { path?: string }) {
               mutate({
                 variables: {
                   name: partyName.value,
-                  basePlaylistId: '',
+                  playlistId: selectedPlaylistId,
                 },
               });
             }}

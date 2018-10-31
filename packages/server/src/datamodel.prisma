@@ -7,6 +7,6 @@ type Party {
   id: ID! @unique
   name: String!
   ownerUserId: String!
-  basePlaylistId: String!
+  playlistId: String!
   partyMemberIds: [String!]
 }

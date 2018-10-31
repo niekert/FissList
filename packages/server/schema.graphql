@@ -27,7 +27,7 @@ type Party {
   id: ID!
   name: String!
   ownerUserId: String!
-  basePlaylistId: String!
+  playlistId: String!
   partyMembers: [PartyMember]
 }
 
@@ -58,12 +58,12 @@ type Playlist {
 
 type Mutation {
   authorize: String!
-  createParty(name: String!, basePlaylistId: String!): Party
+  createParty(name: String!, playlistId: String!): Party
   createUser(name: String!): User
 }
 
 type Query {
   allUsers: [User]!
-  getMe: SpotifyUser
+  me: SpotifyUser
   getPlaylists(offset: Int): PagedPlaylists
 }

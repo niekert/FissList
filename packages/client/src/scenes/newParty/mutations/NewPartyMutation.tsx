@@ -4,11 +4,11 @@ import { Mutation, MutationFn, MutationResult } from 'react-apollo';
 import { NewParty, NewPartyVariables } from './__generated__/NewParty';
 
 export const NEW_PARTY_MUTATION = gql`
-  mutation NewParty($name: String!, $basePlaylistId: String!) {
-    createParty(name: $name, basePlaylistId: $basePlaylistId) {
+  mutation NewParty($name: String!, $playlistId: String!) {
+    createParty(name: $name, playlistId: $playlistId) {
       id
       name
-      basePlaylistId
+      playlistId
     }
   }
 `;

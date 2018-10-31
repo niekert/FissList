@@ -5,7 +5,7 @@ import { GetMe } from './__generated__/GetMe';
 
 export const GET_ME = gql`
   query GetMe {
-    getMe {
+    me {
       id
       displayName
       email

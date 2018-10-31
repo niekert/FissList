@@ -1,7 +1,7 @@
 import { Context, SpotifyUser } from '../types';
 import { GraphQLError } from 'graphql';
 
-export async function getMe(
+export async function me(
   root,
   args,
   context: Context,

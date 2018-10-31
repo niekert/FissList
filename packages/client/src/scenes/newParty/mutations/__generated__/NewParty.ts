@@ -8,7 +8,7 @@
 export interface NewParty_createParty {
   id: string;
   name: string;
-  basePlaylistId: string;
+  playlistId: string;
 }
 
 export interface NewParty {
@@ -17,5 +17,5 @@ export interface NewParty {
 
 export interface NewPartyVariables {
   name: string;
-  basePlaylistId: string;
+  playlistId: string;
 }

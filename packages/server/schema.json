@@ -34,7 +34,7 @@
             "deprecationReason": null
           },
           {
-            "name": "getMe",
+            "name": "me",
             "description": "",
             "args": [],
             "type": {

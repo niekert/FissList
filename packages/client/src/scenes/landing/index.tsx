@@ -15,9 +15,9 @@ const Intro = styled.p`
 function Landing() {
   return (
     <Page>
-      <Title>FissList</Title>
+      <Title>PampaPlay</Title>
       <Intro>
-        FissList allows you to create party playlists that your party guests
+        PampaPlay allows you to create party playlists that your party guests
         control.
       </Intro>
 

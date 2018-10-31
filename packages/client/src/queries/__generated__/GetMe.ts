@@ -5,18 +5,18 @@
 // GraphQL query operation: GetMe
 // ====================================================
 
-export interface GetMe_getMe_images {
+export interface GetMe_me_images {
   url: string;
 }
 
-export interface GetMe_getMe {
+export interface GetMe_me {
   id: string;
   displayName: string | null;
   email: string;
   href: string;
-  images: (GetMe_getMe_images | null)[] | null;
+  images: (GetMe_me_images | null)[] | null;
 }
 
 export interface GetMe {
-  getMe: GetMe_getMe | null;
+  me: GetMe_me | null;
 }

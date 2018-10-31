@@ -151,8 +151,8 @@ export type PartyOrderByInput =
   | "name_DESC"
   | "ownerUserId_ASC"
   | "ownerUserId_DESC"
-  | "basePlaylistId_ASC"
-  | "basePlaylistId_DESC"
+  | "playlistId_ASC"
+  | "playlistId_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -236,20 +236,20 @@ export interface PartyWhereInput {
   ownerUserId_not_starts_with?: String;
   ownerUserId_ends_with?: String;
   ownerUserId_not_ends_with?: String;
-  basePlaylistId?: String;
-  basePlaylistId_not?: String;
-  basePlaylistId_in?: String[] | String;
-  basePlaylistId_not_in?: String[] | String;
-  basePlaylistId_lt?: String;
-  basePlaylistId_lte?: String;
-  basePlaylistId_gt?: String;
-  basePlaylistId_gte?: String;
-  basePlaylistId_contains?: String;
-  basePlaylistId_not_contains?: String;
-  basePlaylistId_starts_with?: String;
-  basePlaylistId_not_starts_with?: String;
-  basePlaylistId_ends_with?: String;
-  basePlaylistId_not_ends_with?: String;
+  playlistId?: String;
+  playlistId_not?: String;
+  playlistId_in?: String[] | String;
+  playlistId_not_in?: String[] | String;
+  playlistId_lt?: String;
+  playlistId_lte?: String;
+  playlistId_gt?: String;
+  playlistId_gte?: String;
+  playlistId_contains?: String;
+  playlistId_not_contains?: String;
+  playlistId_starts_with?: String;
+  playlistId_not_starts_with?: String;
+  playlistId_ends_with?: String;
+  playlistId_not_ends_with?: String;
   AND?: PartyWhereInput[] | PartyWhereInput;
   OR?: PartyWhereInput[] | PartyWhereInput;
   NOT?: PartyWhereInput[] | PartyWhereInput;
@@ -292,7 +292,7 @@ export interface UserWhereInput {
 export interface PartyCreateInput {
   name: String;
   ownerUserId: String;
-  basePlaylistId: String;
+  playlistId: String;
   partyMemberIds?: PartyCreatepartyMemberIdsInput;
 }
 
@@ -307,7 +307,7 @@ export interface UserUpdateInput {
 export interface PartyUpdateInput {
   name?: String;
   ownerUserId?: String;
-  basePlaylistId?: String;
+  playlistId?: String;
   partyMemberIds?: PartyUpdatepartyMemberIdsInput;
 }
 
@@ -451,7 +451,7 @@ export interface PartyPreviousValuesNode {
   id: ID_Output;
   name: String;
   ownerUserId: String;
-  basePlaylistId: String;
+  playlistId: String;
   partyMemberIds: String[];
 }
 
@@ -461,7 +461,7 @@ export interface PartyPreviousValues
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   ownerUserId: () => Promise<String>;
-  basePlaylistId: () => Promise<String>;
+  playlistId: () => Promise<String>;
   partyMemberIds: () => Promise<String[]>;
 }
 
@@ -471,7 +471,7 @@ export interface PartyPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
-  basePlaylistId: () => Promise<AsyncIterator<String>>;
+  playlistId: () => Promise<AsyncIterator<String>>;
   partyMemberIds: () => Promise<AsyncIterator<String[]>>;
 }
 
@@ -528,7 +528,7 @@ export interface PartyNode {
   id: ID_Output;
   name: String;
   ownerUserId: String;
-  basePlaylistId: String;
+  playlistId: String;
   partyMemberIds: String[];
 }
 
@@ -536,7 +536,7 @@ export interface Party extends Promise<PartyNode>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   ownerUserId: () => Promise<String>;
-  basePlaylistId: () => Promise<String>;
+  playlistId: () => Promise<String>;
   partyMemberIds: () => Promise<String[]>;
 }
 
@@ -546,7 +546,7 @@ export interface PartySubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
-  basePlaylistId: () => Promise<AsyncIterator<String>>;
+  playlistId: () => Promise<AsyncIterator<String>>;
   partyMemberIds: () => Promise<AsyncIterator<String[]>>;
 }
 

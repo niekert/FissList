@@ -4,6 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
+    "@types/node-fetch": "^2.1.2",
     "camelcase-keys": "^5.0.0",
     "concurrently": "^4.0.1",
     "express": "^4.16.4",

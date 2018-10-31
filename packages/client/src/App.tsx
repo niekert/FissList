@@ -34,7 +34,7 @@ function App() {
               return null;
             }
 
-            if (!data || !data.getMe) {
+            if (!data || !data.me) {
               return <Landing />;
             }
 
