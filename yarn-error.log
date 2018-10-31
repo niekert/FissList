@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/niekkruse/dev/github/partyplay/package.json: Unexpected token } in JSON at position 268
+  SyntaxError: /Users/niekkruse/dev/github/fisslist/package.json: Unexpected token } in JSON at position 268
       at JSON.parse (<anonymous>)
       at /Users/niekkruse/.yarn/lib/cli.js:1130:59
       at Generator.next (<anonymous>)
@@ -24,7 +24,7 @@ Trace:
 
 npm manifest: 
   {
-    "name": "partyplay",
+    "name": "fisslist",
     "version": "1.0.0",
     "main": "index.ts",
     "license": "MIT",

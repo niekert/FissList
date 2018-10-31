@@ -23,6 +23,12 @@ const Wrapper = styled(PosedCard)`
   align-self: center;
 `;
 
+const CopyLinkInput = styled(Input)`
+  &[readonly] {
+    color: ${props => props.theme.textColors.secondary};
+  }
+`;
+
 const OpenPartyButton = styled(Button)`
   align-self: flex-start;
   margin-top: ${props => props.theme.spacing[2]};
@@ -48,7 +54,7 @@ function NewPartyCard({ partyId, name }: IProps) {
             </Text>
 
             <Label>Party link</Label>
-            <Input readOnly={true} disabled={true} value={link} />
+            <CopyLinkInput readOnly={true} value={link} />
 
             <OpenPartyButton onClick={() => navigate(`/party/${partyId}`)}>
               Open party

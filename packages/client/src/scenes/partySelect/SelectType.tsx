@@ -27,9 +27,9 @@ export default function SelectType(props: IProps) {
   return (
     <>
       {/* TODO: Rename app title and use logo */}
-      <Title>PampaPlay</Title>
+      <Title>FissList</Title>
       <IntroText textAlign="center">
-        PampaPlay helps you play the best music during parties by letting your
+        FissList helps you play the best music during parties by letting your
         guests decide the songs that will play next.
       </IntroText>
       <PartyOptions>
@@ -47,7 +47,7 @@ export default function SelectType(props: IProps) {
         />
       </PartyOptions>
       <Text textAlign="center">
-        Or, if you are done using PampaPlay,{' '}
+        Or, if you are done using FissList,{' '}
         <Link onClick={() => logout()}>Log out</Link>
       </Text>
     </>

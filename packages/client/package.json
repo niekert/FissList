@@ -1,5 +1,5 @@
 {
-  "name": "partyplay-client",
+  "name": "fisslist-client",
   "version": "0.1.0",
   "proxy": "http://localhost:4000",
   "dependencies": {
@@ -123,7 +123,7 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "/Users/niekkruse/dev/github/partyplay/packages/client/tsconfig.test.json"
+        "tsConfigFile": "/Users/niekkruse/dev/github/fisslist/packages/client/tsconfig.test.json"
       }
     }
   },
