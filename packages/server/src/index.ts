@@ -30,7 +30,6 @@ const server = new GraphQLServer({
   context: req => {
     const accessKey = req.request.headers.authorization;
 
-    console.log('accesKey', accessKey);
     const spotifyService = makeHttpService(accessKey);
 
     return {
@@ -72,7 +71,6 @@ server.express.get('/auth-callback', async (req, res) => {
       body,
     });
 
-    console.log('auth resp', authResp);
     res.redirect(
       process.env.CLIENT_HOST +
         `/auth?token=${authResp.access_token}&refreshToken=${
@@ -87,4 +85,4 @@ server.express.get('/auth-callback', async (req, res) => {
   res.end();
 });
 
-server.start(() => console.log('Server is running on http://localhost:4000'));
+server.start(() => console.log(`Server is running on ${process.env.HOST}`));
