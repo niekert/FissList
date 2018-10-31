@@ -5,7 +5,7 @@ import NewParty from 'scenes/newParty';
 import posed, { PoseGroup } from 'react-pose';
 import SelectType from './SelectType';
 import styled from 'styled-components';
-import JoinParty from './JoinParty';
+import JoinParty from 'scenes/joinParty';
 
 const StepsPanel = styled.div`
   display: flex;

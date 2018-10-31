@@ -2,7 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 import { Label, Input, Button } from 'components/Form';
-import { Text } from 'components/Typography';
+import { Text, Title } from 'components/Typography';
+import Page from 'components/Page';
 import { Card } from 'components/Card';
 import posed, { PoseGroup } from 'react-pose';
 
@@ -13,7 +14,7 @@ const PosedCard = posed.div({
   },
   exit: {
     opacity: 0,
-    transform: 'translateY(10px)',
+    transform: 'translateY(20px)',
   },
 });
 
@@ -35,24 +36,27 @@ interface IProps {
 function NewPartyCard({ partyId, name }: IProps) {
   const link = `${window.location.origin}/party/${partyId}`;
   return (
-    <PoseGroup>
-      <Wrapper key="new-party-card" initialPose="exit">
-        <Card>
-          <Label hasMargin={true}>Boom! 🎉</Label>
-          <Text>
-            Your party <b>{name}</b> is ready to get started! Share this link
-            with your friends or open the party yourself
-          </Text>
+    <Page>
+      <PoseGroup>
+        <Wrapper key="new-party-card" initialPose="exit">
+          <Title>🎉</Title>
+          <Card>
+            <Label hasMargin={true}>Boom!</Label>
+            <Text>
+              Your party <b>{name}</b> is ready to get started! Share this link
+              with your friends or open the party yourself
+            </Text>
 
-          <Label>Party link</Label>
-          <Input readOnly={true} disabled={true} value={link} />
+            <Label>Party link</Label>
+            <Input readOnly={true} disabled={true} value={link} />
 
-          <OpenPartyButton onClick={() => navigate(`/party/${partyId}`)}>
-            Open party
-          </OpenPartyButton>
-        </Card>
-      </Wrapper>
-    </PoseGroup>
+            <OpenPartyButton onClick={() => navigate(`/party/${partyId}`)}>
+              Open party
+            </OpenPartyButton>
+          </Card>
+        </Wrapper>
+      </PoseGroup>
+    </Page>
   );
 }
 

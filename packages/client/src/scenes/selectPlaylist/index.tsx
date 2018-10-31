@@ -20,7 +20,13 @@ const PosedPlaylist = posed.li({
   enter: {
     opacity: 1,
     transform: 'translateY(0px)',
-    transition: ({ i }) => ({ delay: i * 100, duration: 300 }),
+    transition: ({ i }) => ({
+      type: 'spring',
+      stiffness: 180,
+      damping: 15,
+      delay: Math.min(i * 100, 600),
+      duration: 300,
+    }),
   },
   exit: {
     opacity: 0,
@@ -94,7 +100,7 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
             {data &&
               data.getPlaylists && (
                 <PlaylistsWrapper key="wrapper">
-                  <PoseGroup>
+                  <PoseGroup animateOnMount={true}>
                     {data.getPlaylists.items.map((playlist, i) => (
                       <Playlist
                         isSelected={playlist.id === selectedPlaylistId}
