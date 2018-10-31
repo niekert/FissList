@@ -98,13 +98,13 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
         return (
           <>
             {data &&
-              data.getPlaylists && (
+              data.userPlaylists && (
                 <PlaylistsWrapper key="wrapper">
                   <PoseGroup animateOnMount={true}>
-                    {data.getPlaylists.items.map((playlist, i) => (
+                    {data.userPlaylists.items.map((playlist, i) => (
                       <Playlist
                         isSelected={playlist.id === selectedPlaylistId}
-                        i={i - data.getPlaylists!.offset}
+                        i={i - data.userPlaylists!.offset}
                         key={playlist.id}
                         onClick={() => onClick(playlist.id)}
                       >
@@ -121,8 +121,8 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
                     ))}
                   </PoseGroup>
                   {!loading &&
-                    data.getPlaylists.items.length <
-                      data.getPlaylists.total && (
+                    data.userPlaylists.items.length <
+                      data.userPlaylists.total && (
                       <LoadMoreButton onClick={loadNext}>
                         Load more
                       </LoadMoreButton>

@@ -23,7 +23,7 @@ interface Playlist {
   tracks: Tracks;
 }
 
-export async function getPlaylists(root, args: Args, context: Context) {
+export async function userPlaylists(root, args: Args, context: Context) {
   await new Promise(resolve => setTimeout(resolve, 700));
   const { data, status } = await context.spotify.fetchResource<
     Paging<Playlist>

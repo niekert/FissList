@@ -5,6 +5,7 @@ import { config } from 'dotEnv';
 import * as playlistQueries from './queries/playlist';
 import * as userQueries from './queries/user';
 import * as partyMutations from './mutations/party';
+import * as partyQueries from './queries/party';
 import { makeHttpService, scopes } from './spotify';
 
 config();
@@ -13,12 +14,10 @@ const resolvers = {
   Query: {
     ...userQueries,
     ...playlistQueries,
+    ...partyQueries,
   },
   Mutation: {
     ...partyMutations,
-    createUser(root, args, context) {
-      return context.prisma.createUser({ name: args.name });
-    },
   },
 };
 

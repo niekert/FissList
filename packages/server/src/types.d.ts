@@ -1,4 +1,5 @@
 import { Prisma } from './generated/prisma-client';
+import { Playlist } from './spotify';
 
 export interface Context {
   prisma: Prisma;
@@ -20,6 +21,12 @@ interface Paging<T> {
   limit: number;
   next: string;
   total: number;
+}
+
+interface Party {
+  id: string;
+  playlistId: string;
+  playlist: Playlist;
 }
 
 interface SpotifyUser {

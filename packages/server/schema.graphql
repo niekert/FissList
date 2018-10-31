@@ -29,6 +29,7 @@ type Party {
   ownerUserId: String!
   playlistId: String!
   partyMembers: [PartyMember]
+  playlist: Playlist!
 }
 
 type PartyMember {
@@ -36,15 +37,29 @@ type PartyMember {
   spotifyUserid: String!
 }
 
-type User {
-  id: ID!
-  email: String
+type Artist {
+  id: String!
   name: String!
+}
+
+type Track {
+  id: String!
+  uri: String!
+  name: String!
+  label: String!
+  artists: [Artist!]!
+}
+
+type PlaylistTrack {
+  id: String!
+  addedAt: String!
+  track: Track!
 }
 
 type TracksLink {
   href: String!
   total: Int!
+  items: [PlaylistTrack!]!
 }
 
 type Playlist {
@@ -52,18 +67,23 @@ type Playlist {
   href: String!
   name: String!
   thumbnail: String
-  image: String!
   tracks: TracksLink!
 }
 
 type Mutation {
   authorize: String!
   createParty(name: String!, playlistId: String!): Party
-  createUser(name: String!): User
+}
+
+type User {
+  id: String!
+  playlist: Playlist!
 }
 
 type Query {
   allUsers: [User]!
   me: SpotifyUser
-  getPlaylists(offset: Int): PagedPlaylists
+  meList: User!
+  party(partyId: String!): Party
+  userPlaylists(offset: Int): PagedPlaylists
 }

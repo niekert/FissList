@@ -42,7 +42,7 @@ function App() {
               <CurrentUserContext.Provider value={result}>
                 <Router>
                   <PartySelect default={true} />
-                  <Party path="/party/:id" />
+                  <Party path="/party/:partyId" />
                 </Router>
               </CurrentUserContext.Provider>
             );

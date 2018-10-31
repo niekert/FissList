@@ -5,7 +5,7 @@ import { GetPlaylists } from './__generated__/GetPlaylists';
 
 export const GET_OWN_PLAYLISTS = gql`
   query GetPlaylists($offset: Int) {
-    getPlaylists(offset: $offset) {
+    userPlaylists(offset: $offset) {
       href
       offset
       total
@@ -45,23 +45,23 @@ export default function GetPlaylists({ children }: IProps) {
           loadNext: () => {
             const { data, fetchMore } = queryResult;
 
-            if (!data || !data.getPlaylists) {
+            if (!data || !data.userPlaylists) {
               return;
             }
 
             fetchMore({
               variables: {
-                offset: data.getPlaylists.offset + data.getPlaylists.limit,
+                offset: data.userPlaylists.offset + data.userPlaylists.limit,
               },
               updateQuery: (prev, { fetchMoreResult }) => {
                 // TODO: how to deal with all the exlamation mark hacks here?
                 return {
                   ...prev,
-                  getPlaylists: {
-                    ...fetchMoreResult!.getPlaylists!,
+                  userPlaylists: {
+                    ...fetchMoreResult!.userPlaylists!,
                     items: [
-                      ...prev.getPlaylists!.items,
-                      ...fetchMoreResult!.getPlaylists!.items,
+                      ...prev.userPlaylists!.items,
+                      ...fetchMoreResult!.userPlaylists!.items,
                     ],
                   },
                 };

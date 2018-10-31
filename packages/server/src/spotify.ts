@@ -61,7 +61,7 @@ export function makeHttpService(accessKey: string): HttpService {
 
   function fetchResource<T>(
     path: string,
-    options: FetchOp = {},
+    options: any = {},
   ): Promise<{ status: Number; data: T }> {
     return fetch(`${BASE_URL}${path}`, {
       ...options,
@@ -83,7 +83,7 @@ export function makeHttpService(accessKey: string): HttpService {
 
       return {
         status: resp.status,
-        data: camelcase(data),
+        data: camelcase(data, { deep: true }),
       };
     });
   }

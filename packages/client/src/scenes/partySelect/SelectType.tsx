@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Title, Text } from 'components/Typography';
 import { navigate } from '@reach/router';
+import { Card, CardTitle } from 'components/Card';
 import Link from 'components/Link';
 import useLogout from 'hooks/logout';
 import OptionCard from './OptionCard';
@@ -45,6 +46,9 @@ export default function SelectType(props: IProps) {
           cta={'Join party'}
           onClick={() => navigate('/join')}
         />
+        <Card>
+          <CardTitle>Existing parties</CardTitle>
+        </Card>
       </PartyOptions>
       <Text textAlign="center">
         Or, if you are done using PampaPlay,{' '}

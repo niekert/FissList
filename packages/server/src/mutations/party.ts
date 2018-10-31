@@ -31,8 +31,6 @@ export async function createParty(
     },
   );
 
-  console.log('created playlist', partyPlaylist);
-
   // Add tracks from base playlist
   await context.spotify.fetchResource(`/playlists/${partyPlaylist.id}/tracks`, {
     method: 'POST',

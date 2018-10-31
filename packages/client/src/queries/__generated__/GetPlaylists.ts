@@ -5,28 +5,28 @@
 // GraphQL query operation: GetPlaylists
 // ====================================================
 
-export interface GetPlaylists_getPlaylists_items_tracks {
+export interface GetPlaylists_userPlaylists_items_tracks {
   total: number;
 }
 
-export interface GetPlaylists_getPlaylists_items {
+export interface GetPlaylists_userPlaylists_items {
   id: string;
   href: string;
   name: string;
   thumbnail: string | null;
-  tracks: GetPlaylists_getPlaylists_items_tracks;
+  tracks: GetPlaylists_userPlaylists_items_tracks;
 }
 
-export interface GetPlaylists_getPlaylists {
+export interface GetPlaylists_userPlaylists {
   href: string;
   offset: number;
   total: number;
   limit: number;
-  items: GetPlaylists_getPlaylists_items[];
+  items: GetPlaylists_userPlaylists_items[];
 }
 
 export interface GetPlaylists {
-  getPlaylists: GetPlaylists_getPlaylists | null;
+  userPlaylists: GetPlaylists_userPlaylists | null;
 }
 
 export interface GetPlaylistsVariables {
