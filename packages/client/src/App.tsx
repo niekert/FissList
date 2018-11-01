@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
+import { PlayerContainer } from './context/player';
 import GetMe from 'queries/GetMe';
 import { Router } from '@reach/router';
 import Auth from './scenes/auth';
@@ -39,12 +40,14 @@ function App() {
             }
 
             return (
-              <CurrentUserContext.Provider value={result}>
-                <Router>
-                  <PartySelect default={true} />
-                  <Party path="/party/:partyId" />
-                </Router>
-              </CurrentUserContext.Provider>
+              <PlayerContainer>
+                <CurrentUserContext.Provider value={result}>
+                  <Router>
+                    <PartySelect default={true} />
+                    <Party path="/party/:partyId" />
+                  </Router>
+                </CurrentUserContext.Provider>
+              </PlayerContainer>
             );
           }}
         </GetMe>

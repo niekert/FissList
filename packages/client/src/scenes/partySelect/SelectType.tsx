@@ -56,9 +56,9 @@ export default function SelectType(props: IProps) {
               <CardTitle>Existing parties</CardTitle>
               {user.parties.map(party => (
                 <Party
-                  key={party.id}
-                  name={party.name}
-                  onClick={() => navigate(`/party/${party.id}`)}
+                  key={party!.id}
+                  name={party!.name}
+                  onClick={() => navigate(`/party/${party!.id}`)}
                 />
               ))}
             </Card>

@@ -34,6 +34,7 @@ export const scopes: string = [
   'user-read-playback-state',
   'user-read-currently-playing',
   'user-modify-playback-state',
+  'user-modify-playback-state',
   'user-read-private',
   'playlist-read-private',
   'playlist-modify-private',
@@ -70,6 +71,14 @@ export function makeHttpService(accessKey: string): HttpService {
         ...options.headers,
       },
     }).then(async resp => {
+      console.log('resp is', resp);
+      if (resp.status === 204) {
+        return {
+          data: null,
+          status: resp.status,
+        };
+      }
+
       const data = await resp.json();
 
       if (resp.status === 401) {

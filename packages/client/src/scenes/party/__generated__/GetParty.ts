@@ -30,11 +30,13 @@ export interface GetParty_party_playlist_tracks {
 
 export interface GetParty_party_playlist {
   id: string;
+  uri: string;
   tracks: GetParty_party_playlist_tracks;
 }
 
 export interface GetParty_party {
   id: string;
+  name: string;
   playlistId: string;
   playlist: GetParty_party_playlist | null;
 }

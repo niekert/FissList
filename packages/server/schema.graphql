@@ -66,13 +66,9 @@ type Playlist {
   id: String!
   href: String!
   name: String!
+  uri: String!
   thumbnail: String
   tracks: TracksLink!
-}
-
-type Mutation {
-  authorize: String!
-  createParty(name: String!, playlistId: String!): Party
 }
 
 type Me {
@@ -80,10 +76,37 @@ type Me {
   parties: [Party]
 }
 
+type Device {
+  id: String!
+  isActive: Boolean!
+  isPrivateSession: Boolean!
+  isRestricted: Boolean!
+  name: String!
+  type: String!
+  volumePercent: Int!
+}
+
+type Player {
+  device: Device
+  repeatState: String!
+  shuffleState: Boolean!
+  isPlaying: Boolean!
+  item: Track
+  currentlyPlayingType: String!
+  devices: [Device!]!
+}
+
 type Query {
   me: Me
   party(partyId: String!): Party!
+  player: Player
   parties(ids: [String]!): [Party]!
   playlist(id: String!): Playlist!
   userPlaylists(offset: Int): PagedPlaylists
+}
+
+type Mutation {
+  authorize: String!
+  togglePlayState(type: String!, uri: String): Boolean
+  createParty(name: String!, playlistId: String!): Party
 }

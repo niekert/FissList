@@ -8,9 +8,11 @@ export const GET_PARTY = gql`
   query GetParty($partyId: String!) {
     party(partyId: $partyId) {
       id
+      name
       playlistId
       playlist {
         id
+        uri
         tracks {
           href
           total

@@ -51,7 +51,7 @@ export async function playlist(
   args: { id: string },
   context: Context,
 ) {
-  const { data, status } = await context.spotify.fetchResource<Playlist>(
+  const { data } = await context.spotify.fetchResource<Playlist>(
     `/playlists/${args.id || (root.playlist && root.playlist.id)}`,
   );
 

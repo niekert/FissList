@@ -9,7 +9,7 @@ interface IProps {
   path?: string;
 }
 
-const ProTip = styled.p`
+const ProTip = styled.div`
   margin-top: ${props => props.theme.spacing[3]};
   color: ${props => props.theme.textColors.secondary};
 `;

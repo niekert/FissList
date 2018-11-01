@@ -9,8 +9,8 @@ export default styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
   border-radius: 50%;
 
   svg {

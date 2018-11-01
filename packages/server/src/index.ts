@@ -6,6 +6,8 @@ import * as playlistQueries from './queries/playlist';
 import * as userQueries from './queries/user';
 import * as partyMutations from './mutations/party';
 import * as partyQueries from './queries/party';
+import * as playerQueries from './queries/player';
+import * as playerMutations from './mutations/player';
 import { makeHttpService, scopes } from './spotify';
 
 config();
@@ -15,12 +17,17 @@ const resolvers = {
     ...userQueries,
     ...playlistQueries,
     ...partyQueries,
+    player: playerQueries.player,
   },
   Mutation: {
     ...partyMutations,
+    ...playerMutations,
   },
   Me: {
     parties: partyQueries.parties,
+  },
+  Player: {
+    devices: playerQueries.devices,
   },
   Party: {
     playlist: playlistQueries.playlist,
