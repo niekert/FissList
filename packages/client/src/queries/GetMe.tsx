@@ -6,12 +6,21 @@ import { GetMe } from './__generated__/GetMe';
 export const GET_ME = gql`
   query GetMe {
     me {
-      id
-      displayName
-      email
-      href
-      images {
-        url
+      user {
+        id
+        displayName
+        email
+        href
+        images {
+          url
+        }
+      }
+      parties {
+        id
+        name
+        playlist {
+          name
+        }
       }
     }
   }

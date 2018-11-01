@@ -36,11 +36,11 @@ export interface GetParty_party_playlist {
 export interface GetParty_party {
   id: string;
   playlistId: string;
-  playlist: GetParty_party_playlist;
+  playlist: GetParty_party_playlist | null;
 }
 
 export interface GetParty {
-  party: GetParty_party | null;
+  party: GetParty_party;
 }
 
 export interface GetPartyVariables {

@@ -3,7 +3,7 @@ import Page from 'components/Page';
 import styled from 'styled-components';
 import { Title } from 'components/Typography';
 import { Input, Label, Button } from 'components/Form';
-import { Card, CardTitle } from 'components/Card';
+import { Card } from 'components/Card';
 
 interface IProps {
   path?: string;

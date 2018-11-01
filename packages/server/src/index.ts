@@ -19,6 +19,12 @@ const resolvers = {
   Mutation: {
     ...partyMutations,
   },
+  Me: {
+    parties: partyQueries.parties,
+  },
+  Party: {
+    playlist: playlistQueries.playlist,
+  },
 };
 
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);

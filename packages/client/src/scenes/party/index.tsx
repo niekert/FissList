@@ -22,7 +22,7 @@ export default function Party(props: IProps) {
           <Title>Party</Title>
           {data &&
             data.party && (
-              <PartyPlaylist {...data.party.playlist} isLoading={loading} />
+              <PartyPlaylist {...data.party.playlist!} isLoading={loading} />
             )}
           {loading && <Spinner />}
         </Page>

@@ -29,7 +29,7 @@ type Party {
   ownerUserId: String!
   playlistId: String!
   partyMembers: [PartyMember]
-  playlist: Playlist!
+  playlist: Playlist
 }
 
 type PartyMember {
@@ -75,16 +75,15 @@ type Mutation {
   createParty(name: String!, playlistId: String!): Party
 }
 
-type User {
-  id: String!
-  playlist: Playlist!
+type Me {
+  user: SpotifyUser!
+  parties: [Party]
 }
 
 type Query {
-  allUsers: [User]!
-  me: SpotifyUser
-  meList: User!
+  me: Me
   party(partyId: String!): Party!
+  parties(ids: [String]!): [Party]!
   playlist(id: String!): Playlist!
   userPlaylists(offset: Int): PagedPlaylists
 }

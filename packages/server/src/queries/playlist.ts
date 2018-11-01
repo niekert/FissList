@@ -46,9 +46,13 @@ export async function userPlaylists(root, args: Args, context: Context) {
   };
 }
 
-export async function playlist(root, args: { id: string }, context: Context) {
+export async function playlist(
+  root: { playlist: { id: string } },
+  args: { id: string },
+  context: Context,
+) {
   const { data, status } = await context.spotify.fetchResource<Playlist>(
-    `/playlists/${args.id}`,
+    `/playlists/${args.id || (root.playlist && root.playlist.id)}`,
   );
 
   return data;

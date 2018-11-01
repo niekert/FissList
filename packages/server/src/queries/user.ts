@@ -1,18 +1,20 @@
-import { Context, SpotifyUser } from '../types';
+import { Context, SpotifyUser, Party } from '../types';
 import { GraphQLError } from 'graphql';
-import { playlist } from './playlist';
+import { party } from '../queries/party';
 
-export async function me(root, args, context: Context): Promise<SpotifyUser> {
-  return context.spotify.fetchCurrentUser();
+interface Me {
+  user: SpotifyUser;
+  parties: any;
 }
 
-export async function meList(root, args, context: Context) {
+export async function me(root, args, context: Context, info): Promise<Me> {
+  const user = await context.spotify.fetchCurrentUser();
+  const parties = await context.prisma.parties({
+    where: { ownerUserId: user.id },
+  });
+
   return {
-    id: 'konjo',
-    playlist: () => playlist(root, { id: '4N8ULyTy9d47bSHZrG0bxJ' }, context),
+    user,
+    parties: { ids: parties.map(userParty => userParty.id) },
   };
-}
-
-export function allUsers(root, args, context: Context) {
-  return context.prisma.users();
 }

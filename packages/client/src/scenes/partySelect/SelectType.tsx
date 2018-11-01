@@ -3,9 +3,11 @@ import { Title, Text } from 'components/Typography';
 import { navigate } from '@reach/router';
 import { Card, CardTitle } from 'components/Card';
 import Link from 'components/Link';
+import Party from 'components/Party';
 import useLogout from 'hooks/logout';
 import OptionCard from './OptionCard';
 import styled from 'styled-components';
+import CurrentUserContext, { CurrentUser } from 'context/CurrentUser';
 
 const PartyOptions = styled.div`
   max-width: 350px;
@@ -24,6 +26,8 @@ interface IProps {
 
 export default function SelectType(props: IProps) {
   const logout = useLogout();
+  const userContext = React.useContext<CurrentUser>(CurrentUserContext);
+  const user = userContext && userContext.data && userContext.data.me;
 
   return (
     <>
@@ -46,9 +50,19 @@ export default function SelectType(props: IProps) {
           cta={'Join party'}
           onClick={() => navigate('/join')}
         />
-        <Card>
-          <CardTitle>Existing parties</CardTitle>
-        </Card>
+        {user &&
+          user.parties && (
+            <Card>
+              <CardTitle>Existing parties</CardTitle>
+              {user.parties.map(party => (
+                <Party
+                  key={party.id}
+                  name={party.name}
+                  onClick={() => navigate(`/party/${party.id}`)}
+                />
+              ))}
+            </Card>
+          )}
       </PartyOptions>
       <Text textAlign="center">
         Or, if you are done using PampaPlay,{' '}
