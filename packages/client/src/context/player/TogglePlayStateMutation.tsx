@@ -41,8 +41,6 @@ const update = (
 ) => {
   const query = cache.readQuery<Player>({ query: PLAYER_QUERY });
 
-  console.log('mutation', mutation);
-
   if (query) {
     cache.writeQuery({
       query: PLAYER_QUERY,
