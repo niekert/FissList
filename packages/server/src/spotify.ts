@@ -71,7 +71,6 @@ export function makeHttpService(accessKey: string): HttpService {
         ...options.headers,
       },
     }).then(async resp => {
-      console.log('resp is', resp);
       if (resp.status === 204) {
         return {
           data: null,

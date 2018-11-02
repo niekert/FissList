@@ -44,6 +44,8 @@ export async function togglePlayState(
   }
 
   const [path, method, isPlayingAfter] = requestMap[args.type];
+
+  console.log('waa', path, method, isPlayingAfter);
   const { status } = await context.spotify.fetchResource(path, {
     method,
   });

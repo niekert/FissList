@@ -11,6 +11,7 @@ import { PLAYER_QUERY, Player } from './PlayerQuery';
 export const TOGGLE_PLAY_STATE_MUTATION = gql`
   mutation TogglePlayState($type: String!, $uri: String) {
     togglePlayState(type: $type, uri: $uri) {
+      __typename
       isPlaying
     }
   }
@@ -39,6 +40,8 @@ const update = (
   mutation: MutationResult<TogglePlayState>,
 ) => {
   const query = cache.readQuery<Player>({ query: PLAYER_QUERY });
+
+  console.log('mutation', mutation);
 
   if (query) {
     cache.writeQuery({

@@ -60,6 +60,12 @@ export default function Party(props: IProps) {
           type,
           uri: playlistUri || null,
         },
+        optimisticResponse: {
+          togglePlayState: {
+            __typename: 'PlayStateChange',
+            isPlaying: type !== 'pause',
+          },
+        },
       });
     },
   );

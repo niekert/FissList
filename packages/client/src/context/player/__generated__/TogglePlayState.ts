@@ -6,6 +6,7 @@
 // ====================================================
 
 export interface TogglePlayState_togglePlayState {
+  __typename: "PlayStateChange";
   isPlaying: boolean | null;
 }
 
