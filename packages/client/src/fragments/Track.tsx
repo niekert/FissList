@@ -6,6 +6,11 @@ export const TrackInfo = gql`
       id
       name
     }
+    images {
+      url
+      width
+      height
+    }
     id
     name
     uri

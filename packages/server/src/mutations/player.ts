@@ -33,6 +33,8 @@ export async function togglePlayState(
         }),
       },
     );
+    //FIXME: fetching player state is not update on time. should inv
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     if (status !== 204) {
       throw new GraphQLError(`Invalid request: ${status}`);
@@ -45,7 +47,6 @@ export async function togglePlayState(
 
   const [path, method, isPlayingAfter] = requestMap[args.type];
 
-  console.log('waa', path, method, isPlayingAfter);
   const { status } = await context.spotify.fetchResource(path, {
     method,
   });
@@ -53,6 +54,9 @@ export async function togglePlayState(
   if (status !== 204) {
     throw new GraphQLError(`Invalid request: ${status}`);
   }
+
+  //FIXME: fetching player state is not update on time. should inv
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   return {
     isPlaying: isPlayingAfter,

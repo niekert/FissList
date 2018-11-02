@@ -26,6 +26,8 @@ export function PlayerContainer({ children }: IProps) {
   );
 }
 
+export type PlayerContextValue = PlayerContextValue;
+
 export function usePlayer(): PlayerContextValue | undefined {
   return React.useContext<PlayerContextValue | undefined>(PlayerContext);
 }

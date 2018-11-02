@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Track from 'components/Track';
+import styled from 'styled-components';
 import { GetParty_party_playlist } from './__generated__/GetParty';
 
 function PartyPlaylist({

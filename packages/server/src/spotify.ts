@@ -13,7 +13,7 @@ export interface Playlist {
 interface Paging<T> {
   href: string;
   limit: number;
-  items: [T];
+  items: T[];
   total: number;
   next?: string;
   previous?: string;
@@ -23,11 +23,25 @@ export interface PlaylistTrack {
   addedAt: string;
   addedBy: string;
   track: Track;
+  images?: Image[];
   isLocal: boolean;
+}
+
+export interface Album {
+  id: string;
+  images: Image[];
+}
+
+export interface Image {
+  url: string;
+  width?: string;
+  height?: string;
 }
 
 export interface Track {
   uri: string;
+  album?: Album;
+  images: Image[];
 }
 
 export const scopes: string = [

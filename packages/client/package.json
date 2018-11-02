@@ -2,6 +2,15 @@
   "name": "fisslist-client",
   "version": "0.1.0",
   "proxy": "http://localhost:4000",
+  "scripts": {
+    "schema:download": "apollo schema:download --endpoint=http://localhost:4000",
+    "codegen:generate": "apollo codegen:generate --queries=./**/*.tsx --schema=./schema.json --target=typescript --tagName=gql",
+    "watch-types": "yarn tsc --noEmit",
+    "types": "yarn schema:download && yarn codegen:generate",
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js --env=jsdom"
+  },
   "dependencies": {
     "@reach/router": "^1.2.1",
     "@types/query-string": "^6.1.1",
@@ -30,6 +39,7 @@
     "graphql": "^14.0.2",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "lodash.get": "^4.4.2",
     "object-assign": "4.1.1",
     "polished": "^2.3.0",
     "postcss-flexbugs-fixes": "3.2.0",
@@ -65,14 +75,6 @@
     "webpack-dev-server": "2.11.3",
     "webpack-manifest-plugin": "1.3.2",
     "whatwg-fetch": "2.0.3"
-  },
-  "scripts": {
-    "schema:download": "apollo schema:download --endpoint=http://localhost:4000",
-    "codegen:generate": "apollo codegen:generate --queries=./**/*.tsx --schema=./schema.json --target=typescript --tagName=gql",
-    "types": "yarn schema:download && yarn codegen:generate",
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {
     "@types/jest": "^23.3.5",

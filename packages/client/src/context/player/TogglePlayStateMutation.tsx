@@ -31,7 +31,6 @@ interface IProps {
     mutate: TogglePlayingMutationFn,
     result: MutationResult<TogglePlayState>,
   ) => React.ReactNode;
-  variables: TogglePlayStateVariables;
   update?: () => void;
 }
 
@@ -62,6 +61,7 @@ export default function TogglePlayingMutationComponent({
     <TogglePlayStateMutation
       mutation={TOGGLE_PLAY_STATE_MUTATION}
       update={update}
+      refetchQueries={[{ query: PLAYER_QUERY }]}
       {...props}
     >
       {children}

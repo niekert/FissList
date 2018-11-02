@@ -48,6 +48,7 @@ type Track {
   name: String!
   label: String!
   artists: [Artist!]!
+  images: [Image!]
 }
 
 type PlaylistTrack {
@@ -89,6 +90,7 @@ type Device {
 type Player {
   device: Device
   repeatState: String!
+  progressMs: Int!
   shuffleState: Boolean!
   isPlaying: Boolean!
   item: Track

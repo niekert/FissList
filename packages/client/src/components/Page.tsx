@@ -9,7 +9,6 @@ const StyledPage = styled.div`
   justify-content: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
 `;
 
 interface IProps {

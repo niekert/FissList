@@ -10,8 +10,15 @@ export interface GetParty_party_playlist_tracks_items_track_artists {
   name: string;
 }
 
+export interface GetParty_party_playlist_tracks_items_track_images {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+
 export interface GetParty_party_playlist_tracks_items_track {
   artists: GetParty_party_playlist_tracks_items_track_artists[];
+  images: GetParty_party_playlist_tracks_items_track_images[] | null;
   id: string;
   name: string;
   uri: string;
