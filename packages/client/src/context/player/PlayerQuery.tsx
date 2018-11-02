@@ -24,6 +24,7 @@ interface IProps {
 }
 
 export type PlayerQueryResult = QueryResult<Player>;
+export type Player = Player;
 
 export default function PlayerQueryComponent({ children }: IProps) {
   return <PlayerQuery query={PLAYER_QUERY}>{children}</PlayerQuery>;

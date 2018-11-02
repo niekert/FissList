@@ -26,9 +26,7 @@ interface DeviceResp {
 }
 
 export async function player(root, args, context: Context): Promise<Player> {
-  const { data, status } = await context.spotify.fetchResource<Player>(
-    '/me/player',
-  );
+  const { data } = await context.spotify.fetchResource<Player>('/me/player');
 
   console.log('data is', data);
 
@@ -36,8 +34,7 @@ export async function player(root, args, context: Context): Promise<Player> {
 }
 
 export async function devices(root, args, context: Context): Promise<Device[]> {
-  console.log('running devices resolver');
-  const { data, status } = await context.spotify.fetchResource<DeviceResp>(
+  const { data } = await context.spotify.fetchResource<DeviceResp>(
     '/me/player/devices',
   );
 

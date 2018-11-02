@@ -96,6 +96,10 @@ type Player {
   devices: [Device!]!
 }
 
+type PlayStateChange {
+  isPlaying: Boolean
+}
+
 type Query {
   me: Me
   party(partyId: String!): Party!
@@ -107,6 +111,6 @@ type Query {
 
 type Mutation {
   authorize: String!
-  togglePlayState(type: String!, uri: String): Boolean
+  togglePlayState(type: String!, uri: String): PlayStateChange
   createParty(name: String!, playlistId: String!): Party
 }

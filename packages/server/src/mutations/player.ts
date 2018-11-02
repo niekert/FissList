@@ -8,10 +8,14 @@ enum PlayState {
   Prev = 'prev',
 }
 
-const requestMap = {
-  [PlayState.Pause]: ['/me/player/pause', 'PUT'],
-  [PlayState.Prev]: ['/me/player/previous', 'POST'],
-  [PlayState.Next]: ['/me/player/next', 'POST'],
+interface Map {
+  [k: string]: [string, string, boolean];
+}
+
+const requestMap: Map = {
+  [PlayState.Pause]: ['/me/player/pause', 'PUT', false],
+  [PlayState.Prev]: ['/me/player/previous', 'POST', true],
+  [PlayState.Next]: ['/me/player/next', 'POST', true],
 };
 
 export async function togglePlayState(
@@ -34,10 +38,12 @@ export async function togglePlayState(
       throw new GraphQLError(`Invalid request: ${status}`);
     }
 
-    return status === 204;
+    return {
+      isPlaying: true,
+    };
   }
 
-  const [path, method] = requestMap[args.type];
+  const [path, method, isPlayingAfter] = requestMap[args.type];
   const { status } = await context.spotify.fetchResource(path, {
     method,
   });
@@ -46,5 +52,7 @@ export async function togglePlayState(
     throw new GraphQLError(`Invalid request: ${status}`);
   }
 
-  return status === 204;
+  return {
+    isPlaying: isPlayingAfter,
+  };
 }

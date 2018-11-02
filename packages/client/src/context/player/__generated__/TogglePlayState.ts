@@ -5,8 +5,12 @@
 // GraphQL mutation operation: TogglePlayState
 // ====================================================
 
+export interface TogglePlayState_togglePlayState {
+  isPlaying: boolean | null;
+}
+
 export interface TogglePlayState {
-  togglePlayState: boolean | null;
+  togglePlayState: TogglePlayState_togglePlayState | null;
 }
 
 export interface TogglePlayStateVariables {
