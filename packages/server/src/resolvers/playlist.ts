@@ -23,7 +23,7 @@ interface Playlist {
   tracks: Tracks;
 }
 
-export async function userPlaylists(root, args: Args, context: Context) {
+async function userPlaylists(root, args: Args, context: Context) {
   await new Promise(resolve => setTimeout(resolve, 700));
   const { data, status } = await context.spotify.fetchResource<
     Paging<Playlist>
@@ -46,7 +46,7 @@ export async function userPlaylists(root, args: Args, context: Context) {
   };
 }
 
-export async function playlist(
+async function playlist(
   root: { playlist: { id: string } },
   args: { id: string },
   context: Context,
@@ -57,3 +57,13 @@ export async function playlist(
 
   return data;
 }
+
+export default {
+  Query: {
+    playlist,
+    userPlaylists,
+  },
+  Party: {
+    playlist,
+  },
+};

@@ -11,6 +11,7 @@
     "graphql": "^0.13.2",
     "graphql-tools": "^4.0.2",
     "graphql-yoga": "^1.16.7",
+    "lodash": "^4.17.11",
     "node-fetch": "^2.2.0",
     "nodemon": "^1.18.4",
     "prisma-client-lib": "^1.18.1"

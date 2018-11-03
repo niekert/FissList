@@ -1,7 +1,49 @@
-import { Context } from '../types';
+import { Context, Party } from '../types';
 import { Playlist } from '../spotify';
 
-export async function createParty(
+interface PartyResult {
+  id: string;
+  playlistId: string;
+  name: string;
+  playlist: {
+    id: string;
+  };
+}
+
+async function party(
+  root,
+  args: { partyId: string },
+  context: Context,
+): Promise<PartyResult> {
+  console.log('party is', args);
+  const party = await context.prisma.party({ id: args.partyId });
+
+  return {
+    id: party.id,
+    name: party.name,
+    playlistId: party.playlistId,
+    playlist: { id: party.playlistId },
+  };
+}
+
+async function parties(
+  root,
+  args: { ids: [string] },
+  context: Context,
+): Promise<PartyResult[]> {
+  const parties = await context.prisma.parties({ where: { id_in: args.ids } });
+
+  return parties.map(party => ({
+    id: party.id!,
+    name: party.name!,
+    playlistId: party.playlistId!,
+    playlist: {
+      id: party.playlistId!,
+    },
+  }));
+}
+
+async function createParty(
   _,
   args: { name: string; playlistId: string },
   context: Context,
@@ -45,3 +87,16 @@ export async function createParty(
     ownerUserId: user.id,
   });
 }
+
+export default {
+  Query: {
+    parties,
+    party,
+  },
+  Mutation: {
+    createParty,
+  },
+  Me: {
+    parties,
+  },
+};

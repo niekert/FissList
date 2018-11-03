@@ -2,37 +2,42 @@ import { URLSearchParams } from 'url';
 import { prisma, Prisma } from './generated/prisma-client';
 import { GraphQLServer } from 'graphql-yoga';
 import { config } from 'dotEnv';
-import * as playlistQueries from './queries/playlist';
-import * as userQueries from './queries/user';
-import * as partyMutations from './mutations/party';
-import * as partyQueries from './queries/party';
-import * as playerQueries from './queries/player';
-import * as playerMutations from './mutations/player';
+import { merge } from 'lodash';
+import playlistResolvers from './resolvers/playlist';
+import partyResolvers from './resolvers/party';
+import userResolvers from './resolvers/user';
+import playerResolvers from './resolvers/player';
 import { makeHttpService, scopes } from './spotify';
 
 config();
 
-const resolvers = {
-  Query: {
-    ...userQueries,
-    ...playlistQueries,
-    ...partyQueries,
-    player: playerQueries.player,
-  },
-  Mutation: {
-    ...partyMutations,
-    ...playerMutations,
-  },
-  Me: {
-    parties: partyQueries.parties,
-  },
-  Player: {
-    devices: playerQueries.devices,
-  },
-  Party: {
-    playlist: playlistQueries.playlist,
-  },
-};
+const resolvers = merge(
+  playlistResolvers,
+  partyResolvers,
+  userResolvers,
+  playerResolvers,
+);
+// const resolvers = {
+//   Query: {
+//     ...userQueries,
+//     ...playlistQueries,
+//     ...partyQueries,
+//     player: playerQueries.player,
+//   },
+//   Mutation: {
+//     ...partyMutations,
+//     ...playerMutations,
+//   },
+//   Me: {
+//     parties: partyQueries.parties,
+//   },
+//   Player: {
+//     devices: playerQueries.devices,
+//   },
+//   Party: {
+//     playlist: playlistQueries.playlist,
+//   },
+// };
 
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
 

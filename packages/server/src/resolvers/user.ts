@@ -7,7 +7,7 @@ interface Me {
   parties: any;
 }
 
-export async function me(root, args, context: Context, info): Promise<Me> {
+async function me(root, args, context: Context, info): Promise<Me> {
   const user = await context.spotify.fetchCurrentUser();
   const parties = await context.prisma.parties({
     where: { ownerUserId: user.id },
@@ -18,3 +18,9 @@ export async function me(root, args, context: Context, info): Promise<Me> {
     parties: { ids: parties.map(userParty => userParty.id) },
   };
 }
+
+export default {
+  Query: {
+    me,
+  },
+};
