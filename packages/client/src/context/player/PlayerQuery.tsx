@@ -33,5 +33,9 @@ export type PlayerQueryResult = QueryResult<Player>;
 export type Player = Player;
 
 export default function PlayerQueryComponent({ children }: IProps) {
-  return <PlayerQuery query={PLAYER_QUERY}>{children}</PlayerQuery>;
+  return (
+    <PlayerQuery pollInterval={10000} query={PLAYER_QUERY}>
+      {children}
+    </PlayerQuery>
+  );
 }

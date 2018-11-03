@@ -2,7 +2,7 @@ import * as React from 'react';
 import PartyQuery from './PartyQuery';
 import Spinner from 'components/Spinner';
 import Page from 'components/Page';
-import PartyPlaylist from './PartyPlaylist';
+import Playlist from 'components/Playlist';
 import { Title } from 'components/Typography';
 import Player from 'scenes/player';
 
@@ -27,12 +27,7 @@ export default function Party(props: IProps) {
                 <Title as="h2">{data.party.name}</Title>
                 <Player activeFeedUri={data.party.playlistId} />
                 {data &&
-                  data.party && (
-                    <PartyPlaylist
-                      {...data.party.playlist!}
-                      isLoading={loading}
-                    />
-                  )}
+                  data.party.playlist && <Playlist {...data.party.playlist} />}
               </>
             )}
         </Page>

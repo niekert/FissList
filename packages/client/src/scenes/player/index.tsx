@@ -23,6 +23,7 @@ const Navigation = styled.div`
 
 export default function Player({ activeFeedUri }) {
   const playerContext = usePlayer();
+
   const handlePlayState = React.useCallback(
     (type: string, playlistUri?: string) => {
       if (!playerContext) {

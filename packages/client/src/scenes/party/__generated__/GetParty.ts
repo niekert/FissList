@@ -30,14 +30,14 @@ export interface GetParty_party_playlist_tracks_items {
 }
 
 export interface GetParty_party_playlist_tracks {
-  href: string;
-  total: number;
   items: GetParty_party_playlist_tracks_items[];
+  total: number;
+  href: string;
 }
 
 export interface GetParty_party_playlist {
+  name: string;
   id: string;
-  uri: string;
   tracks: GetParty_party_playlist_tracks;
 }
 
