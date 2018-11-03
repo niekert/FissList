@@ -1,11 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { NextIcon, PlayIcon, PauseIcon, PrevIcon } from 'icons';
 import { Card } from 'components/Card';
-import IconButton from 'components/IconButton';
 import { usePlayer } from 'context/player';
 import DevicesSelect from './DevicesSelect';
 import ActiveTrack from './ActiveTrack';
+import Devices from './Devices';
 import TrackNavigation from './TrackNavigation';
 
 const PlayerWrapper = styled(Card)`
@@ -15,10 +14,6 @@ const PlayerWrapper = styled(Card)`
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   top: 0;
-`;
-
-const Navigation = styled.div`
-  display: flex;
 `;
 
 export default function Player({ activeFeedUri }) {
@@ -67,6 +62,11 @@ export default function Player({ activeFeedUri }) {
           onPlayPause={() =>
             handlePlayState(isPlaying ? 'pause' : 'play', activeFeedUri)
           }
+        />
+        <Devices
+          activeDevice={player.device}
+          isPlaying={player.isPlaying}
+          devices={player.devices}
         />
       </PlayerWrapper>
     </>

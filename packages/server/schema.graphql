@@ -95,7 +95,7 @@ type Player {
   isPlaying: Boolean!
   item: Track
   currentlyPlayingType: String!
-  devices: [Device!]!
+  devices: [Device!]
 }
 
 type PlayStateChange {

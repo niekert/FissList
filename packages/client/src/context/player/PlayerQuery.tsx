@@ -2,6 +2,7 @@ import * as React from 'react';
 import gql from 'graphql-tag';
 import { Query, QueryResult } from 'react-apollo';
 import { TrackInfo } from 'fragments/Track';
+import { DeviceInfo } from 'fragments/Device';
 import { Player } from './__generated__/Player';
 
 export const PLAYER_QUERY = gql`
@@ -11,16 +12,17 @@ export const PLAYER_QUERY = gql`
       item {
         ...TrackInfo
       }
+      device {
+        ...DeviceInfo
+      }
       devices {
-        id
-        name
-        isRestricted
-        type
+        ...DeviceInfo
       }
     }
   }
 
   ${TrackInfo}
+  ${DeviceInfo}
 `;
 
 export class PlayerQuery extends Query<Player> {}

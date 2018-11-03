@@ -24,12 +24,12 @@ export interface GetMe_me_parties_playlist {
 export interface GetMe_me_parties {
   id: string;
   name: string;
-  playlist: GetMe_me_parties_playlist | null;
+  playlist: GetMe_me_parties_playlist;
 }
 
 export interface GetMe_me {
   user: GetMe_me_user;
-  parties: (GetMe_me_parties | null)[] | null;
+  parties: (GetMe_me_parties | null)[];
 }
 
 export interface GetMe {

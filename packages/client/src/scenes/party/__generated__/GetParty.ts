@@ -45,7 +45,7 @@ export interface GetParty_party {
   id: string;
   name: string;
   playlistId: string;
-  playlist: GetParty_party_playlist | null;
+  playlist: GetParty_party_playlist;
 }
 
 export interface GetParty {

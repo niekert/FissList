@@ -24,6 +24,13 @@ export interface Player_player_item {
   uri: string;
 }
 
+export interface Player_player_device {
+  id: string;
+  name: string;
+  isRestricted: boolean;
+  type: string;
+}
+
 export interface Player_player_devices {
   id: string;
   name: string;
@@ -34,6 +41,7 @@ export interface Player_player_devices {
 export interface Player_player {
   isPlaying: boolean;
   item: Player_player_item | null;
+  device: Player_player_device | null;
   devices: Player_player_devices[];
 }
 
