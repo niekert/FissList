@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Playercontext from './PlayerContext';
 import TogglePlayingmutation from './TogglePlayStateMutation';
+import SetActiveDeviceMutation from './SetDeviceMutation';
 import PlayerQuery from './PlayerQuery';
 import PlayerContext, { PlayerContextValue } from './PlayerContext';
 
@@ -11,18 +12,25 @@ interface IProps {
 }
 
 export function PlayerContainer({ children }: IProps) {
+  // need HOOKS for graphql smh
   return (
-    <TogglePlayingmutation>
-      {togglePlayState => (
-        <PlayerQuery>
-          {result => (
-            <PlayerContext.Provider value={{ ...result, togglePlayState }}>
-              {children}
-            </PlayerContext.Provider>
+    <SetActiveDeviceMutation>
+      {setActiveDevice => (
+        <TogglePlayingmutation>
+          {togglePlayState => (
+            <PlayerQuery>
+              {result => (
+                <PlayerContext.Provider
+                  value={{ ...result, setActiveDevice, togglePlayState }}
+                >
+                  {children}
+                </PlayerContext.Provider>
+              )}
+            </PlayerQuery>
           )}
-        </PlayerQuery>
+        </TogglePlayingmutation>
       )}
-    </TogglePlayingmutation>
+    </SetActiveDeviceMutation>
   );
 }
 

@@ -6,10 +6,11 @@ import styled from 'styled-components';
 const PlayerNavigation = styled.div`
   display: flex;
   align-items: flex-end;
-  width: 100%;
   justify-content: center;
+  flex: 1;
   background: white;
   padding-top: ${props => props.theme.spacing[1]};
+  padding-bottom: 4px;
 `;
 
 const PlayButton = styled(IconButton)`

@@ -78,7 +78,7 @@ type Me {
 }
 
 type Device {
-  id: String!
+  id: String
   isActive: Boolean!
   isPrivateSession: Boolean!
   isRestricted: Boolean!
@@ -115,4 +115,5 @@ type Mutation {
   authorize: String!
   togglePlayState(type: String!, uri: String): PlayStateChange
   createParty(name: String!, playlistId: String!): Party
+  setActiveDevice(deviceId: String): Boolean
 }

@@ -16,6 +16,10 @@ const PlayerWrapper = styled(Card)`
   top: 0;
 `;
 
+const SecondaryOptions = styled.div`
+  display: flex;
+`;
+
 export default function Player({ activeFeedUri }) {
   const playerContext = usePlayer();
 
@@ -40,6 +44,12 @@ export default function Player({ activeFeedUri }) {
     },
   );
 
+  const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    playerContext!.setActiveDevice({
+      variables: { deviceId: e.target.value },
+    });
+  };
+
   if (!playerContext || !playerContext.data || !playerContext.data.player) {
     return null;
   }
@@ -51,23 +61,25 @@ export default function Player({ activeFeedUri }) {
 
   return (
     <>
-      <DevicesSelect devices={player.devices} />
       <PlayerWrapper>
         {player.item && <ActiveTrack {...player.item} />}
-        <TrackNavigation
-          // TODO: handle with reducer
-          isPlaying={isPlaying}
-          onPrev={() => handlePlayState('prev')}
-          onNext={() => handlePlayState('next')}
-          onPlayPause={() =>
-            handlePlayState(isPlaying ? 'pause' : 'play', activeFeedUri)
-          }
-        />
-        <Devices
-          activeDevice={player.device}
-          isPlaying={player.isPlaying}
-          devices={player.devices}
-        />
+        <SecondaryOptions>
+          <TrackNavigation
+            // TODO: handle with reducer
+            isPlaying={isPlaying}
+            onPrev={() => handlePlayState('prev')}
+            onNext={() => handlePlayState('next')}
+            onPlayPause={() =>
+              handlePlayState(isPlaying ? 'pause' : 'play', activeFeedUri)
+            }
+          />
+          <Devices
+            activeDevice={player.device}
+            isPlaying={player.isPlaying}
+            devices={player.devices || []}
+            onDeviceChange={handleDeviceChange}
+          />
+        </SecondaryOptions>
       </PlayerWrapper>
     </>
   );

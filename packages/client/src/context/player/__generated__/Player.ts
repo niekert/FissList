@@ -42,7 +42,7 @@ export interface Player_player {
   isPlaying: boolean;
   item: Player_player_item | null;
   device: Player_player_device | null;
-  devices: Player_player_devices[];
+  devices: Player_player_devices[] | null;
 }
 
 export interface Player {

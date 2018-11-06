@@ -107,9 +107,34 @@ export async function togglePlayState(
   };
 }
 
+export async function setActiveDevice(
+  root,
+  args: { deviceId: string },
+  context: Context,
+) {
+  const { status } = await context.spotify.fetchResource('/me/player', {
+    method: 'PUT',
+    body: JSON.stringify({
+      device_ids: [args.deviceId],
+    }),
+  });
+
+  if (status !== 204) {
+    // TODO
+    throw new GraphQLError('Failed setting active device');
+  }
+
+  // LOL wait for sync for spotify API.
+  // FIXME: Don't do this plz
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  return true;
+}
+
 export default {
   Mutation: {
     togglePlayState,
+    setActiveDevice,
   },
   Player: {
     devices,
