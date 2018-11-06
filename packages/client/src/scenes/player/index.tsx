@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Card } from 'components/Card';
 import { usePlayer } from 'context/player';
-import DevicesSelect from './DevicesSelect';
 import ActiveTrack from './ActiveTrack';
 import Devices from './Devices';
 import TrackNavigation from './TrackNavigation';

@@ -32,7 +32,7 @@ interface IProps {
   ) => React.ReactNode;
 }
 
-export default function GetPlaylists({ children }: IProps) {
+export default function GetPlaylistsQueryComponent({ children }: IProps) {
   return (
     <GetPlaylistsQuery
       query={GET_OWN_PLAYLISTS}
