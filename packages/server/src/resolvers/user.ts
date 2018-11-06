@@ -1,6 +1,5 @@
 import { Context, SpotifyUser, Party } from '../types';
 import { GraphQLError } from 'graphql';
-import { party } from '../queries/party';
 
 interface Me {
   user: SpotifyUser;

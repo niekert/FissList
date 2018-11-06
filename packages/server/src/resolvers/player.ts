@@ -114,4 +114,7 @@ export default {
   Player: {
     devices,
   },
+  Query: {
+    player,
+  },
 };
