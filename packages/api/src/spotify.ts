@@ -93,7 +93,6 @@ export function makeHttpService(accessKey: string): HttpService {
       }
 
       const data = await resp.json();
-      console.log('wtf', data);
 
       if (resp.status === 401) {
         throw new GraphQLError('Unauthorized request');
