@@ -1680,7 +1680,7 @@ apollo-link-http@^1.5.4, apollo-link-http@^1.5.5:
     apollo-link "^1.2.3"
     apollo-link-http-common "^0.2.5"
 
-apollo-link@^1.0.0, apollo-link@^1.2.1, apollo-link@^1.2.2, apollo-link@^1.2.3:
+apollo-link@^1.0.0, apollo-link@^1.2.2, apollo-link@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.3.tgz#9bd8d5fe1d88d31dc91dae9ecc22474d451fb70d"
   integrity sha512-iL9yS2OfxYhigme5bpTbmRyC+Htt6tyo2fRMHT3K1XRL/C5IQDDz37OjpPy4ndx7WInSvfSZaaOTKFja9VWqSw==
@@ -5273,12 +5273,12 @@ http-errors@1.6.3, http-errors@~1.6.2, http-errors@~1.6.3:
     setprototypeof "1.1.0"
     statuses ">= 1.4.0 < 2"
 
-http-link-dataloader@^0.1.4:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/http-link-dataloader/-/http-link-dataloader-0.1.5.tgz#3dca3341e449bf26a44b57222fbb1df986958f7d"
-  integrity sha512-vWWFbuuABBxu27pTIrPXZJpwWpv4JM/u0DQRslNcPQNg+uA94Yqf175sJfdpepWn9GOvgPEEROy4dZB53v65LQ==
+http-link-dataloader@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/http-link-dataloader/-/http-link-dataloader-0.1.6.tgz#ad87d6b5cb6c2745b14b21ffd9cf476c13976c4f"
+  integrity sha512-r9B/n+SR32k++Z3MIAumI+Kv6ucL3+3ZfqcvGECWVkUc2BmfUWKu6gkPH7+uR1UKyUUJyuZENOLS/RDXVyXVTA==
   dependencies:
-    apollo-link "^1.2.1"
+    apollo-link "^1.2.3"
     cross-fetch "2.2.2"
     dataloader "^1.4.0"
 
@@ -8132,7 +8132,12 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
   integrity sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
 
-prettier@1.14.3, prettier@^1.14.3:
+prettier@1.15.1:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.15.1.tgz#06c67106afb1b40e74b002353b2079cc7e0e67bf"
+  integrity sha512-4rgV2hyc/5Pk0XHH4VjJWHRgVjgRbpMfLQjREAhHBtyW1UvTFkjJEsueGYNYYZd9mn97K+1qv0EBwm11zoaSgA==
+
+prettier@^1.14.3:
   version "1.14.3"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.3.tgz#90238dd4c0684b7edce5f83b0fb7328e48bd0895"
   integrity sha512-qZDVnCrnpsRJJq5nSsiHCE3BYMED2OtsI+cmzIzF1QIfqm5ALf8tEJcO27zV1gKNKRPdhjO0dNWnrzssDQ1tFg==
@@ -8158,16 +8163,16 @@ pretty-format@^23.6.0:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
 
-prisma-client-lib@^1.19.3:
-  version "1.19.3"
-  resolved "https://registry.yarnpkg.com/prisma-client-lib/-/prisma-client-lib-1.19.3.tgz#34af4a9eee653ba2407cfc3c84f1385423cff2ed"
-  integrity sha512-t2b1JgzdAKPC/gOtmgDbcILmnPa9+nciJI45OR1MVJuTWcIAIL5ogn5sfAjwtI7OlDM/eKNuPtlsnopCr0da/A==
+prisma-client-lib@^1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/prisma-client-lib/-/prisma-client-lib-1.20.0.tgz#3a3883cc885a2afcc7aeec225534a88d9e2ee763"
+  integrity sha512-cKdabaDHRCISqq2DfM5w3XAaMUS80823FMqRoS+6y7LXd/7D0/BtwZLPtL4SIHtEbTMSWxXpdWqATotebcYKHA==
   dependencies:
     "@types/node" "^10.12.0"
     "@types/prettier" "^1.13.2"
     debug "^4.1.0"
     graphql-tag "^2.10.0"
-    http-link-dataloader "^0.1.4"
+    http-link-dataloader "^0.1.6"
     jsonwebtoken "^8.3.0"
     lodash.flatten "^4.4.0"
     prettier "^1.14.3"
