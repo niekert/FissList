@@ -16,6 +16,7 @@ const BackButton = styled(IconButton)`
 
 const Form = styled.form`
   margin-bottom: 0;
+  flex: 1;
 `;
 
 const CardContent = styled(Card)`

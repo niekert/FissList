@@ -14,6 +14,7 @@ const PosedCtaSection = posed.div({
 
 const Wrapper = styled.div`
   display: flex;
+  min-height: 100vh;
   flex-direction: column;
 `;
 
