@@ -5,7 +5,7 @@ import { DeviceInfo } from 'fragments/__generated__/DeviceInfo';
 
 const Wrapper = styled.div`
   flex: 1;
-  position: relative
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -16,6 +16,7 @@ const ActiveDeviceWrapper = styled.div`
   color: ${props => props.theme.textColors.primary};
   align-items: center;
   flex-direction: column;
+  position: relative;
 `;
 
 const HiddenSelect = styled.select`
@@ -62,11 +63,13 @@ export default function Devices({
             value={activeDevice.id || ''}
             onChange={onDeviceChange}
           >
-            {devices.filter(device => !!device.id).map(device => (
-              <option key={device.id} value={device.id}>
-                {device.name}
-              </option>
-            ))}
+            {devices
+              .filter(device => !!device.id)
+              .map(device => (
+                <option key={device.id} value={device.id}>
+                  {device.name}
+                </option>
+              ))}
           </HiddenSelect>
         </ActiveDeviceWrapper>
       )}

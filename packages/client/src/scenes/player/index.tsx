@@ -1,19 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Card } from 'components/Card';
 import { usePlayer } from 'context/player';
 import ActiveTrack from './ActiveTrack';
 import Devices from './Devices';
 import TrackNavigation from './TrackNavigation';
-
-const PlayerWrapper = styled(Card)`
-  display: flex;
-  position: sticky;
-  background: white;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  top: 0;
-`;
 
 const SecondaryOptions = styled.div`
   display: flex;
@@ -60,26 +50,24 @@ export default function Player({ activeFeedUri }) {
 
   return (
     <>
-      <PlayerWrapper>
-        {player.item && <ActiveTrack {...player.item} />}
-        <SecondaryOptions>
-          <TrackNavigation
-            // TODO: handle with reducer
-            isPlaying={isPlaying}
-            onPrev={() => handlePlayState('prev')}
-            onNext={() => handlePlayState('next')}
-            onPlayPause={() =>
-              handlePlayState(isPlaying ? 'pause' : 'play', activeFeedUri)
-            }
-          />
-          <Devices
-            activeDevice={player.device}
-            isPlaying={player.isPlaying}
-            devices={player.devices || []}
-            onDeviceChange={handleDeviceChange}
-          />
-        </SecondaryOptions>
-      </PlayerWrapper>
+      {player.item && <ActiveTrack {...player.item} />}
+      <SecondaryOptions>
+        <TrackNavigation
+          // TODO: handle with reducer
+          isPlaying={isPlaying}
+          onPrev={() => handlePlayState('prev')}
+          onNext={() => handlePlayState('next')}
+          onPlayPause={() =>
+            handlePlayState(isPlaying ? 'pause' : 'play', activeFeedUri)
+          }
+        />
+        <Devices
+          activeDevice={player.device}
+          isPlaying={player.isPlaying}
+          devices={player.devices || []}
+          onDeviceChange={handleDeviceChange}
+        />
+      </SecondaryOptions>
     </>
   );
 }

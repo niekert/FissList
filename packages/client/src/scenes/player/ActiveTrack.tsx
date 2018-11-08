@@ -10,8 +10,8 @@ const Wrapper = styled.div`
 `;
 
 const Image = styled.img`
-  max-width: 60px;
-  max-height: 60px;
+  width: 60px;
+  height: 60px;
   margin-right: ${props => props.theme.spacing[2]};
   margin-bottom: 0;
 `;
