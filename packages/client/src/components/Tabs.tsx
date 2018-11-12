@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import useComponentSize from 'use-component-size-typed';
-import { transparentize } from 'polished';
 import { Spring } from 'react-spring';
+import { transparentize } from 'polished';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -11,13 +11,15 @@ const TabsContainer = styled.div`
 `;
 
 const TabLineWrapper = styled.div`
-  height: 3px;
+  height: 2px;
   position: absolute;
   bottom: 0;
+  overflow: hidden;
+  width: 100%;
 `;
 
 const ActiveLine = styled.div`
-  height: 3px;
+  height: 2px;
   position: absolute;
   background: ${props => props.theme.colors.cta};
 `;
@@ -30,16 +32,13 @@ const TabsWrapper = styled.div`
 
 const StyledTab = styled.button<{ isActive?: boolean }>`
   flex: 1;
-  background: none;
+  background-color: ${props =>
+    props.isActive ? transparentize(0.95, props.theme.colors.cta) : 'none'};
+  transition: background-color 0.3s ease-in;
   border: none;
   outline: none;
-  ${props => (props.isActive ? props.theme.colors.cta : 'transparent')};
   font-weight: 600;
   cursor: pointer;
-
-  &:hover {
-    color: ${props => transparentize(0, props.theme.colors.cta)};
-  }
 `;
 
 const noop = () => {};
