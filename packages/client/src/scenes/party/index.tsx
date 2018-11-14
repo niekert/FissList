@@ -2,6 +2,7 @@ import * as React from 'react';
 import PartyQuery from './PartyQuery';
 import Spinner from 'components/Spinner';
 import Page from 'components/Page';
+import { RouteComponentProps } from 'react-router';
 import { Card } from 'components/Card';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'components/Tabs';
@@ -39,9 +40,8 @@ const PlayerWrapper = styled.div`
   padding: ${props => `${props.theme.spacing[2]} ${props.theme.spacing[2]} 0`};
 `;
 
-interface IProps {
+interface IProps extends RouteComponentProps<{ partyId: string }> {
   path?: string;
-  partyId?: string;
 }
 
 enum PlayerTabs {
@@ -49,7 +49,7 @@ enum PlayerTabs {
   Browse = 'browse',
 }
 
-export default function Party(props: IProps) {
+export default function Party({ match }: IProps) {
   const [activeTab, setActiveTab] = React.useState<PlayerTabs>(
     PlayerTabs.Queue,
   );
@@ -63,7 +63,7 @@ export default function Party(props: IProps) {
   return (
     <PartyQuery
       variables={{
-        partyId: props.partyId!,
+        partyId: match.params.partyId,
       }}
     >
       {({ data, loading }) => (

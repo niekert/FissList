@@ -3,12 +3,16 @@ import { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
 import { PlayerContainer } from './context/player';
 import GetMe from 'queries/GetMe';
-import { Router } from '@reach/router';
+import { BrowserRouter } from 'react-router-dom';
+import { Route, Switch, RouteComponentProps } from 'react-router';
+import NewParty from 'scenes/newParty';
+import SelectType from 'scenes/selectType';
+import JoinParty from 'scenes/joinParty';
 import Auth from './scenes/auth';
 import Landing from 'scenes/landing';
-import PartySelect from 'scenes/partySelect';
-import Party from 'scenes/party';
+import posed, { PoseGroup } from 'react-pose';
 import Theme from './theme';
+import Party from 'scenes/party';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -20,13 +24,33 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Item = posed.div({
+  enter: {
+    transform: 'translateX(0px)',
+    top: 0,
+    transition: { duration: 250 },
+    width: '100%',
+    opacity: 1,
+    beforeChildren: true,
+    delayChildren: 2000,
+  },
+  exit: {
+    opacity: 0,
+    transform: ({ type }) =>
+      `translateX(${type === 'prev' ? '-300px' : '300px'})`,
+    transition: { duration: 300 },
+  },
+  props: {
+    type: 'prev',
+  },
+});
+
 function App() {
   return (
     <Theme>
-      <>
-        <Router>
-          <Auth path="/auth" />
-        </Router>
+      <BrowserRouter>
+        <Route path="/auth" component={Auth} />
+
         <GlobalStyle />
         <GetMe>
           {result => {
@@ -42,16 +66,29 @@ function App() {
             return (
               <PlayerContainer>
                 <CurrentUserContext.Provider value={result}>
-                  <Router>
-                    <PartySelect default={true} />
-                    <Party path="/party/:partyId" />
-                  </Router>
+                  <Route
+                    render={({ location }: RouteComponentProps) => (
+                      <PoseGroup>
+                        <Item
+                          key={location.key}
+                          type={location.pathname === '/' ? 'prev' : 'next'}
+                        >
+                          <Switch>
+                            <Route path="/new" component={NewParty} />
+                            <Route path="/join" component={JoinParty} />
+                            <Route path="/party/:partyId" component={Party} />
+                            <Route path="" component={SelectType} />
+                          </Switch>
+                        </Item>
+                      </PoseGroup>
+                    )}
+                  />
                 </CurrentUserContext.Provider>
               </PlayerContainer>
             );
           }}
         </GetMe>
-      </>
+      </BrowserRouter>
     </Theme>
   );
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { navigate } from '@reach/router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { Card } from 'components/Card';
 import IconButton from 'components/IconButton';
 import BackIcon from 'icons/BackIcon';
@@ -27,18 +27,19 @@ const CardContent = styled(Card)`
   max-width: 100%;
 `;
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   children: React.ReactNode;
 }
-export default function PartyForm({ children }: IProps) {
+
+function PartyForm({ children, history }: IProps) {
   return (
     <Form>
       <BackButton
         type="button"
         onClick={e => {
           e.stopPropagation();
-          // TODO: this is unsafe lol
-          navigate('/');
+
+          history.push('/');
         }}
       >
         <BackIcon />
@@ -47,3 +48,5 @@ export default function PartyForm({ children }: IProps) {
     </Form>
   );
 }
+
+export default withRouter(PartyForm);

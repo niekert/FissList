@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Title, Text } from 'components/Typography';
-import { navigate } from '@reach/router';
+import { withRouter } from 'react-router-dom';
 import { Card, CardTitle } from 'components/Card';
 import { PoseGroup } from 'react-pose';
 import PosedListItem from 'components/PosedListItem';
@@ -10,6 +10,7 @@ import useLogout from 'hooks/logout';
 import OptionCard from './OptionCard';
 import styled from 'styled-components';
 import CurrentUserContext, { CurrentUser } from 'context/CurrentUser';
+import { RouteComponentProps } from 'react-router';
 
 const PartyOptions = styled.div`
   max-width: 350px;
@@ -21,12 +22,12 @@ const IntroText = styled(Text)`
   margin: 0 auto 16px auto;
 `;
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   // workaround for reach router
   default?: boolean;
 }
 
-export default function SelectType(props: IProps) {
+function SelectType({ history }: IProps) {
   const logout = useLogout();
   const userContext = React.useContext<CurrentUser>(CurrentUserContext);
   const user = userContext && userContext.data && userContext.data.me;
@@ -46,13 +47,13 @@ export default function SelectType(props: IProps) {
               title="🔊 Start a new party"
               body="Click this button to start a new party and get a shareable party link"
               cta={'Start party'}
-              onClick={() => navigate('/new')}
+              onClick={() => history.push('/new')}
             />
             <OptionCard
               title="🎉 Join a party"
               body="Join a friend's party by filling in the party code"
               cta={'Join party'}
-              onClick={() => navigate('/join')}
+              onClick={() => history.push('/join')}
             />
             {user && user.parties && user.parties.length > 0 && (
               <Card>
@@ -61,7 +62,7 @@ export default function SelectType(props: IProps) {
                   <Party
                     key={party!.id}
                     name={party!.name}
-                    onClick={() => navigate(`/party/${party!.id}`)}
+                    onClick={() => history.push(`/party/${party!.id}`)}
                   />
                 ))}
               </Card>
@@ -76,3 +77,5 @@ export default function SelectType(props: IProps) {
     </>
   );
 }
+
+export default withRouter(SelectType);

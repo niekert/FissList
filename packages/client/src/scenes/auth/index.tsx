@@ -1,16 +1,14 @@
 import * as React from 'react';
+import { __RouterContext as RouterContext } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { parse, OutputParams } from 'query-string';
-import { RouteComponentProps } from '@reach/router';
 
 interface IProps {
   path: string;
 }
 
-function AuthCallback({
-  location,
-  navigate,
-  path,
-}: RouteComponentProps & IProps) {
+function AuthCallback({ location, navigate }: IProps) {
+  const bla = React.useContext(RouterContext);
   React.useEffect(
     () => {
       const query: OutputParams = parse(location!.search);
@@ -27,4 +25,4 @@ function AuthCallback({
 
   return null;
 }
-export default AuthCallback;
+export default withRouter(AuthCallback);

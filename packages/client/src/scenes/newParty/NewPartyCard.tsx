@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { navigate } from '@reach/router';
+import { Link } from 'react-router-dom';
 import { Label, Input, Button } from 'components/Form';
 import { Text, Title } from 'components/Typography';
 import Page from 'components/Page';
@@ -32,6 +32,7 @@ const CopyLinkInput = styled(Input)`
 const OpenPartyButton = styled(Button)`
   align-self: flex-start;
   margin-top: ${props => props.theme.spacing[2]};
+  text-shadow: none;
 `;
 
 interface IProps {
@@ -56,7 +57,7 @@ function NewPartyCard({ partyId, name }: IProps) {
             <Label>Party link</Label>
             <CopyLinkInput readOnly={true} value={link} />
 
-            <OpenPartyButton onClick={() => navigate(`/party/${partyId}`)}>
+            <OpenPartyButton to={`/party/${partyId}`}>
               Open party
             </OpenPartyButton>
           </Card>
