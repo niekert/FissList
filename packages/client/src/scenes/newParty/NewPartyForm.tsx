@@ -77,7 +77,7 @@ function NewPartyForm({
       </Text>
       {isLoading && <Loading />}
       {!isLoading && (
-        <>
+        <>  
           <PartyForm>
             <FormHeading>
               <FormField label="Party name">

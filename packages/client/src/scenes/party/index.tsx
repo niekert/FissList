@@ -6,7 +6,6 @@ import { Card } from 'components/Card';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'components/Tabs';
 import Playlist from 'components/Playlist';
-import { Title } from 'components/Typography';
 import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
 
@@ -16,6 +15,7 @@ const PlayerCard = styled(Card)`
   z-index: 1;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  margin-bottom: 0;
   padding: 0;
   top: 0;
   flex-shrink: 0;
@@ -75,9 +75,6 @@ export default function Party(props: IProps) {
           )}
           {data && data.party && (
             <>
-              <Title as="h2">
-                {activeTab === PlayerTabs.Queue ? data.party.name : 'Browse'}
-              </Title>
               <PlayerCard>
                 <PlayerWrapper>
                   <Player activeFeedUri={data.party.playlistId} />

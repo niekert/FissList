@@ -66,7 +66,7 @@ export default function Devices({
             {devices
               .filter(device => !!device.id)
               .map(device => (
-                <option key={device.id} value={device.id}>
+                <option key={device.id!} value={device.id!}>
                   {device.name}
                 </option>
               ))}

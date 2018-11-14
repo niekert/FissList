@@ -21,7 +21,7 @@ export default function Player({ activeFeedUri }) {
       playerContext.togglePlayState({
         variables: {
           type,
-          uri: playlistUri || null,
+          contextUri: `spotify:playlist:${playlistUri}` || undefined,
         },
         optimisticResponse: {
           togglePlayState: {

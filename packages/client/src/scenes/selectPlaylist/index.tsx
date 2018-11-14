@@ -15,6 +15,7 @@ interface IProps {
 const PlaylistsWrapper = styled.ul`
   margin: 0;
   overflow: auto;
+  padding-bottom: ${props => props.theme.spacing[3]};
 `;
 
 const Playlist = styled(PosedListItem)<{ isSelected: boolean }>`

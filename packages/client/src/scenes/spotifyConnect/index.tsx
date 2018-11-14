@@ -4,7 +4,6 @@ import ConnectSpotifyButton from 'components/ConnectSpotifyButton';
 
 function SpotifyConnect() {
   const [, setIsConnecting] = React.useState(false);
-  React.useEffect(() => {});
 
   const onClick = () => {
     setIsConnecting(true);

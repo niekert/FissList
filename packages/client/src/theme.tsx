@@ -14,6 +14,7 @@ const DEFAULT_THEME = {
     spotify: '#1DB954',
     black: '#191414',
     outline: '#CCD9DF',
+    primary: '#FFF',
   },
   spacing: ['0px', '8px', '16px', '24px'],
   textColors: {

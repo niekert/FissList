@@ -4,11 +4,11 @@ const PosedListItem = posed.div({
   enter: {
     opacity: 1,
     transform: 'translateY(0px)',
-    transition: ({ i, delayBase = 600 }) => ({
+    transition: ({ i, delayBase = 100 }) => ({
       type: 'spring',
       stiffness: 180,
       damping: 15,
-      delay: Math.min(i * 100, delayBase),
+      delay: Math.min(i * delayBase, delayBase * 10),
       duration: 300,
     }),
   },

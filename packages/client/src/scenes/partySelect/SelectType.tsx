@@ -54,7 +54,7 @@ export default function SelectType(props: IProps) {
               cta={'Join party'}
               onClick={() => navigate('/join')}
             />
-            {user && user.parties && (
+            {user && user.parties && user.parties.length > 0 && (
               <Card>
                 <CardTitle>Existing parties</CardTitle>
                 {user.parties.map(party => (

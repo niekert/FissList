@@ -42,8 +42,8 @@ const StyledTab = styled.button<{ isActive?: boolean }>`
   cursor: pointer;
 `;
 
+// tslint:disable-next-line
 const noop = () => {};
-
 interface ITabContext {
   activeTab: string;
   setActiveTab: (tabName: string) => void;

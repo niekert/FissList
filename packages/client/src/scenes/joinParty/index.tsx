@@ -28,9 +28,7 @@ function JoinParty(props: IProps) {
         <p>Enter the party code to join a new party</p>
         <Label>Party code</Label>
         <Input type="text" />
-        <JoinButton type="button" disabled>
-          Join party
-        </JoinButton>
+        <JoinButton type="button">Join party</JoinButton>
 
         <ProTip>
           <div>
