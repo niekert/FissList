@@ -17,6 +17,9 @@ const Wrapper = styled.div`
   min-height: 100vh;
   flex-direction: column;
 `;
+const FormHeading = styled.div`
+  padding: 0 ${props => props.theme.spacing[2]};
+`;
 
 const CtaSection = styled(PosedCtaSection)`
   height: 75px;
@@ -76,17 +79,17 @@ function NewPartyForm({
       {!isLoading && (
         <>
           <PartyForm>
-            <FormField label="Party name">
-              <Input type="text" value={name} onChange={setName} />
-            </FormField>
-
-            <FormField
-              label="Base playlist"
-              marginBottom={0}
-              subTitle="New songs are added to the front of the queue"
-            >
-              {selectPlaylist}
-            </FormField>
+            <FormHeading>
+              <FormField label="Party name">
+                <Input type="text" value={name} onChange={setName} />
+              </FormField>
+              <FormField
+                label="Base playlist"
+                marginBottom={0}
+                subTitle="New songs are added to the front of the queue"
+              />
+            </FormHeading>
+            {selectPlaylist}
           </PartyForm>
           <CtaSection pose={isValid ? 'visible' : 'hidden'}>
             <Cta type="button" onClick={onSubmit}>

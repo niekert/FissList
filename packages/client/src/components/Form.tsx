@@ -41,7 +41,7 @@ interface IFormFieldProps {
   label: string;
   subTitle?: string;
   marginBottom?: number;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   error?: React.ReactNode;
 }
 export function FormField({
@@ -56,7 +56,7 @@ export function FormField({
     <FieldSet marginBottom={marginBottom} {...props}>
       <Label hasMargin={!subTitle}>{label}</Label>
       {subTitle && <SubTitle>{subTitle}</SubTitle>}
-      <InputWrapper>{children}</InputWrapper>
+      {children && <InputWrapper>{children}</InputWrapper>}
       {error}
     </FieldSet>
   );

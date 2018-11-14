@@ -106,7 +106,7 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
                   )}
               </PlaylistsWrapper>
             )}
-            {(loading || true) && <Loader />}
+            {loading && <Loader />}
           </>
         );
       }}

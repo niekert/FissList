@@ -6,8 +6,9 @@ const StyledPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   max-width: 1000px;
+  height: 100vh;
   margin: 0 auto;
 `;
 

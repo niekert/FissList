@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PartyQuery from './PartyQuery';
-import ContextUriContext from 'context/ContextUri';
 import Spinner from 'components/Spinner';
 import Page from 'components/Page';
 import { Card } from 'components/Card';
@@ -19,11 +18,20 @@ const PlayerCard = styled(Card)`
   border-bottom-right-radius: 8px;
   padding: 0;
   top: 0;
+  flex-shrink: 0;
   background: white;
 `;
 
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ContentWrapper = styled.div`
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
 `;
 
@@ -60,7 +68,11 @@ export default function Party(props: IProps) {
     >
       {({ data, loading }) => (
         <Page>
-          {(!data || !data.party) && <Spinner />}
+          {(!data || !data.party) && (
+            <SpinnerWrapper>
+              <Spinner />
+            </SpinnerWrapper>
+          )}
           {data && data.party && (
             <>
               <Title as="h2">

@@ -24,6 +24,7 @@ const CardContent = styled(Card)`
   display: flex;
   align-items: stretch;
   flex-direction: column;
+  padding: 0;
   width: 400px;
   max-width: 100%;
 `;

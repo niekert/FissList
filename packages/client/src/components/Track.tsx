@@ -72,7 +72,7 @@ export default function Track({ name, id, artists }: IProps) {
         <Title>{name}</Title>
         <Artist>{artistNames}</Artist>
       </LeftColumn>
-      <PlayButton onClick={playTrack}>Play a mattie</PlayButton>
+      <PlayButton onClick={playTrack}>Play</PlayButton>
     </Wrapper>
   );
 }
