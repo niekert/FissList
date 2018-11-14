@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { usePlayer } from 'context/player';
+import ContextUriContext from 'context/ContextUri';
 import { getCurrentTrackId } from 'selectors/player';
 import styled, { css } from 'styled-components';
 import { transparentize } from 'polished';
@@ -16,7 +17,7 @@ const Wrapper = styled.div<{ isNowPlaying?: boolean }>`
   ${props =>
     props.isNowPlaying &&
     css`
-      background: ${transparentize(0.9, props.theme.colors.cta)};
+      background: ${transparentize(0.93, props.theme.colors.cta)};
     `};
 `;
 
@@ -49,7 +50,18 @@ type IProps = TrackInfo & {
 
 export default function Track({ name, id, artists }: IProps) {
   const player = usePlayer();
+  const contextUri = React.useContext(ContextUriContext);
   const artistNames = artists!.map(artist => artist!.name).join(', ');
+
+  const playTrack = () => {
+    player!.togglePlayState({
+      variables: {
+        type: 'play',
+        contextUri,
+        offsetUri: `spotify:track:${id}`,
+      },
+    });
+  };
 
   const activeTrackID = getCurrentTrackId(player!);
   const isNowPlaying = activeTrackID === id;
@@ -60,7 +72,7 @@ export default function Track({ name, id, artists }: IProps) {
         <Title>{name}</Title>
         <Artist>{artistNames}</Artist>
       </LeftColumn>
-      <PlayButton>Play a mattie</PlayButton>
+      <PlayButton onClick={playTrack}>Play a mattie</PlayButton>
     </Wrapper>
   );
 }

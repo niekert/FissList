@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PartyQuery from './PartyQuery';
+import ContextUriContext from 'context/ContextUri';
 import Spinner from 'components/Spinner';
 import Page from 'components/Page';
 import { Card } from 'components/Card';
@@ -8,15 +9,22 @@ import { Tabs, Tab } from 'components/Tabs';
 import Playlist from 'components/Playlist';
 import { Title } from 'components/Typography';
 import Player from 'scenes/player';
+import PlayLists from 'scenes/playlists';
 
 const PlayerCard = styled(Card)`
   display: flex;
   position: sticky;
+  z-index: 1;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 0;
   top: 0;
   background: white;
+`;
+
+const ContentWrapper = styled.div`
+  overflow: hidden;
+  width: 100%;
 `;
 
 const PlayerWrapper = styled.div`
@@ -67,9 +75,12 @@ export default function Party(props: IProps) {
                   <Tab name={PlayerTabs.Browse}>Browse</Tab>
                 </Tabs>
               </PlayerCard>
-              {activeTab === PlayerTabs.Queue &&
-                data &&
-                data.party.playlist && <Playlist {...data.party.playlist} />}
+              <ContentWrapper>
+                {activeTab === PlayerTabs.Queue &&
+                  data &&
+                  data.party.playlist && <Playlist {...data.party.playlist} />}
+                {activeTab === PlayerTabs.Browse && <PlayLists />}
+              </ContentWrapper>
             </>
           )}
         </Page>

@@ -9,8 +9,16 @@ import { ApolloCache } from 'apollo-cache';
 import { PLAYER_QUERY, Player } from './PlayerQuery';
 
 export const TOGGLE_PLAY_STATE_MUTATION = gql`
-  mutation TogglePlayState($type: String!, $uri: String) {
-    togglePlayState(type: $type, uri: $uri) {
+  mutation TogglePlayState(
+    $type: String!
+    $contextUri: String
+    $offsetUri: String
+  ) {
+    togglePlayState(
+      type: $type
+      contextUri: $contextUri
+      offsetUri: $offsetUri
+    ) {
       __typename
       isPlaying
     }

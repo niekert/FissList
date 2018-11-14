@@ -25,14 +25,14 @@ export interface Player_player_item {
 }
 
 export interface Player_player_device {
-  id: string;
+  id: string | null;
   name: string;
   isRestricted: boolean;
   type: string;
 }
 
 export interface Player_player_devices {
-  id: string;
+  id: string | null;
   name: string;
   isRestricted: boolean;
   type: string;

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Title, Text } from 'components/Typography';
 import { navigate } from '@reach/router';
 import { Card, CardTitle } from 'components/Card';
+import { PoseGroup } from 'react-pose';
+import PosedListItem from 'components/PosedListItem';
 import Link from 'components/Link';
 import Party from 'components/Party';
 import useLogout from 'hooks/logout';
@@ -38,31 +40,34 @@ export default function SelectType(props: IProps) {
         guests decide the songs that will play next.
       </IntroText>
       <PartyOptions>
-        <OptionCard
-          title="🔊 Start a new party"
-          body="Click this button to start a new party and get a shareable party link"
-          cta={'Start party'}
-          onClick={() => navigate('/new')}
-        />
-        <OptionCard
-          title="🎉 Join a party"
-          body="Join a friend's party by filling in the party code"
-          cta={'Join party'}
-          onClick={() => navigate('/join')}
-        />
-        {user &&
-          user.parties && (
-            <Card>
-              <CardTitle>Existing parties</CardTitle>
-              {user.parties.map(party => (
-                <Party
-                  key={party!.id}
-                  name={party!.name}
-                  onClick={() => navigate(`/party/${party!.id}`)}
-                />
-              ))}
-            </Card>
-          )}
+        <PoseGroup animateOnMount={true}>
+          <PosedListItem key="main-group">
+            <OptionCard
+              title="🔊 Start a new party"
+              body="Click this button to start a new party and get a shareable party link"
+              cta={'Start party'}
+              onClick={() => navigate('/new')}
+            />
+            <OptionCard
+              title="🎉 Join a party"
+              body="Join a friend's party by filling in the party code"
+              cta={'Join party'}
+              onClick={() => navigate('/join')}
+            />
+            {user && user.parties && (
+              <Card>
+                <CardTitle>Existing parties</CardTitle>
+                {user.parties.map(party => (
+                  <Party
+                    key={party!.id}
+                    name={party!.name}
+                    onClick={() => navigate(`/party/${party!.id}`)}
+                  />
+                ))}
+              </Card>
+            )}
+          </PosedListItem>
+        </PoseGroup>
       </PartyOptions>
       <Text textAlign="center">
         Or, if you are done using PampaPlay,{' '}

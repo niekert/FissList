@@ -13,7 +13,7 @@ export default function Player({ activeFeedUri }) {
   const playerContext = usePlayer();
 
   const handlePlayState = React.useCallback(
-    (type: string, playlistUri?: string) => {
+    (type: string, uris?: string[], playlistUri?: string) => {
       if (!playerContext) {
         return;
       }

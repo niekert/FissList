@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { SpotifyUser } from './types';
-import { GraphQLError } from 'graphql';
+import { GraphQLError, graphql } from 'graphql';
 import { HttpService } from './types';
 import * as camelcase from 'camelcase-keys';
 
@@ -71,7 +71,11 @@ export function makeHttpService(accessKey: string): HttpService {
         authorization: accessKey,
         ...options.headers,
       },
-    }).then(resp => resp.json());
+    })
+      .then(resp => resp.json())
+      .catch(err => {
+        throw new GraphQLError('Ow shit');
+      });
   }
 
   function fetchResource<T>(

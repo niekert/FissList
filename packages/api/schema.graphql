@@ -113,7 +113,11 @@ type Query {
 
 type Mutation {
   authorize: String!
-  togglePlayState(type: String!, uri: String): PlayStateChange
+  togglePlayState(
+    type: String!
+    contextUri: String
+    offsetUri: String
+  ): PlayStateChange
   createParty(name: String!, playlistId: String!): Party
   setActiveDevice(deviceId: String): Boolean
 }

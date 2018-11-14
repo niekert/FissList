@@ -6,7 +6,7 @@
 // ====================================================
 
 export interface DeviceInfo {
-  id: string;
+  id: string | null;
   name: string;
   isRestricted: boolean;
   type: string;

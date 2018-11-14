@@ -32,8 +32,9 @@ const TabsWrapper = styled.div`
 
 const StyledTab = styled.button<{ isActive?: boolean }>`
   flex: 1;
+  min-height: 42px;
   background-color: ${props =>
-    props.isActive ? transparentize(0.95, props.theme.colors.cta) : 'none'};
+    props.isActive ? transparentize(0.95, props.theme.colors.cta) : 'white'};
   transition: background-color 0.3s ease-in;
   border: none;
   outline: none;

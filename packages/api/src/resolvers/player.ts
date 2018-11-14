@@ -64,7 +64,7 @@ const requestMap: Map = {
 
 export async function togglePlayState(
   _,
-  args: { type: PlayState; uri: string },
+  args: { type: PlayState; contextUri: string; offsetUri?: string },
   context: Context,
 ) {
   if (args.type === PlayState.Play) {
@@ -73,7 +73,10 @@ export async function togglePlayState(
       {
         method: 'PUT',
         body: JSON.stringify({
-          context_uri: `spotify:playlist:${args.uri}`,
+          context_uri: args.contextUri,
+          offset: args.offsetUri && {
+            uri: args.offsetUri,
+          },
         }),
       },
     );
