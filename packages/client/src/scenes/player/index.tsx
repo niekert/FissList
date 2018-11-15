@@ -31,6 +31,7 @@ export default function Player({ activeFeedUri }) {
         },
       });
     },
+    [],
   );
 
   const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -45,7 +46,6 @@ export default function Player({ activeFeedUri }) {
 
   const { player } = playerContext.data;
 
-  // This is rediculous lol
   const isPlaying = player && player.isPlaying;
 
   return (

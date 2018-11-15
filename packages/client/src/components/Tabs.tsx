@@ -79,8 +79,8 @@ export function Tabs({ activeTab, onChange, children }: ITabs) {
     width: 0,
   });
 
-  const activeTabRef = React.useRef<any>();
-  const containerRef = React.useRef<any>();
+  const activeTabRef = React.useRef<any>(undefined);
+  const containerRef = React.useRef<any>(undefined);
   const containerSize = useComponentSize(containerRef);
 
   React.useEffect(

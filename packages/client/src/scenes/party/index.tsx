@@ -54,9 +54,7 @@ enum PlayerTabs {
 }
 
 export default function Party({ match }: IProps) {
-  const [activeTab, setActiveTab] = React.useState<PlayerTabs>(
-    PlayerTabs.Queue,
-  );
+  const [activeTab, setActiveTab] = React.useState<string>(PlayerTabs.Queue);
   React.useLayoutEffect(
     () => {
       window.scrollTo(0, 0);

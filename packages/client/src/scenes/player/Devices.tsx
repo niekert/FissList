@@ -45,7 +45,7 @@ export default function Devices({
   devices = [],
   onDeviceChange,
 }: IProps) {
-  const selectRef = React.useRef<any>();
+  const selectRef = React.useRef<any>(undefined);
   const onDeviceClick = () => {
     if (selectRef.current) {
       selectRef.current.click();
