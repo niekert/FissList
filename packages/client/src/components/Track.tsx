@@ -9,6 +9,7 @@ import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 const Wrapper = styled.div<{ isNowPlaying?: boolean }>`
   display: flex;
   width: 100%;
+  height: 70px;
   justify-content: space-between;
   padding: ${props => `${props.theme.spacing[1]} ${props.theme.spacing[2]}`};
   border-bottom: 1px solid
@@ -48,7 +49,7 @@ type IProps = TrackInfo & {
   onClick?: (trackId: string) => void;
 };
 
-export default function Track({ name, id, artists }: IProps) {
+function Track({ name, id, artists }: IProps) {
   const player = usePlayer();
   const contextUri = React.useContext(ContextUriContext);
   const artistNames = artists!.map(artist => artist!.name).join(', ');
@@ -76,3 +77,5 @@ export default function Track({ name, id, artists }: IProps) {
     </Wrapper>
   );
 }
+
+export default React.memo(Track);

@@ -17,7 +17,8 @@ import Party from 'scenes/party';
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
-    -webkit-font-smoothing: antialiased
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
   }
   body {
     color: red;
@@ -70,7 +71,7 @@ function App() {
                     render={({ location }: RouteComponentProps) => (
                       <PoseGroup>
                         <Item
-                          key={location.key}
+                          key={location.pathname}
                           type={location.pathname === '/' ? 'prev' : 'next'}
                         >
                           <Switch>

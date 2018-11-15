@@ -1,6 +1,4 @@
-import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
 import { lighten } from 'polished';
 
 const getType = ({ buttonType = 'primary', theme }) => {
@@ -35,12 +33,4 @@ StyledButton.defaultProps = {
   buttonType: 'primary',
 };
 
-function Button({ to, ...props }: { to: string }) {
-  if (to) {
-    return <StyledButton {...props} to={to} as={Link} />;
-  }
-
-  return <StyledButton {...props} />;
-}
-
-export default Button;
+export default StyledButton;

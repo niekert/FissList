@@ -22,11 +22,6 @@ const SelectedPlaylistName = styled.div`
   font-size: 22px;
 `;
 
-const ScrollablePlaylist = styled.div`
-  flex: 1;
-  overflow: auto;
-`;
-
 export default function Playlists() {
   const [selectedPlaylist, setSelectedPlaylist] = React.useState('');
 
@@ -52,9 +47,7 @@ export default function Playlists() {
             return (
               <>
                 <SelectedPlaylistName>{name}</SelectedPlaylistName>
-                <ScrollablePlaylist>
-                  <Playlist id={id} key={id} name={name} tracks={tracks} />
-                </ScrollablePlaylist>
+                <Playlist id={id} key={id} name={name} tracks={tracks} />
               </>
             );
           }}

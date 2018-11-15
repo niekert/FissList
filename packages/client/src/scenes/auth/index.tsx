@@ -1,14 +1,8 @@
 import * as React from 'react';
-import { __RouterContext as RouterContext } from 'react-router-dom';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { parse, OutputParams } from 'query-string';
 
-interface IProps {
-  path: string;
-}
-
-function AuthCallback({ location, navigate }: IProps) {
-  const bla = React.useContext(RouterContext);
+function AuthCallback({ history }: RouteComponentProps) {
   React.useEffect(
     () => {
       const query: OutputParams = parse(location!.search);
@@ -18,7 +12,7 @@ function AuthCallback({ location, navigate }: IProps) {
         localStorage.setItem('refreshToken', query.refreshToken as string);
       }
 
-      navigate!('/', { replace: true });
+      history.replace('/', { replace: true });
     },
     [location!.search],
   );
