@@ -36,7 +36,11 @@ export type Player = Player;
 
 export default function PlayerQueryComponent({ children }: IProps) {
   return (
-    <PlayerQuery pollInterval={10000} query={PLAYER_QUERY}>
+    <PlayerQuery
+      pollInterval={10000}
+      query={PLAYER_QUERY}
+      notifyOnNetworkStatusChange={true}
+    >
       {children}
     </PlayerQuery>
   );

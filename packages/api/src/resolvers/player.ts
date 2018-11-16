@@ -28,9 +28,12 @@ interface DeviceResp {
 
 export async function player(root, args, context: Context): Promise<Player> {
   let { data } = await context.spotify.fetchResource<Player>('/me/player');
+  if (!data) {
+    return null;
+  }
 
   // For simplicity in the client merge album and track images
-  if (!data.item.images && data.item && data.item.album.images) {
+  if (!data.item && data.item.images && data.item.album.images) {
     data.item.images = data.item.album.images;
   }
 

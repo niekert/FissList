@@ -1,9 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { usePlayer } from 'context/player';
+import { NetworkStatus } from 'apollo-client';
 import ActiveTrack from './ActiveTrack';
 import Devices from './Devices';
 import TrackNavigation from './TrackNavigation';
+import NoPlayerFound from './NoPlayerFound';
 
 const SecondaryOptions = styled.div`
   display: flex;
@@ -39,6 +41,19 @@ export default function Player({ activeFeedUri }) {
       variables: { deviceId: e.target.value },
     });
   };
+
+  if (
+    (playerContext!.networkStatus === NetworkStatus.ready &&
+      !playerContext!.data!.player) ||
+    playerContext!.networkStatus === 4
+  ) {
+    return (
+      <NoPlayerFound
+        isLoading={playerContext!.networkStatus === NetworkStatus.refetch}
+        onRetry={() => playerContext!.refetch()}
+      />
+    );
+  }
 
   if (!playerContext || !playerContext.data || !playerContext.data.player) {
     return null;

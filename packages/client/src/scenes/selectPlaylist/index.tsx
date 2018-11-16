@@ -101,7 +101,7 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
                 {!loading &&
                   data.userPlaylists.items.length <
                     data.userPlaylists.total && (
-                    <LoadMoreButton onClick={loadNext}>
+                    <LoadMoreButton type="button" onClick={loadNext}>
                       Load more
                     </LoadMoreButton>
                   )}

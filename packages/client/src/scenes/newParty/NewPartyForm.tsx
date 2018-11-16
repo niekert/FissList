@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Title, Text } from 'components/Typography';
 import SelectPlaylist from 'scenes/selectPlaylist';
-import posed from 'react-pose';
+import posed, { PoseGroup } from 'react-pose';
 import PartyForm from './PartyForm';
 import { Button, Input, FormField } from 'components/Form';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';
 
 const PosedCtaSection = posed.div({
-  visible: { transform: 'translateY(0%)', opacity: 1 },
-  hidden: { transform: 'translateY(100%)', opacity: 0 },
+  enter: { transform: 'translateY(0%)', opacity: 1 },
+  exit: { transform: 'translateY(100%)', opacity: 0 },
 });
 
 const Wrapper = styled.div`
@@ -77,7 +77,7 @@ function NewPartyForm({
       </Text>
       {isLoading && <Loading />}
       {!isLoading && (
-        <>  
+        <>
           <PartyForm>
             <FormHeading>
               <FormField label="Party name">
@@ -91,11 +91,15 @@ function NewPartyForm({
             </FormHeading>
             {selectPlaylist}
           </PartyForm>
-          <CtaSection pose={isValid ? 'visible' : 'hidden'}>
-            <Cta type="button" onClick={onSubmit}>
-              Start a new party
-            </Cta>
-          </CtaSection>
+          <PoseGroup>
+            {isValid && (
+              <CtaSection key="cta-section">
+                <Cta type="button" onClick={onSubmit}>
+                  Start a new party
+                </Cta>
+              </CtaSection>
+            )}
+          </PoseGroup>
         </>
       )}
     </Wrapper>

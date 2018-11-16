@@ -34,10 +34,7 @@ interface IProps {
 
 export default function GetPlaylistsQueryComponent({ children }: IProps) {
   return (
-    <GetPlaylistsQuery
-      query={GET_OWN_PLAYLISTS}
-      notifyOnNetworkStatusChange={true}
-    >
+    <GetPlaylistsQuery query={GET_OWN_PLAYLISTS}>
       {queryResult =>
         children({
           ...queryResult,

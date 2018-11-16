@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Label, Input, Button } from 'components/Form';
 import { Text, Title } from 'components/Typography';
+import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'components/Page';
 import { Card } from 'components/Card';
 import posed, { PoseGroup } from 'react-pose';
@@ -34,12 +35,12 @@ const OpenPartyButton = styled(Button)`
   text-shadow: none;
 `;
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   partyId: string;
   name: string;
 }
 
-function NewPartyCard({ partyId, name }: IProps) {
+function NewPartyCard({ partyId, name, history }: IProps) {
   const link = `${window.location.origin}/party/${partyId}`;
   return (
     <Page>
@@ -56,7 +57,7 @@ function NewPartyCard({ partyId, name }: IProps) {
             <Label>Party link</Label>
             <CopyLinkInput readOnly={true} value={link} />
 
-            <OpenPartyButton to={`/party/${partyId}`}>
+            <OpenPartyButton onClick={() => history.push(`/party/${partyId}`)}>
               Open party
             </OpenPartyButton>
           </Card>
@@ -66,4 +67,4 @@ function NewPartyCard({ partyId, name }: IProps) {
   );
 }
 
-export default NewPartyCard;
+export default withRouter(NewPartyCard);

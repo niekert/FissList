@@ -32,8 +32,6 @@ const Item = posed.div({
     transition: { duration: 250 },
     width: '100%',
     opacity: 1,
-    beforeChildren: true,
-    delayChildren: 2000,
   },
   exit: {
     opacity: 0,

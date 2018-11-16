@@ -1,4 +1,6 @@
+import * as React from 'react';
 import styled, { css } from 'styled-components';
+import Spinner from 'components/Spinner';
 import { lighten } from 'polished';
 
 const getType = ({ buttonType = 'primary', theme }) => {
@@ -12,7 +14,28 @@ const getType = ({ buttonType = 'primary', theme }) => {
   `;
 };
 
+const LoadingContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Loading = styled(Spinner)`
+  width: 22px;
+  height: 22px;
+`;
+
+const Content = styled.div<{ isHidden: boolean }>`
+  visibility: ${props => (props.isHidden ? 'hidden' : 'visible')};
+`;
+
 const StyledButton = styled.button<{ buttonType?: 'primary'; to?: string }>`
+  position: relative;
   border-radius: 4px;
   text-shadow: none;
   -webkit-appearance: none;
@@ -33,4 +56,22 @@ StyledButton.defaultProps = {
   buttonType: 'primary',
 };
 
-export default StyledButton;
+interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean;
+  children: React.ReactNode;
+}
+
+function Button({ isLoading, children, ...props }: IButton) {
+  return (
+    <StyledButton {...props}>
+      <Content isHidden={isLoading}>{children}</Content>
+      {isLoading && (
+        <LoadingContainer>
+          <Loading />
+        </LoadingContainer>
+      )}
+    </StyledButton>
+  );
+}
+
+export default Button;
