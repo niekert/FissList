@@ -45,7 +45,8 @@ export default function Player({ activeFeedUri }) {
   if (
     (playerContext!.networkStatus === NetworkStatus.ready &&
       !playerContext!.data!.player) ||
-    playerContext!.networkStatus === 4
+    playerContext!.networkStatus === NetworkStatus.refetch ||
+    playerContext!.networkStatus === NetworkStatus.poll
   ) {
     return (
       <NoPlayerFound

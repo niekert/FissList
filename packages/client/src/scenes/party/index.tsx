@@ -2,7 +2,13 @@ import * as React from 'react';
 import PartyQuery from './PartyQuery';
 import Spinner from 'components/Spinner';
 import Page from 'components/Page';
-import { RouteComponentProps } from 'react-router';
+import { Location } from 'history';
+import {
+  RouteComponentProps,
+  match as Match,
+  Switch,
+  Route,
+} from 'react-router';
 import { Card } from 'components/Card';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'components/Tabs';
@@ -53,8 +59,33 @@ enum PlayerTabs {
   Browse = 'browse',
 }
 
-export default function Party({ match }: IProps) {
-  const [activeTab, setActiveTab] = React.useState<string>(PlayerTabs.Queue);
+const getActivetab = (match: Match, location: Location) => {
+  const relativePath = location.pathname.replace(match.url, '');
+
+  if (relativePath === '') {
+    return PlayerTabs.Queue;
+  }
+
+  if (relativePath.includes('/browse')) {
+    return PlayerTabs.Browse;
+  }
+
+  return PlayerTabs.Queue;
+};
+
+export default function Party({ match, location, history }: IProps) {
+  const onTabChange = tab => {
+    if (tab === PlayerTabs.Queue) {
+      history.replace(match.url);
+    }
+
+    if (tab === PlayerTabs.Browse) {
+      history.replace(`${match.url}/browse`);
+    }
+  };
+
+  const activeTab = getActivetab(match, location);
+
   React.useLayoutEffect(
     () => {
       window.scrollTo(0, 0);
@@ -81,16 +112,16 @@ export default function Party({ match }: IProps) {
                 <PlayerWrapper>
                   <Player activeFeedUri={data.party.playlistId} />
                 </PlayerWrapper>
-                <Tabs activeTab={activeTab} onChange={setActiveTab}>
+                <Tabs activeTab={activeTab} onChange={onTabChange}>
                   <Tab name={PlayerTabs.Queue}>Queue</Tab>
                   <Tab name={PlayerTabs.Browse}>Browse</Tab>
                 </Tabs>
               </PlayerCard>
               <ContentWrapper>
-                {activeTab === PlayerTabs.Queue &&
-                  data &&
-                  data.party.playlist && <Playlist {...data.party.playlist} />}
-                {activeTab === PlayerTabs.Browse && <PlayLists />}
+                <Switch>
+                  <Route path={`${match.path}/browse`} component={PlayLists} />
+                  <Route render={() => <Playlist {...data.party.playlist} />} />
+                </Switch>
               </ContentWrapper>
             </>
           )}

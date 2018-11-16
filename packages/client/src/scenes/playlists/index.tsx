@@ -1,10 +1,12 @@
 import * as React from 'react';
 import PlaylistQuery from './PlaylistQuery';
+import { Switch, Route, RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';
 import Playlist from 'components/Playlist';
-
 import SelectPlaylist from 'scenes/selectPlaylist';
+import { BackIcon } from 'icons';
 
 const StyledSpinner = styled(Spinner)`
   margin: 0 auto;
@@ -22,37 +24,67 @@ const SelectedPlaylistName = styled.div`
   font-size: 22px;
 `;
 
-export default function Playlists() {
-  const [selectedPlaylist, setSelectedPlaylist] = React.useState('');
+const IconLink = styled(Link)`
+  color: inherit;
+  background-image: none;
+  margin-right: ${props => props.theme.spacing[1]};
+  text-decoration: none;
+`;
 
+const StyledBackIcon = styled(BackIcon)`
+  width: 25px;
+  height: 25px;
+`;
+
+export default function Playlists({
+  match,
+  location,
+  history,
+}: RouteComponentProps) {
   return (
-    <>
-      {!selectedPlaylist && (
-        <SelectPlaylist
-          onClick={playlistId => setSelectedPlaylist(playlistId)}
-        />
-      )}
-      {selectedPlaylist && (
-        <PlaylistQuery
-          variables={{
-            playlistId: selectedPlaylist,
-          }}
-        >
-          {({ loading, data }) => {
-            if (loading || !data) {
-              return <StyledSpinner />;
-            }
+    <Switch>
+      <Route
+        path={`${match.path}/playlist/:playlistId`}
+        render={({
+          match: playListMatch,
+        }: {
+          match: { params: { playlistId: string } };
+        }) => (
+          <PlaylistQuery
+            variables={{
+              playlistId: playListMatch.params.playlistId,
+            }}
+          >
+            {({ loading, data }) => {
+              if (loading || !data) {
+                return <StyledSpinner />;
+              }
 
-            const { id, name, tracks } = data.playlist;
-            return (
-              <>
-                <SelectedPlaylistName>{name}</SelectedPlaylistName>
-                <Playlist id={id} key={id} name={name} tracks={tracks} />
-              </>
-            );
-          }}
-        </PlaylistQuery>
-      )}
-    </>
+              const { id, name, tracks } = data.playlist;
+              return (
+                <>
+                  <SelectedPlaylistName>
+                    <IconLink to={match.url}>
+                      <StyledBackIcon />
+                    </IconLink>
+                    {name}
+                  </SelectedPlaylistName>
+                  <Playlist id={id} key={id} name={name} tracks={tracks} />
+                </>
+              );
+            }}
+          </PlaylistQuery>
+        )}
+      />
+      <Route
+        render={() => (
+          <SelectPlaylist
+            onClick={playlistId =>
+              history.push(`${match.url}/playlist/${playlistId}`)
+            }
+          />
+        )}
+      />
+    </Switch>
   );
 }

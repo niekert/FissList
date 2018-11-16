@@ -6,3 +6,4 @@ export { default as SpotifyIcon } from './Spotify';
 export { default as PhoneIcon } from './PhoneIcon';
 export { default as LaptopIcon } from './LaptopIcon';
 export { default as SpeakerIcon } from './SpeakerIcon';
+export { default as BackIcon } from './BackIcon';

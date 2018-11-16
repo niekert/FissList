@@ -65,23 +65,12 @@ function App() {
             return (
               <PlayerContainer>
                 <CurrentUserContext.Provider value={result}>
-                  <Route
-                    render={({ location }: RouteComponentProps) => (
-                      <PoseGroup>
-                        <Item
-                          key={location.pathname}
-                          type={location.pathname === '/' ? 'prev' : 'next'}
-                        >
-                          <Switch>
-                            <Route path="/new" component={NewParty} />
-                            <Route path="/join" component={JoinParty} />
-                            <Route path="/party/:partyId" component={Party} />
-                            <Route path="" component={SelectType} />
-                          </Switch>
-                        </Item>
-                      </PoseGroup>
-                    )}
-                  />
+                  <Switch>
+                    <Route path="/new" component={NewParty} />
+                    <Route path="/join" component={JoinParty} />
+                    <Route path="/party/:partyId" component={Party} />
+                    <Route path="" component={SelectType} />
+                  </Switch>
                 </CurrentUserContext.Provider>
               </PlayerContainer>
             );
