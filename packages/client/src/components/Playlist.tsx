@@ -1,44 +1,41 @@
 import * as React from 'react';
 import ContextUriContext from 'context/ContextUri';
-import useComponentSize from 'use-component-size-typed';
-import { FixedSizeList as List } from 'react-window';
-import Track from 'components/Track';
+import FlexVirtualizedList, { ItemRenderer } from './FlexVirtualizedList';
 import styled from 'styled-components';
-import { PlaylistInfo } from 'fragments/__generated__/PlaylistInfo';
+import Track from 'components/Track';
+import { transparentize } from 'polished';
+import {
+  PlaylistInfo,
+  PlaylistInfo_tracks_items,
+} from 'fragments/__generated__/PlaylistInfo';
 
-const ScrollableList = styled.div`
-  flex: 1;
-  overflow: hidden;
+const PlaylistItem = styled.div`
+  border-bottom: 1px solid
+    ${props => transparentize(0.5, props.theme.colors.outline)};
 `;
 
 function Playlist({ tracks, id }: PlaylistInfo) {
-  const listRef = React.useRef<any>(undefined);
-  const { height: listHeight } = useComponentSize(listRef);
-
-  const renderTrack = React.useCallback<any>(
-    ({ style, index }) => {
-      const playlistItem = tracks.items[index];
+  const renderTrack = React.useCallback<
+    ItemRenderer<PlaylistInfo_tracks_items>
+  >(
+    ({ style, data }) => {
       return (
-        <div key={playlistItem.track.id} style={style}>
-          <Track key={playlistItem.track.id} {...playlistItem.track} />
-        </div>
+        <PlaylistItem key={data.track.id} style={style}>
+          <Track {...data.track} />
+        </PlaylistItem>
       );
     },
-    [listHeight, tracks],
+    [tracks],
   );
 
   return (
     <ContextUriContext.Provider value={`spotify:playlist:${id}`}>
-      <ScrollableList ref={listRef}>
-        <List
-          key="list"
-          height={listHeight || 0}
-          itemCount={tracks.items.length}
-          itemSize={70}
-        >
-          {renderTrack}
-        </List>
-      </ScrollableList>
+      <FlexVirtualizedList<PlaylistInfo_tracks_items>
+        itemSize={70}
+        items={tracks.items}
+      >
+        {renderTrack}
+      </FlexVirtualizedList>
     </ContextUriContext.Provider>
   );
 }

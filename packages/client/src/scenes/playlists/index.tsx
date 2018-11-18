@@ -4,8 +4,8 @@ import { Switch, Route, RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';
-import Playlist from 'components/Playlist';
 import SelectPlaylist from 'scenes/selectPlaylist';
+import { TrackSelectList } from './TrackSelectList';
 import { BackIcon } from 'icons';
 
 const StyledSpinner = styled(Spinner)`
@@ -36,11 +36,7 @@ const StyledBackIcon = styled(BackIcon)`
   height: 25px;
 `;
 
-export default function Playlists({
-  match,
-  location,
-  history,
-}: RouteComponentProps) {
+export default function Playlists({ match, history }: RouteComponentProps) {
   return (
     <Switch>
       <Route
@@ -60,16 +56,15 @@ export default function Playlists({
                 return <StyledSpinner />;
               }
 
-              const { id, name, tracks } = data.playlist;
               return (
                 <>
                   <SelectedPlaylistName>
-                    <IconLink to={match.url}>
+                    <IconLink replace={true} to={match.url}>
                       <StyledBackIcon />
                     </IconLink>
-                    {name}
+                    {data.playlist.name}
                   </SelectedPlaylistName>
-                  <Playlist id={id} key={id} name={name} tracks={tracks} />
+                  <TrackSelectList {...data.playlist} />
                 </>
               );
             }}

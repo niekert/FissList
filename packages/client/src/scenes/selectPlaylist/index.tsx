@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import PosedListItem from 'components/PosedListItem';
 import { PoseGroup } from 'react-pose';
 import Button from 'components/Button';
 import Spinner from 'components/Spinner';
@@ -18,7 +17,7 @@ const PlaylistsWrapper = styled.ul`
   padding-bottom: ${props => props.theme.spacing[3]};
 `;
 
-const Playlist = styled(PosedListItem)<{ isSelected: boolean }>`
+const Playlist = styled.div<{ isSelected: boolean }>`
   max-width: 100%;
   padding: 8px 0;
   display: flex;

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PartyQuery from './PartyQuery';
 import Spinner from 'components/Spinner';
+import { SelectedTracksContainer } from 'context/SelectedTracks';
 import Page from 'components/Page';
 import { Location } from 'history';
 import {
@@ -12,6 +13,7 @@ import {
 import { Card } from 'components/Card';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'components/Tabs';
+import AddSelectedTracks from './AddSelectedTracks';
 import Playlist from 'components/Playlist';
 import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
@@ -107,7 +109,7 @@ export default function Party({ match, location, history }: IProps) {
             </SpinnerWrapper>
           )}
           {data && data.party && (
-            <>
+            <SelectedTracksContainer>
               <PlayerCard>
                 <PlayerWrapper>
                   <Player activeFeedUri={data.party.playlistId} />
@@ -123,7 +125,8 @@ export default function Party({ match, location, history }: IProps) {
                   <Route render={() => <Playlist {...data.party.playlist} />} />
                 </Switch>
               </ContentWrapper>
-            </>
+              <AddSelectedTracks />
+            </SelectedTracksContainer>
           )}
         </Page>
       )}

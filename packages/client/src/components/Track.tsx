@@ -2,8 +2,7 @@ import * as React from 'react';
 import { usePlayer } from 'context/player';
 import ContextUriContext from 'context/ContextUri';
 import { getCurrentTrackId } from 'selectors/player';
-import styled, { css } from 'styled-components';
-import { transparentize } from 'polished';
+import styled from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 
 const Wrapper = styled.div<{ isNowPlaying?: boolean }>`
@@ -12,14 +11,6 @@ const Wrapper = styled.div<{ isNowPlaying?: boolean }>`
   height: 70px;
   justify-content: space-between;
   padding: ${props => `${props.theme.spacing[1]} ${props.theme.spacing[2]}`};
-  border-bottom: 1px solid
-    ${props => transparentize(0.5, props.theme.colors.outline)};
-
-  ${props =>
-    props.isNowPlaying &&
-    css`
-      background: ${transparentize(0.93, props.theme.colors.cta)};
-    `};
 `;
 
 const LeftColumn = styled.div`
@@ -49,10 +40,16 @@ type IProps = TrackInfo & {
   onClick?: (trackId: string) => void;
 };
 
-function Track({ name, id, artists }: IProps) {
+function Track({ name, id, artists, onClick, ...props }: IProps) {
   const player = usePlayer();
   const contextUri = React.useContext(ContextUriContext);
   const artistNames = artists!.map(artist => artist!.name).join(', ');
+
+  const onTrackClick = () => {
+    if (onClick) {
+      onClick(id);
+    }
+  };
 
   const playTrack = () => {
     player!.togglePlayState({
@@ -68,7 +65,7 @@ function Track({ name, id, artists }: IProps) {
   const isNowPlaying = activeTrackID === id;
 
   return (
-    <Wrapper isNowPlaying={isNowPlaying}>
+    <Wrapper isNowPlaying={isNowPlaying} onClick={onTrackClick} {...props}>
       <LeftColumn>
         <Title>{name}</Title>
         <Artist>{artistNames}</Artist>

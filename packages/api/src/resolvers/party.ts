@@ -15,7 +15,6 @@ async function party(
   args: { partyId: string },
   context: Context,
 ): Promise<PartyResult> {
-  console.log('party is', args);
   const party = await context.prisma.party({ id: args.partyId });
 
   return {
