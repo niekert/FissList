@@ -5,6 +5,7 @@ interface PartyResult {
   id: string;
   playlistId: string;
   name: string;
+  activeTrackIndex: number;
   playlist: {
     id: string;
   };
@@ -22,6 +23,7 @@ async function party(
     name: party.name,
     playlistId: party.playlistId,
     playlist: { id: party.playlistId },
+    activeTrackIndex: party.activeTrackIndex,
   };
 }
 
@@ -35,6 +37,7 @@ async function parties(
   return parties.map(party => ({
     id: party.id!,
     name: party.name!,
+    activeTrackIndex: 0,
     playlistId: party.playlistId!,
     playlist: {
       id: party.playlistId!,
@@ -121,6 +124,19 @@ async function addTracks(
   return party;
 }
 
+async function partySubscription(
+  _,
+  args: { partyId: string },
+  context: Context,
+) {
+  return await context.prisma.$subscribe
+    .party({
+      node: { id: args.partyId },
+      mutation_in: ['UPDATED'],
+    })
+    .node();
+}
+
 export default {
   Query: {
     parties,
@@ -132,5 +148,11 @@ export default {
   },
   Me: {
     parties,
+  },
+  Subscription: {
+    party: {
+      subscribe: partySubscription,
+      resolve: payload => payload,
+    },
   },
 };

@@ -1,6 +1,11 @@
 import { Context } from '../types';
-import { Track } from '../spotify';
+import { Track, Playlist } from '../spotify';
 import { GraphQLError } from 'graphql';
+
+interface PlayerContext {
+  uri: string;
+  href: string;
+}
 
 interface Player {
   device: Device;
@@ -10,6 +15,7 @@ interface Player {
   item: Track;
   currentlyPlayingType: string;
   devices: Device[];
+  context?: PlayerContext;
 }
 
 interface Device {
@@ -26,6 +32,29 @@ interface DeviceResp {
   devices: Device[];
 }
 
+async function fetchPlaylistContext(
+  playerContext: PlayerContext,
+  context: Context,
+) {
+  if (playerContext && playerContext.uri) {
+    const ids = playerContext.uri.split(':');
+    if (ids.includes('playlist')) {
+      const playlistId = ids[ids.length - 1];
+      const [party] = await context.prisma.parties({ where: { playlistId } });
+      if (party) {
+        const playlist = await context.spotify.fetchResource<Playlist>(
+          `/playlists/${playlistId}`,
+        );
+
+        return {
+          party,
+          playlist,
+        };
+      }
+    }
+  }
+}
+
 export async function player(
   root,
   args: { partyid?: string },
@@ -36,9 +65,20 @@ export async function player(
     return null;
   }
 
-  if (args.partyid) {
-    const party = await context.prisma.party({ id: args.partyid });
-    // console.log('data is', data.context);
+  const playerContext = await fetchPlaylistContext(data.context, context);
+  if (playerContext && data.item) {
+    const { party, playlist } = playerContext;
+
+    const trackIndex = playlist.data.tracks.items.findIndex(
+      track => track.track.id === data.item.id,
+    );
+
+    await context.prisma.updateParty({
+      where: { id: party.id },
+      data: {
+        activeTrackIndex: trackIndex,
+      },
+    });
   }
 
   // For simplicity in the client merge album and track images

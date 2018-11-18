@@ -43,6 +43,7 @@ export interface GetParty_party_playlist {
 
 export interface GetParty_party {
   id: string;
+  activeTrackIndex: number | null;
   name: string;
   playlistId: string;
   playlist: GetParty_party_playlist;

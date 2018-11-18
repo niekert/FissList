@@ -131,7 +131,14 @@ export default function Party({ match, location, history }: IProps) {
                       component={PlayLists}
                     />
                     <Route
-                      render={() => <PartyPlaylist {...data.party.playlist} />}
+                      render={() => (
+                        <PartyPlaylist
+                          {...data.party.playlist}
+                          activeTrackIndex={
+                            data.party.activeTrackIndex || undefined
+                          }
+                        />
+                      )}
                     />
                   </Switch>
                 </ContentWrapper>

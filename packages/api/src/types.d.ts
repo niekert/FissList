@@ -1,9 +1,11 @@
 import { Prisma } from './generated/prisma-client';
 import { Playlist } from './spotify';
+import { PubSub } from 'graphql-yoga';
 
 export interface Context {
   prisma: Prisma;
   spotify: HttpService;
+  pubsub: PubSub;
 }
 
 interface HttpService {

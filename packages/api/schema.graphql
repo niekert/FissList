@@ -1,3 +1,5 @@
+#
+
 type SpotifyUser {
   displayName: String
   email: String!
@@ -26,6 +28,7 @@ type PagedPlaylists {
 type Party {
   id: ID!
   name: String!
+  activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
   partyMembers: [PartyMember]
@@ -87,6 +90,10 @@ type Device {
   volumePercent: Int!
 }
 
+type PartyContext {
+  activeTrackIndex: Int!
+}
+
 type Player {
   device: Device
   repeatState: String!
@@ -122,4 +129,8 @@ type Mutation {
   createParty(name: String!, playlistId: String!): Party
   addTracks(partyId: String, trackIds: [String]!): Party
   setActiveDevice(deviceId: String): Boolean
+}
+
+type Subscription {
+  party(partyId: String!): Party
 }

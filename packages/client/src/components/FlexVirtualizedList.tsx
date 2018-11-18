@@ -9,7 +9,7 @@ const ScrollableList = styled.div`
 `;
 
 export type ItemRenderer<T> = (
-  data: { style: any; data: T },
+  data: { style: any; data: T; index: number },
 ) => React.ReactNode;
 
 interface FlexListProps<T> {
@@ -29,7 +29,7 @@ function FlexVirtualizedList<T>({
   const renderTrack = React.useCallback<any>(
     ({ style, index }) => {
       const playlistItem = items[index];
-      return children({ style, data: playlistItem });
+      return children({ style, index, data: playlistItem });
     },
     [listHeight, items, children],
   );

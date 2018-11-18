@@ -1,6 +1,7 @@
 import { URLSearchParams } from 'url';
 import { prisma, Prisma } from './generated/prisma-client';
-import { GraphQLServer } from 'graphql-yoga';
+import { ApolloServer } from 'apollo-server';
+import { GraphQLServer, PubSub } from 'graphql-yoga';
 import { config } from 'dotEnv';
 import { merge } from 'lodash';
 import playlistResolvers from './resolvers/playlist';
@@ -17,40 +18,22 @@ const resolvers = merge(
   userResolvers,
   playerResolvers,
 );
-// const resolvers = {
-//   Query: {
-//     ...userQueries,
-//     ...playlistQueries,
-//     ...partyQueries,
-//     player: playerQueries.player,
-//   },
-//   Mutation: {
-//     ...partyMutations,
-//     ...playerMutations,
-//   },
-//   Me: {
-//     parties: partyQueries.parties,
-//   },
-//   Player: {
-//     devices: playerQueries.devices,
-//   },
-//   Party: {
-//     playlist: playlistQueries.playlist,
-//   },
-// };
 
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
+
+const pubsub = new PubSub();
 
 const server = new GraphQLServer({
   typeDefs: './schema.graphql',
   resolvers,
   context: req => {
-    const accessKey = req.request.headers.authorization;
+    const accessKey = req.request ? req.request.headers.authorization : '';
 
     const spotifyService = makeHttpService(accessKey);
 
     return {
       prisma,
+      pubsub,
       spotify: spotifyService,
     };
   },

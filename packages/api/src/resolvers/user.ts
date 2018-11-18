@@ -12,6 +12,10 @@ async function me(root, args, context: Context, info): Promise<Me> {
     where: { ownerUserId: user.id },
   });
 
+  await context.prisma.$subscribe.party({
+    mutation_in: ['UPDATED'],
+  });
+
   return {
     user,
     parties: { ids: parties.map(userParty => userParty.id) },

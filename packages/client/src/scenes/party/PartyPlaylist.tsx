@@ -23,7 +23,11 @@ const PlaylistItem = styled.div<{ isActive: boolean }>`
     `}
 `;
 
-function PartyPlaylist({ tracks, id }: PlaylistInfo) {
+type Props = PlaylistInfo & {
+  activeTrackIndex?: number;
+};
+
+function PartyPlaylist({ tracks, id, activeTrackIndex }: Props) {
   const player = usePlayer();
   // lol
   const activeItem =
@@ -32,12 +36,12 @@ function PartyPlaylist({ tracks, id }: PlaylistInfo) {
   const renderTrack = React.useCallback<
     ItemRenderer<PlaylistInfo_tracks_items>
   >(
-    ({ style, data }) => {
+    ({ style, data, index }) => {
       return (
         <PlaylistItem
           key={data.track.id}
           style={style}
-          isActive={activeItem && activeItem.id === data.track.id}
+          isActive={activeTrackIndex === index}
         >
           <Track {...data.track} />
         </PlaylistItem>
