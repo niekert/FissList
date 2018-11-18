@@ -40,7 +40,7 @@ const client = new ApolloClient({
       }
     }),
     new HttpLink({
-      uri: API_HOST,
+      uri: `${API_HOST}/graphql`,
       credentials: 'same-origin',
     }),
   ]),

@@ -32,29 +32,6 @@ interface DeviceResp {
   devices: Device[];
 }
 
-async function fetchPlaylistContext(
-  playerContext: PlayerContext,
-  context: Context,
-) {
-  if (playerContext && playerContext.uri) {
-    const ids = playerContext.uri.split(':');
-    if (ids.includes('playlist')) {
-      const playlistId = ids[ids.length - 1];
-      const [party] = await context.prisma.parties({ where: { playlistId } });
-      if (party) {
-        const playlist = await context.spotify.fetchResource<Playlist>(
-          `/playlists/${playlistId}`,
-        );
-
-        return {
-          party,
-          playlist,
-        };
-      }
-    }
-  }
-}
-
 export async function player(
   root,
   args: { partyid?: string },
@@ -63,22 +40,6 @@ export async function player(
   let { data } = await context.spotify.fetchResource<Player>('/me/player');
   if (!data) {
     return null;
-  }
-
-  const playerContext = await fetchPlaylistContext(data.context, context);
-  if (playerContext && data.item) {
-    const { party, playlist } = playerContext;
-
-    const trackIndex = playlist.data.tracks.items.findIndex(
-      track => track.track.id === data.item.id,
-    );
-
-    await context.prisma.updateParty({
-      where: { id: party.id },
-      data: {
-        activeTrackIndex: trackIndex,
-      },
-    });
   }
 
   // For simplicity in the client merge album and track images
@@ -124,10 +85,12 @@ export async function togglePlayState(
   },
   context: Context,
 ) {
+  const party = await context.prisma.party({ id: args.partyId });
+
+  let retVal;
   if (args.type === PlayState.Play) {
     let contextUri = args.contextUri;
     if (!args.contextUri) {
-      const party = await context.prisma.party({ id: args.partyId });
       contextUri = `spotify:playlist:${party.playlistId}`;
     }
     const { data, status } = await context.spotify.fetchResource(
@@ -142,34 +105,41 @@ export async function togglePlayState(
         }),
       },
     );
-    //FIXME: fetching player state is not update on time. should inv
-    await new Promise(resolve => setTimeout(resolve, 500));
 
-    if (status !== 204) {
-      throw new GraphQLError(`Invalid request: ${status}`);
-    }
-
-    return {
+    retVal = {
       isPlaying: true,
     };
-  }
+  } else {
+    const [path, method, isPlayingAfter] = requestMap[args.type];
 
-  const [path, method, isPlayingAfter] = requestMap[args.type];
+    const { status } = await context.spotify.fetchResource(path, {
+      method,
+    });
 
-  const { status } = await context.spotify.fetchResource(path, {
-    method,
-  });
-
-  if (status !== 204) {
-    throw new GraphQLError(`Invalid request: ${status}`);
+    retVal = {
+      isPlaying: true,
+    };
   }
 
   //FIXME: fetching player state is not update on time. should inv
   await new Promise(resolve => setTimeout(resolve, 500));
 
-  return {
-    isPlaying: isPlayingAfter,
-  };
+  const player = await context.spotify.fetchResource<Player>('/me/player');
+  const playlist = await context.spotify.fetchResource<Playlist>(
+    `/playlists/${party.playlistId}`,
+  );
+
+  const trackIndex = playlist.data.tracks.items.findIndex(
+    track => track.track.id === player.data.item.id,
+  );
+  await context.prisma.updateParty({
+    where: { id: args.partyId },
+    data: {
+      activeTrackIndex: trackIndex,
+    },
+  });
+
+  return retVal;
 }
 
 export async function setActiveDevice(

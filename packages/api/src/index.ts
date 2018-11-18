@@ -1,6 +1,10 @@
 import { URLSearchParams } from 'url';
 import { prisma, Prisma } from './generated/prisma-client';
-import { ApolloServer } from 'apollo-server';
+import { createServer } from 'http';
+import * as cors from 'cors';
+import * as express from 'express';
+import { importSchema } from 'graphql-import';
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import { GraphQLServer, PubSub } from 'graphql-yoga';
 import { config } from 'dotEnv';
 import { merge } from 'lodash';
@@ -20,16 +24,31 @@ const resolvers = merge(
 );
 
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
+const app = express();
+
+app.use(cors());
 
 const pubsub = new PubSub();
 
-const server = new GraphQLServer({
-  typeDefs: './schema.graphql',
-  resolvers,
-  context: req => {
-    const accessKey = req.request ? req.request.headers.authorization : '';
+const typeDefs = importSchema('./schema.graphql');
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-    const spotifyService = makeHttpService(accessKey);
+const apolloServer = new ApolloServer({
+  schema,
+  resolvers,
+  subscriptions: {
+    onConnect(connectionParams: any) {
+      if (connectionParams.Authorization) {
+        return {
+          authToken: connectionParams.Authorization,
+        };
+      }
+    },
+  },
+  context: ({ req, connection }) => {
+    const spotifyService = connection
+      ? makeHttpService(connection.context.authToken)
+      : makeHttpService(req.headers.authorization);
 
     return {
       prisma,
@@ -39,7 +58,7 @@ const server = new GraphQLServer({
   },
 });
 
-server.express.get('/authorize', (req, res) => {
+app.get('/authorize', (req, res) => {
   res.redirect(
     `https://accounts.spotify.com/authorize?response_type=code&client_id=${
       process.env.CLIENT_ID
@@ -47,7 +66,7 @@ server.express.get('/authorize', (req, res) => {
   );
 });
 
-server.express.get('/auth-callback', async (req, res) => {
+app.get('/auth-callback', async (req, res) => {
   const { code } = req.query;
 
   const body = new URLSearchParams({
@@ -85,4 +104,13 @@ server.express.get('/auth-callback', async (req, res) => {
   res.end();
 });
 
-server.start(() => console.log(`Server is running on ${process.env.HOST}`));
+const httpServer = createServer(app);
+apolloServer.applyMiddleware({ app });
+
+apolloServer.installSubscriptionHandlers(httpServer);
+
+console.log('ap', apolloServer.graphqlPath);
+
+httpServer.listen(4000, () =>
+  console.log(`Server is running on ${process.env.HOST}`),
+);

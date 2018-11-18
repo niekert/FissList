@@ -55,7 +55,6 @@ type Track {
 }
 
 type PlaylistTrack {
-  id: String!
   addedAt: String!
   track: Track!
 }

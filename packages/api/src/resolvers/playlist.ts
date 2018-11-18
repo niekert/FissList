@@ -47,12 +47,12 @@ async function userPlaylists(root, args: Args, context: Context) {
 }
 
 async function playlist(
-  root: { playlist: { id: string } },
+  root: { playlistId: string },
   args: { id: string },
   context: Context,
 ) {
   const { data } = await context.spotify.fetchResource<Playlist>(
-    `/playlists/${args.id || (root.playlist && root.playlist.id)}`,
+    `/playlists/${args.id || root.playlistId}`,
   );
 
   return data;

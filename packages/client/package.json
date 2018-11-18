@@ -29,6 +29,7 @@
     "babel-preset-react-app": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chalk": "2.4.1",
+    "cors": "^2.8.5",
     "css-loader": "1.0.1",
     "dotenv": "6.1.0",
     "dotenv-expand": "4.2.0",

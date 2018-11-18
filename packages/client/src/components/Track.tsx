@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { usePlayer } from 'context/player';
 import ContextUriContext from 'context/ContextUri';
+import { usePartyId } from 'context/PartyIdContext';
 import { getCurrentTrackId } from 'selectors/player';
 import styled from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
@@ -42,6 +43,7 @@ type IProps = TrackInfo & {
 
 function Track({ name, id, artists, onClick, ...props }: IProps) {
   const player = usePlayer();
+  const partyId = usePartyId();
   const contextUri = React.useContext(ContextUriContext);
   const artistNames = artists!.map(artist => artist!.name).join(', ');
 
@@ -56,6 +58,7 @@ function Track({ name, id, artists, onClick, ...props }: IProps) {
       variables: {
         type: 'play',
         contextUri,
+        partyId,
         offsetUri: `spotify:track:${id}`,
       },
     });
