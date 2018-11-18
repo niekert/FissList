@@ -105,7 +105,7 @@ type PlayStateChange {
 type Query {
   me: Me
   party(partyId: String!): Party!
-  player(partyId: String): Player
+  player: Player
   parties(ids: [String]!): [Party]!
   playlist(id: String!): Playlist!
   userPlaylists(offset: Int): PagedPlaylists
