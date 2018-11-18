@@ -119,5 +119,6 @@ type Mutation {
     offsetUri: String
   ): PlayStateChange
   createParty(name: String!, playlistId: String!): Party
+  addTracks(partyId: String, trackIds: [String]!): Party
   setActiveDevice(deviceId: String): Boolean
 }

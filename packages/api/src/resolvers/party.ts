@@ -87,6 +87,16 @@ async function createParty(
   });
 }
 
+async function addTracks(
+  _,
+  args: { partyId: string; trackIds: string[] },
+  context: Context,
+) {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  return context.prisma.party({ id: args.partyId });
+}
+
 export default {
   Query: {
     parties,
@@ -94,6 +104,7 @@ export default {
   },
   Mutation: {
     createParty,
+    addTracks,
   },
   Me: {
     parties,
