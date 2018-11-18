@@ -29,6 +29,7 @@ type Props = PlaylistInfo & {
 
 function PartyPlaylist({ tracks, id, activeTrackIndex }: Props) {
   const player = usePlayer();
+
   // lol
   const activeItem =
     player && player.data && player.data.player && player.data.player!.item;
@@ -47,7 +48,7 @@ function PartyPlaylist({ tracks, id, activeTrackIndex }: Props) {
         </PlaylistItem>
       );
     },
-    [tracks, activeItem],
+    [tracks, activeItem, activeTrackIndex],
   );
 
   return (

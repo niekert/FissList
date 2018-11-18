@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "proxy": "http://localhost:4000",
   "scripts": {
-    "schema:download": "apollo schema:download --endpoint=http://localhost:4000",
+    "schema:download": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "codegen:generate": "apollo codegen:generate --queries=./**/*.tsx --schema=./schema.json --target=typescript --tagName=gql",
     "watch-types": "yarn tsc --noEmit",
     "types": "yarn schema:download && yarn codegen:generate",
@@ -23,6 +23,7 @@
     "apollo-link-context": "^1.0.9",
     "apollo-link-error": "^1.1.1",
     "apollo-link-http": "^1.5.5",
+    "apollo-link-ws": "^1.0.9",
     "autoprefixer": "9.3.1",
     "babel-jest": "23.6.0",
     "babel-loader": "8.0.4",

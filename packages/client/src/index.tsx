@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { API_HOST } from 'app-constants';
@@ -21,6 +22,14 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const getConnectionParams = () => {
+  const accessKey = localStorage.getItem('accessToken');
+
+  return {
+    Authorization: `Bearer ${accessKey}`,
+  };
+};
+
 const client = new ApolloClient({
   link: ApolloLink.from([
     authLink,
@@ -38,6 +47,13 @@ const client = new ApolloClient({
         // tslint:disable-next-line
         console.log(`[Network error]: ${networkError}`);
       }
+    }),
+    new WebSocketLink({
+      uri: `ws://localhost:4000/graphql`,
+      options: {
+        reconnect: true,
+        connectionParams: getConnectionParams(),
+      },
     }),
     new HttpLink({
       uri: `${API_HOST}/graphql`,

@@ -14,6 +14,7 @@ import {
 import { Card } from 'components/Card';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'components/Tabs';
+import PartySubscription from './PartyChangesSubscription';
 import AddSelectedTracks from './AddSelectedTracks';
 import { PlayerContainer } from 'context/player';
 import Player from 'scenes/player';
@@ -99,6 +100,7 @@ export default function Party({ match, location, history }: IProps) {
 
   return (
     <PartyIdContext.Provider value={match.params.partyId}>
+      <PartySubscription partyId={match.params.partyId} />
       <PlayerContainer>
         <PartyQuery
           variables={{

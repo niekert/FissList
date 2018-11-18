@@ -2,22 +2,16 @@ import * as React from 'react';
 import gql from 'graphql-tag';
 import { Query, QueryResult } from 'react-apollo';
 import { GetParty, GetPartyVariables } from './__generated__/GetParty';
-import { PlaylistInfo } from 'fragments/Playlist';
+import { PartyInfo } from 'fragments/Party';
 
 export const GET_PARTY = gql`
   query GetParty($partyId: String!) {
     party(partyId: $partyId) {
-      id
-      activeTrackIndex
-      name
-      playlistId
-      playlist {
-        ...PlaylistInfo
-      }
+      ...PartyInfo
     }
   }
 
-  ${PlaylistInfo}
+  ${PartyInfo}
 `;
 
 export class GetPartyQuery extends Query<GetParty, GetPartyVariables> {}

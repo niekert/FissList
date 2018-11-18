@@ -38,6 +38,7 @@ const apolloServer = new ApolloServer({
   resolvers,
   subscriptions: {
     onConnect(connectionParams: any) {
+      console.log('connection', connectionParams);
       if (connectionParams.Authorization) {
         return {
           authToken: connectionParams.Authorization,

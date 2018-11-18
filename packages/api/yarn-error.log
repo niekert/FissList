@@ -49,7 +49,7 @@ npm manifest:
       "start": "npm run serve",
       "build": "npm run build-sass && npm run build-ts && npm run tslint && npm run copy-static-assets",
       "serve": "node dist/index.js",
-      "schema:download": "apollo schema:download --endpoint=http://localhost:4000",
+      "schema:download": "apollo schema:download --endpoint=http://localhost:4000/graphql",
       "types": "apollo codegen:generate --queries=blaa --schema=./schema.graphql --target=typescript",
       "watch-node": "dotenv -- nodemon dist/index.js",
       "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
