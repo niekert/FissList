@@ -3,7 +3,8 @@ import * as ReactDOM from 'react-dom';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
+import { split, from } from 'apollo-link';
 import { API_HOST } from 'app-constants';
 import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
@@ -30,8 +31,23 @@ const getConnectionParams = () => {
   };
 };
 
-const client = new ApolloClient({
-  link: ApolloLink.from([
+const link = split(
+  // split based on operation type
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  new WebSocketLink({
+    uri: `ws://localhost:4000/graphql`,
+    options: {
+      reconnect: true,
+      connectionParams: getConnectionParams(),
+    },
+  }),
+  from([
     authLink,
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
@@ -48,18 +64,15 @@ const client = new ApolloClient({
         console.log(`[Network error]: ${networkError}`);
       }
     }),
-    new WebSocketLink({
-      uri: `ws://localhost:4000/graphql`,
-      options: {
-        reconnect: true,
-        connectionParams: getConnectionParams(),
-      },
-    }),
     new HttpLink({
       uri: `${API_HOST}/graphql`,
       credentials: 'same-origin',
     }),
   ]),
+);
+
+const client = new ApolloClient({
+  link,
   cache: new InMemoryCache(),
 });
 
