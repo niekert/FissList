@@ -11,11 +11,13 @@ import { PLAYER_QUERY, Player } from './PlayerQuery';
 export const TOGGLE_PLAY_STATE_MUTATION = gql`
   mutation TogglePlayState(
     $type: String!
+    $partyId: String
     $contextUri: String
     $offsetUri: String
   ) {
     togglePlayState(
       type: $type
+      partyId: $partyId
       contextUri: $contextUri
       offsetUri: $offsetUri
     ) {
@@ -69,7 +71,6 @@ export default function TogglePlayingMutationComponent({
     <TogglePlayStateMutation
       mutation={TOGGLE_PLAY_STATE_MUTATION}
       update={update}
-      refetchQueries={[{ query: PLAYER_QUERY }]}
       {...props}
     >
       {children}

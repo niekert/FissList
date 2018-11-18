@@ -2,10 +2,10 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode, GraphQLSchema } from "graphql";
-import { IResolvers } from "graphql-tools/dist/Interfaces";
-import { makePrismaClientClass, BaseClientOptions } from "prisma-client-lib";
-import { typeDefs } from "./prisma-schema";
+import { DocumentNode, GraphQLSchema } from 'graphql';
+import { IResolvers } from 'graphql-tools/dist/Interfaces';
+import { makePrismaClientClass, BaseClientOptions } from 'prisma-client-lib';
+import { typeDefs } from './prisma-schema';
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
@@ -27,7 +27,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any }
+    variables?: { [key: string]: any },
   ) => Promise<T>;
   $getAbstractResolvers(filterSchema?: GraphQLSchema | string): IResolvers;
 
@@ -45,7 +45,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<PartyNode>;
   partiesConnection: (
     args?: {
@@ -56,7 +56,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => PartyConnection;
   user: (where: UserWhereUniqueInput) => User;
   users: (
@@ -68,7 +68,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<UserNode>;
   usersConnection: (
     args?: {
@@ -79,7 +79,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => UserConnection;
   node: (args: { id: ID_Output }) => Node;
 
@@ -89,33 +89,33 @@ export interface Prisma {
 
   createParty: (data: PartyCreateInput) => Party;
   updateParty: (
-    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput }
+    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput },
   ) => Party;
   updateManyParties: (
-    args: { data: PartyUpdateInput; where?: PartyWhereInput }
+    args: { data: PartyUpdateInput; where?: PartyWhereInput },
   ) => BatchPayload;
   upsertParty: (
     args: {
       where: PartyWhereUniqueInput;
       create: PartyCreateInput;
       update: PartyUpdateInput;
-    }
+    },
   ) => Party;
   deleteParty: (where: PartyWhereUniqueInput) => Party;
   deleteManyParties: (where?: PartyWhereInput) => BatchPayload;
   createUser: (data: UserCreateInput) => User;
   updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
+    args: { data: UserUpdateInput; where: UserWhereUniqueInput },
   ) => User;
   updateManyUsers: (
-    args: { data: UserUpdateInput; where?: UserWhereInput }
+    args: { data: UserUpdateInput; where?: UserWhereInput },
   ) => BatchPayload;
   upsertUser: (
     args: {
       where: UserWhereUniqueInput;
       create: UserCreateInput;
       update: UserUpdateInput;
-    }
+    },
   ) => User;
   deleteUser: (where: UserWhereUniqueInput) => User;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayload;
@@ -129,10 +129,10 @@ export interface Prisma {
 
 export interface Subscription {
   party: (
-    where?: PartySubscriptionWhereInput
+    where?: PartySubscriptionWhereInput,
   ) => PartySubscriptionPayloadSubscription;
   user: (
-    where?: UserSubscriptionWhereInput
+    where?: UserSubscriptionWhereInput,
   ) => UserSubscriptionPayloadSubscription;
 }
 
@@ -145,30 +145,32 @@ export interface ClientConstructor<T> {
  */
 
 export type PartyOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "ownerUserId_ASC"
-  | "ownerUserId_DESC"
-  | "playlistId_ASC"
-  | "playlistId_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'activeTrackIndex_ASC'
+  | 'activeTrackIndex_DESC'
+  | 'ownerUserId_ASC'
+  | 'ownerUserId_DESC'
+  | 'playlistId_ASC'
+  | 'playlistId_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
 export type UserOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
 
 export interface PartyUpdatepartyMemberIdsInput {
   set?: String[] | String;
@@ -180,17 +182,6 @@ export type PartyWhereUniqueInput = AtLeastOne<{
 
 export interface PartyCreatepartyMemberIdsInput {
   set?: String[] | String;
-}
-
-export interface PartySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PartyWhereInput;
-  AND?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-  OR?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-  NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
 }
 
 export interface PartyWhereInput {
@@ -222,6 +213,14 @@ export interface PartyWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
+  activeTrackIndex?: Int;
+  activeTrackIndex_not?: Int;
+  activeTrackIndex_in?: Int[] | Int;
+  activeTrackIndex_not_in?: Int[] | Int;
+  activeTrackIndex_lt?: Int;
+  activeTrackIndex_lte?: Int;
+  activeTrackIndex_gt?: Int;
+  activeTrackIndex_gte?: Int;
   ownerUserId?: String;
   ownerUserId_not?: String;
   ownerUserId_in?: String[] | String;
@@ -253,6 +252,17 @@ export interface PartyWhereInput {
   AND?: PartyWhereInput[] | PartyWhereInput;
   OR?: PartyWhereInput[] | PartyWhereInput;
   NOT?: PartyWhereInput[] | PartyWhereInput;
+}
+
+export interface PartySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PartyWhereInput;
+  AND?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+  OR?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+  NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
 }
 
 export interface UserWhereInput {
@@ -291,6 +301,7 @@ export interface UserWhereInput {
 
 export interface PartyCreateInput {
   name: String;
+  activeTrackIndex?: Int;
   ownerUserId: String;
   playlistId: String;
   partyMemberIds?: PartyCreatepartyMemberIdsInput;
@@ -306,6 +317,7 @@ export interface UserUpdateInput {
 
 export interface PartyUpdateInput {
   name?: String;
+  activeTrackIndex?: Int;
   ownerUserId?: String;
   playlistId?: String;
   partyMemberIds?: PartyUpdatepartyMemberIdsInput;
@@ -450,6 +462,7 @@ export interface PartySubscriptionPayloadSubscription
 export interface PartyPreviousValuesNode {
   id: ID_Output;
   name: String;
+  activeTrackIndex?: Int;
   ownerUserId: String;
   playlistId: String;
   partyMemberIds: String[];
@@ -460,6 +473,7 @@ export interface PartyPreviousValues
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  activeTrackIndex: () => Promise<Int>;
   ownerUserId: () => Promise<String>;
   playlistId: () => Promise<String>;
   partyMemberIds: () => Promise<String[]>;
@@ -470,6 +484,7 @@ export interface PartyPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
   playlistId: () => Promise<AsyncIterator<String>>;
   partyMemberIds: () => Promise<AsyncIterator<String[]>>;
@@ -527,6 +542,7 @@ export interface AggregateUserSubscription
 export interface PartyNode {
   id: ID_Output;
   name: String;
+  activeTrackIndex?: Int;
   ownerUserId: String;
   playlistId: String;
   partyMemberIds: String[];
@@ -535,6 +551,7 @@ export interface PartyNode {
 export interface Party extends Promise<PartyNode>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  activeTrackIndex: () => Promise<Int>;
   ownerUserId: () => Promise<String>;
   playlistId: () => Promise<String>;
   partyMemberIds: () => Promise<String[]>;
@@ -545,6 +562,7 @@ export interface PartySubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
   playlistId: () => Promise<AsyncIterator<String>>;
   partyMemberIds: () => Promise<AsyncIterator<String[]>>;
@@ -632,6 +650,6 @@ export type String = string;
 
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
-  endpoint: `http://localhost:4467`
+  endpoint: `http://localhost:4467`,
 });
 export const prisma = new Prisma();

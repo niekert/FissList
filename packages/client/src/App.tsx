@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
-import { PlayerContainer } from './context/player';
 import GetMe from 'queries/GetMe';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
@@ -43,16 +42,14 @@ function App() {
             }
 
             return (
-              <PlayerContainer>
-                <CurrentUserContext.Provider value={result}>
-                  <Switch>
-                    <Route path="/new" component={NewParty} />
-                    <Route path="/join" component={JoinParty} />
-                    <Route path="/party/:partyId" component={Party} />
-                    <Route path="" component={SelectType} />
-                  </Switch>
-                </CurrentUserContext.Provider>
-              </PlayerContainer>
+              <CurrentUserContext.Provider value={result}>
+                <Switch>
+                  <Route path="/new" component={NewParty} />
+                  <Route path="/join" component={JoinParty} />
+                  <Route path="/party/:partyId" component={Party} />
+                  <Route path="" component={SelectType} />
+                </Switch>
+              </CurrentUserContext.Provider>
             );
           }}
         </GetMe>

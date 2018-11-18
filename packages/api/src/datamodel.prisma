@@ -6,6 +6,7 @@ type User {
 type Party {
   id: ID! @unique
   name: String!
+  activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
   partyMemberIds: [String!]

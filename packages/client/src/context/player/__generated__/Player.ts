@@ -48,3 +48,7 @@ export interface Player_player {
 export interface Player {
   player: Player_player | null;
 }
+
+export interface PlayerVariables {
+  partyId?: string | null;
+}

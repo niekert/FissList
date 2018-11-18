@@ -16,6 +16,7 @@ export interface TogglePlayState {
 
 export interface TogglePlayStateVariables {
   type: string;
+  partyId?: string | null;
   contextUri?: string | null;
   offsetUri?: string | null;
 }

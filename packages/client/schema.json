@@ -59,7 +59,18 @@
           {
             "name": "player",
             "description": "",
-            "args": [],
+            "args": [
+              {
+                "name": "partyId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
             "type": {
               "kind": "OBJECT",
               "name": "Player",
@@ -1342,6 +1353,16 @@
                 "defaultValue": null
               },
               {
+                "name": "partyId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "contextUri",
                 "description": "",
                 "type": {
@@ -1398,6 +1419,47 @@
                     "kind": "SCALAR",
                     "name": "String",
                     "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Party",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "addTracks",
+            "description": "",
+            "args": [
+              {
+                "name": "partyId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "trackIds",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
                   }
                 },
                 "defaultValue": null

@@ -39,6 +39,7 @@ export interface Image {
 }
 
 export interface Track {
+  id: string;
   uri: string;
   album?: Album;
   images: Image[];

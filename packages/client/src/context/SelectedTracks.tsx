@@ -2,40 +2,65 @@ import * as React from 'react';
 
 enum Actions {
   TOGGLE_TRACK,
+  COMMIT_TRACKS,
 }
 
-export type State = ReadonlyArray<string>;
+export interface State {
+  selectedTracks: string[];
+  unseenTracks: string[];
+}
 export type Reducer = (s: State, a: any) => State;
 
-export interface ActionCreators {
+export interface Context extends State {
   toggleTrack: (trackId) => void;
+  commitTracks: () => void;
 }
 
-const initialState = [];
+const initialState = {
+  selectedTracks: [],
+  unseenTracks: [],
+};
 
 function selectedTracksReducer(state: State, action) {
   switch (action.type) {
     case Actions.TOGGLE_TRACK: {
-      if (state.includes(action.payload)) {
-        return state.filter(trackId => trackId !== action.payload);
+      if (state.selectedTracks.includes(action.payload)) {
+        return {
+          ...state,
+          selectedTracks: state.selectedTracks.filter(
+            trackId => trackId !== action.payload,
+          ),
+        };
       }
 
-      return [action.payload, ...state];
+      return {
+        ...state,
+        selectedTracks: [...state.selectedTracks, action.payload],
+      };
+    }
+    case Actions.COMMIT_TRACKS: {
+      return {
+        ...state,
+        unseenTracks: [...initialState.selectedTracks],
+        selectedTracks: [],
+      };
+    }
+    default: {
+      return state;
     }
   }
-  return [];
 }
 
 const noProvider = () => {
   throw new Error('Action creator was called without a provider');
 };
 
-const SelectedTracksContext = React.createContext<[State, ActionCreators]>([
-  [],
-  {
-    toggleTrack: noProvider,
-  },
-]);
+const SelectedTracksContext = React.createContext<Context>({
+  selectedTracks: [],
+  unseenTracks: [],
+  toggleTrack: noProvider,
+  commitTracks: noProvider,
+});
 
 export function SelectedTracksContainer({
   children,
@@ -53,9 +78,14 @@ export function SelectedTracksContainer({
       payload: trackId,
     });
   }, []);
+  const commitTracks = React.useCallback(() => {
+    dispatch({
+      type: Actions.COMMIT_TRACKS,
+    });
+  }, []);
 
-  const context = React.useMemo<[State, ActionCreators]>(
-    () => [state, { toggleTrack }],
+  const context = React.useMemo<Context>(
+    () => ({ ...state, toggleTrack, commitTracks }),
     [state],
   );
 

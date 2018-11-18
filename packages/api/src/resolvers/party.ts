@@ -92,9 +92,33 @@ async function addTracks(
   args: { partyId: string; trackIds: string[] },
   context: Context,
 ) {
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  const [party, me] = await Promise.all([
+    context.prisma.party({ id: args.partyId }),
+    context.spotify.fetchCurrentUser(),
+  ]);
 
-  return context.prisma.party({ id: args.partyId });
+  const playlist = await context.spotify.fetchResource<Playlist>(
+    `/playlists/${party.playlistId}`,
+  );
+  const currentTrackIds = playlist.data.tracks.items.map(
+    playlistTrack => playlistTrack.track.id,
+  );
+  const activeTrackIndex = party.activeTrackIndex || 0;
+
+  const newTrackOrder = [
+    currentTrackIds[activeTrackIndex],
+    ...args.trackIds,
+    ...currentTrackIds.slice(activeTrackIndex + 1),
+  ];
+
+  await context.spotify.fetchResource(`/playlists/${party.playlistId}/tracks`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      uris: newTrackOrder.map(trackId => `spotify:track:${trackId}`),
+    }),
+  });
+
+  return party;
 }
 
 export default {

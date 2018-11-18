@@ -14,9 +14,10 @@ import { Card } from 'components/Card';
 import styled from 'styled-components';
 import { Tabs, Tab } from 'components/Tabs';
 import AddSelectedTracks from './AddSelectedTracks';
-import Playlist from 'components/Playlist';
+import { PlayerContainer } from 'context/player';
 import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
+import PartyPlaylist from './PartyPlaylist';
 
 const PlayerCard = styled(Card)`
   display: flex;
@@ -96,40 +97,50 @@ export default function Party({ match, location, history }: IProps) {
   );
 
   return (
-    <PartyQuery
-      variables={{
-        partyId: match.params.partyId,
-      }}
-    >
-      {({ data, loading }) => (
-        <Page>
-          {(!data || !data.party) && (
-            <SpinnerWrapper>
-              <Spinner />
-            </SpinnerWrapper>
-          )}
-          {data && data.party && (
-            <SelectedTracksContainer>
-              <PlayerCard>
-                <PlayerWrapper>
-                  <Player activeFeedUri={data.party.playlistId} />
-                </PlayerWrapper>
-                <Tabs activeTab={activeTab} onChange={onTabChange}>
-                  <Tab name={PlayerTabs.Queue}>Queue</Tab>
-                  <Tab name={PlayerTabs.Browse}>Browse</Tab>
-                </Tabs>
-              </PlayerCard>
-              <ContentWrapper>
-                <Switch>
-                  <Route path={`${match.path}/browse`} component={PlayLists} />
-                  <Route render={() => <Playlist {...data.party.playlist} />} />
-                </Switch>
-              </ContentWrapper>
-              <AddSelectedTracks />
-            </SelectedTracksContainer>
-          )}
-        </Page>
-      )}
-    </PartyQuery>
+    <PlayerContainer>
+      <PartyQuery
+        variables={{
+          partyId: match.params.partyId,
+        }}
+      >
+        {({ data, loading }) => (
+          <Page>
+            {(!data || !data.party) && (
+              <SpinnerWrapper>
+                <Spinner />
+              </SpinnerWrapper>
+            )}
+            {data && data.party && (
+              <SelectedTracksContainer>
+                <PlayerCard>
+                  <PlayerWrapper>
+                    <Player
+                      activeFeedUri={data.party.playlistId}
+                      partyId={data.party.id}
+                    />
+                  </PlayerWrapper>
+                  <Tabs activeTab={activeTab} onChange={onTabChange}>
+                    <Tab name={PlayerTabs.Queue}>Queue</Tab>
+                    <Tab name={PlayerTabs.Browse}>Browse</Tab>
+                  </Tabs>
+                </PlayerCard>
+                <ContentWrapper>
+                  <Switch>
+                    <Route
+                      path={`${match.path}/browse`}
+                      component={PlayLists}
+                    />
+                    <Route
+                      render={() => <PartyPlaylist {...data.party.playlist} />}
+                    />
+                  </Switch>
+                </ContentWrapper>
+                <AddSelectedTracks partyId={data.party.id} />
+              </SelectedTracksContainer>
+            )}
+          </Page>
+        )}
+      </PartyQuery>
+    </PlayerContainer>
   );
 }

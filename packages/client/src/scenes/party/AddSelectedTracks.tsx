@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useSelectedTracks } from 'context/SelectedTracks';
 import Button from 'components/Button';
 import posed, { PoseGroup } from 'react-pose';
+import { GET_PARTY } from './PartyQuery';
+import AddTracksMutation from './mutations/AddTracksMutation';
 import styled from 'styled-components';
 
 const PosedSelectedTracks = posed.div({
@@ -24,21 +26,47 @@ const SelectedTracksWrapper = styled(PosedSelectedTracks)`
   width: 100%;
 `;
 
-function AddSelectedTracks() {
-  const [selectedTracks] = useSelectedTracks();
+function AddSelectedTracks({ partyId }: { partyId: string }) {
+  const { selectedTracks, commitTracks } = useSelectedTracks();
 
   return (
-    <PoseGroup>
-      {selectedTracks.length > 0 && (
-        <SelectedTracksWrapper key="selectedTracks">
-          <span>
-            <b>{selectedTracks.length}</b>
-            {' tracks selected'}
-          </span>
-          <Button>Add to queue</Button>
-        </SelectedTracksWrapper>
+    <AddTracksMutation
+      onCompleted={commitTracks}
+      refetchQueries={[
+        {
+          query: GET_PARTY,
+          variables: {
+            partyId,
+          },
+        },
+      ]}
+    >
+      {(mutate, { loading }) => (
+        <PoseGroup>
+          {selectedTracks.length > 0 && (
+            <SelectedTracksWrapper key="selectedTracks">
+              <span>
+                <b>{selectedTracks.length}</b>
+                {' tracks selected'}
+              </span>
+              <Button
+                isLoading={loading}
+                onClick={() => {
+                  mutate({
+                    variables: {
+                      partyId,
+                      trackIds: selectedTracks,
+                    },
+                  });
+                }}
+              >
+                Add to queue
+              </Button>
+            </SelectedTracksWrapper>
+          )}
+        </PoseGroup>
       )}
-    </PoseGroup>
+    </AddTracksMutation>
   );
 }
 

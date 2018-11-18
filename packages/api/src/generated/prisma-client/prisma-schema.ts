@@ -47,6 +47,7 @@ type PageInfo {
 type Party {
   id: ID!
   name: String!
+  activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
   partyMemberIds: [String!]!
@@ -60,6 +61,7 @@ type PartyConnection {
 
 input PartyCreateInput {
   name: String!
+  activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
   partyMemberIds: PartyCreatepartyMemberIdsInput
@@ -79,6 +81,8 @@ enum PartyOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  activeTrackIndex_ASC
+  activeTrackIndex_DESC
   ownerUserId_ASC
   ownerUserId_DESC
   playlistId_ASC
@@ -92,6 +96,7 @@ enum PartyOrderByInput {
 type PartyPreviousValues {
   id: ID!
   name: String!
+  activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
   partyMemberIds: [String!]!
@@ -117,6 +122,7 @@ input PartySubscriptionWhereInput {
 
 input PartyUpdateInput {
   name: String
+  activeTrackIndex: Int
   ownerUserId: String
   playlistId: String
   partyMemberIds: PartyUpdatepartyMemberIdsInput
@@ -155,6 +161,14 @@ input PartyWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  activeTrackIndex: Int
+  activeTrackIndex_not: Int
+  activeTrackIndex_in: [Int!]
+  activeTrackIndex_not_in: [Int!]
+  activeTrackIndex_lt: Int
+  activeTrackIndex_lte: Int
+  activeTrackIndex_gt: Int
+  activeTrackIndex_gte: Int
   ownerUserId: String
   ownerUserId_not: String
   ownerUserId_in: [String!]

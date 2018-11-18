@@ -26,10 +26,19 @@ interface DeviceResp {
   devices: Device[];
 }
 
-export async function player(root, args, context: Context): Promise<Player> {
+export async function player(
+  root,
+  args: { partyid?: string },
+  context: Context,
+): Promise<Player> {
   let { data } = await context.spotify.fetchResource<Player>('/me/player');
   if (!data) {
     return null;
+  }
+
+  if (args.partyid) {
+    const party = await context.prisma.party({ id: args.partyid });
+    // console.log('data is', data.context);
   }
 
   // For simplicity in the client merge album and track images
@@ -67,16 +76,26 @@ const requestMap: Map = {
 
 export async function togglePlayState(
   _,
-  args: { type: PlayState; contextUri: string; offsetUri?: string },
+  args: {
+    type: PlayState;
+    contextUri: string;
+    offsetUri?: string;
+    partyId: string;
+  },
   context: Context,
 ) {
   if (args.type === PlayState.Play) {
+    let contextUri = args.contextUri;
+    if (!args.contextUri) {
+      const party = await context.prisma.party({ id: args.partyId });
+      contextUri = `spotify:playlist:${party.playlistId}`;
+    }
     const { data, status } = await context.spotify.fetchResource(
       '/me/player/play',
       {
         method: 'PUT',
         body: JSON.stringify({
-          context_uri: args.contextUri,
+          context_uri: contextUri,
           offset: args.offsetUri && {
             uri: args.offsetUri,
           },

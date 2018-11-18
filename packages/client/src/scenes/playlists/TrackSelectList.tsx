@@ -36,7 +36,7 @@ const Checkbox = styled.input.attrs({
 
 // TODO: Add support for more generic "TrackFeed"
 export function TrackSelectList({ tracks, id }: PlaylistInfo) {
-  const [state, { toggleTrack }] = useSelectedTracks();
+  const { toggleTrack, selectedTracks } = useSelectedTracks();
 
   const renderTrack = React.useCallback<
     ItemRenderer<PlaylistInfo_tracks_items>
@@ -45,7 +45,7 @@ export function TrackSelectList({ tracks, id }: PlaylistInfo) {
       <ListItem key={data.track.id} style={style}>
         <SelectWrapper>
           <Checkbox
-            checked={state.includes(data.track.id)}
+            checked={selectedTracks.includes(data.track.id)}
             value={data.track.id}
             onChange={e => toggleTrack(e.target.value)}
           />
@@ -56,7 +56,7 @@ export function TrackSelectList({ tracks, id }: PlaylistInfo) {
         />
       </ListItem>
     ),
-    [state],
+    [selectedTracks],
   );
 
   return (

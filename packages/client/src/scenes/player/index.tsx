@@ -11,7 +11,12 @@ const SecondaryOptions = styled.div`
   display: flex;
 `;
 
-export default function Player({ activeFeedUri }) {
+interface Props {
+  partyId: string;
+  activeFeedUri: string;
+}
+
+export default function Player({ activeFeedUri, partyId }: Props) {
   const playerContext = usePlayer();
 
   const handlePlayState = React.useCallback(
@@ -23,7 +28,7 @@ export default function Player({ activeFeedUri }) {
       playerContext.togglePlayState({
         variables: {
           type,
-          contextUri: `spotify:playlist:${playlistUri}` || undefined,
+          partyId,
         },
         optimisticResponse: {
           togglePlayState: {
@@ -72,9 +77,7 @@ export default function Player({ activeFeedUri }) {
           isPlaying={isPlaying}
           onPrev={() => handlePlayState('prev')}
           onNext={() => handlePlayState('next')}
-          onPlayPause={() =>
-            handlePlayState(isPlaying ? 'pause' : 'play', activeFeedUri)
-          }
+          onPlayPause={() => handlePlayState(isPlaying ? 'pause' : 'play')}
         />
         <Devices
           activeDevice={player.device}
