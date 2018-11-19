@@ -109,7 +109,7 @@ async function addTracks(
   const activeTrackIndex = party.activeTrackIndex || 0;
 
   const newTrackOrder = [
-    currentTrackIds[activeTrackIndex],
+    ...currentTrackIds.slice(0, activeTrackIndex + 1),
     ...args.trackIds,
     ...currentTrackIds.slice(activeTrackIndex + 1),
   ];
