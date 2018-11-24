@@ -9,5 +9,6 @@ export const Text = styled.p<{
 `;
 
 export const Title = styled.h1`
+  color: ${props => props.theme.textColors.primary};
   text-align: center;
 `;

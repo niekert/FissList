@@ -3,11 +3,13 @@ import * as React from 'react';
 enum Actions {
   TOGGLE_TRACK,
   COMMIT_TRACKS,
+  RESET_COMMIT_SUCCESS,
 }
 
 export interface State {
   selectedTracks: string[];
   unseenTracks: string[];
+  commitSuccess: boolean;
 }
 export type Reducer = (s: State, a: any) => State;
 
@@ -19,6 +21,7 @@ export interface Context extends State {
 const initialState = {
   selectedTracks: [],
   unseenTracks: [],
+  commitSuccess: false,
 };
 
 function selectedTracksReducer(state: State, action) {
@@ -43,6 +46,13 @@ function selectedTracksReducer(state: State, action) {
         ...state,
         unseenTracks: [...initialState.selectedTracks],
         selectedTracks: [],
+        commitSuccess: true,
+      };
+    }
+    case Actions.RESET_COMMIT_SUCCESS: {
+      return {
+        ...state,
+        commitSuccess: false,
       };
     }
     default: {
@@ -58,6 +68,7 @@ const noProvider = () => {
 const SelectedTracksContext = React.createContext<Context>({
   selectedTracks: [],
   unseenTracks: [],
+  commitSuccess: false,
   toggleTrack: noProvider,
   commitTracks: noProvider,
 });
@@ -70,6 +81,25 @@ export function SelectedTracksContainer({
   const [state, dispatch] = React.useReducer<State, any>(
     selectedTracksReducer,
     initialState,
+  );
+
+  React.useEffect(
+    () => {
+      if (state.commitSuccess) {
+        const timeout = setTimeout(
+          () =>
+            dispatch({
+              type: Actions.RESET_COMMIT_SUCCESS,
+            }),
+          2000,
+        );
+
+        return () => clearTimeout(timeout);
+      }
+
+      return undefined;
+    },
+    [state.commitSuccess],
   );
 
   const toggleTrack = React.useCallback(trackId => {

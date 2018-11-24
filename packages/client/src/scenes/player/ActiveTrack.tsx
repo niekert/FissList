@@ -5,7 +5,8 @@ import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 const Wrapper = styled.div`
   display: flex;
   flex: 1;
-  /* justify-content: center; */
+  text-align: center;
+  justify-content: center;
   overflow: hidden;
 `;
 

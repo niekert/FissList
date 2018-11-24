@@ -38,7 +38,6 @@ const apolloServer = new ApolloServer({
   resolvers,
   subscriptions: {
     onConnect(connectionParams: any) {
-      console.log('connection', connectionParams);
       if (connectionParams.Authorization) {
         return {
           authToken: connectionParams.Authorization,
@@ -109,8 +108,6 @@ const httpServer = createServer(app);
 apolloServer.applyMiddleware({ app });
 
 apolloServer.installSubscriptionHandlers(httpServer);
-
-console.log('ap', apolloServer.graphqlPath);
 
 httpServer.listen(4000, () =>
   console.log(`Server is running on ${process.env.HOST}`),

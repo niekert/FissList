@@ -18,9 +18,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -webkit-overflow-scrolling: touch;
   }
-  body {
-    color: red;
-  }
+
 `;
 
 function App() {

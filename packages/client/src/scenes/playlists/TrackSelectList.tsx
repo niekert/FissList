@@ -12,9 +12,14 @@ import {
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
-const ListItem = styled.div`
+const ListItem = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
+  transition: background-color 2s ease-out;
+  background-color: ${props =>
+    props.isSelected
+      ? transparentize(0.92, props.theme.colors.cta)
+      : props.theme.colors.primary};
   max-width: 100%;
   border-bottom: 1px solid
     ${props => transparentize(0.5, props.theme.colors.outline)};
@@ -42,7 +47,11 @@ export function TrackSelectList({ tracks, id }: PlaylistInfo) {
     ItemRenderer<PlaylistInfo_tracks_items>
   >(
     ({ style, data }) => (
-      <ListItem key={data.track.id} style={style}>
+      <ListItem
+        key={data.track.id}
+        style={style}
+        isSelected={selectedTracks.includes(data.track.id)}
+      >
         <SelectWrapper>
           <Checkbox
             checked={selectedTracks.includes(data.track.id)}

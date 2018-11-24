@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 const PlayerNavigation = styled.div`
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
   flex: 1;
   background: white;
   padding-top: ${props => props.theme.spacing[1]};
@@ -16,14 +16,12 @@ const PlayerNavigation = styled.div`
 const PlayButton = styled(IconButton)`
   border-radius: 50%;
   color: ${props => props.theme.textColors.primaryText};
-  border: 3px solid ${props => props.theme.textColors.primaryText};
   cursor: pointer;
   &:hover {
     transform: scale(1.05);
   }
 
   svg {
-    padding: 12px;
     width: 50px;
     height: 50px;
   }
@@ -33,7 +31,6 @@ const NavigateButton = styled(PlayButton)`
   margin: 0 ${props => props.theme.spacing[2]};
 
   svg {
-    padding: 6px;
     width: 32px;
     height: 32px;
   }

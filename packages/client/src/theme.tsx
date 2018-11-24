@@ -18,6 +18,7 @@ const DEFAULT_THEME = {
   },
   spacing: ['0px', '8px', '16px', '24px'],
   textColors: {
+    active: '#000',
     primary: 'rgba(0, 0, 0, 0.73)',
     secondary: '#6f6f6f',
   },

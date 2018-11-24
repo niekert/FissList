@@ -116,7 +116,6 @@ export function makeHttpService(accessKey: string): HttpService {
   }
 
   async function fetchCurrentUser(): Promise<SpotifyUser> {
-    console.log('accessKey', accessKey);
     const { data, status } = await fetchResource<SpotifyUser>('/me');
 
     if (status === 400) {

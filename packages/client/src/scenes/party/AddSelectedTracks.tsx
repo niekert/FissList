@@ -4,6 +4,7 @@ import Button from 'components/Button';
 import posed, { PoseGroup } from 'react-pose';
 import { GET_PARTY } from './PartyQuery';
 import AddTracksMutation from './mutations/AddTracksMutation';
+import TracksAdded from './TracksAdded';
 import styled from 'styled-components';
 
 const PosedSelectedTracks = posed.div({
@@ -18,6 +19,8 @@ const PosedSelectedTracks = posed.div({
 const SelectedTracksWrapper = styled(PosedSelectedTracks)`
   min-height: 70px;
   display: flex;
+  position: fixed;
+  bottom: 0;
   background: ${props => props.theme.colors.primary};
   align-items: center;
   box-shadow: rgba(200, 223, 245, 0.2) 0px -8px 16px 0px;
@@ -27,7 +30,7 @@ const SelectedTracksWrapper = styled(PosedSelectedTracks)`
 `;
 
 function AddSelectedTracks({ partyId }: { partyId: string }) {
-  const { selectedTracks, commitTracks } = useSelectedTracks();
+  const { selectedTracks, commitTracks, commitSuccess } = useSelectedTracks();
 
   return (
     <AddTracksMutation
@@ -63,6 +66,9 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
                 Add to queue
               </Button>
             </SelectedTracksWrapper>
+          )}
+          {commitSuccess && (
+            <TracksAdded as={PosedSelectedTracks} key="tracksAdded" />
           )}
         </PoseGroup>
       )}

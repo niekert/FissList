@@ -27,6 +27,8 @@ const SelectedPlaylistName = styled.div`
 const IconLink = styled(Link)`
   color: inherit;
   background-image: none;
+  display: flex;
+  align-items: center;
   margin-right: ${props => props.theme.spacing[1]};
   text-decoration: none;
 `;

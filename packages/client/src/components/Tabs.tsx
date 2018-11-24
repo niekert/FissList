@@ -35,6 +35,10 @@ const StyledTab = styled.button<{ isActive?: boolean }>`
   min-height: 42px;
   background-color: ${props =>
     props.isActive ? transparentize(0.95, props.theme.colors.cta) : 'white'};
+  color: ${props =>
+    props.isActive
+      ? props.theme.textColors.active
+      : props.theme.textColors.primary};
   transition: background-color 0.3s ease-in;
   border: none;
   outline: none;
