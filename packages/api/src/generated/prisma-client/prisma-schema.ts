@@ -10,6 +10,8 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
@@ -48,6 +50,8 @@ type Party {
   id: ID!
   name: String!
   activeTrackIndex: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
   ownerUserId: String!
   playlistId: String!
   partyMemberIds: [String!]!
@@ -83,20 +87,22 @@ enum PartyOrderByInput {
   name_DESC
   activeTrackIndex_ASC
   activeTrackIndex_DESC
-  ownerUserId_ASC
-  ownerUserId_DESC
-  playlistId_ASC
-  playlistId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  ownerUserId_ASC
+  ownerUserId_DESC
+  playlistId_ASC
+  playlistId_DESC
 }
 
 type PartyPreviousValues {
   id: ID!
   name: String!
   activeTrackIndex: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
   ownerUserId: String!
   playlistId: String!
   partyMemberIds: [String!]!
@@ -169,6 +175,22 @@ input PartyWhereInput {
   activeTrackIndex_lte: Int
   activeTrackIndex_gt: Int
   activeTrackIndex_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   ownerUserId: String
   ownerUserId_not: String
   ownerUserId_in: [String!]

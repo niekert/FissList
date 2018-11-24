@@ -2,10 +2,10 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode, GraphQLSchema } from 'graphql';
-import { IResolvers } from 'graphql-tools/dist/Interfaces';
-import { makePrismaClientClass, BaseClientOptions } from 'prisma-client-lib';
-import { typeDefs } from './prisma-schema';
+import { DocumentNode, GraphQLSchema } from "graphql";
+import { IResolvers } from "graphql-tools/dist/Interfaces";
+import { makePrismaClientClass, BaseClientOptions } from "prisma-client-lib";
+import { typeDefs } from "./prisma-schema";
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
@@ -27,7 +27,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any },
+    variables?: { [key: string]: any }
   ) => Promise<T>;
   $getAbstractResolvers(filterSchema?: GraphQLSchema | string): IResolvers;
 
@@ -45,7 +45,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<PartyNode>;
   partiesConnection: (
     args?: {
@@ -56,7 +56,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => PartyConnection;
   user: (where: UserWhereUniqueInput) => User;
   users: (
@@ -68,7 +68,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<UserNode>;
   usersConnection: (
     args?: {
@@ -79,7 +79,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => UserConnection;
   node: (args: { id: ID_Output }) => Node;
 
@@ -89,33 +89,33 @@ export interface Prisma {
 
   createParty: (data: PartyCreateInput) => Party;
   updateParty: (
-    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput },
+    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput }
   ) => Party;
   updateManyParties: (
-    args: { data: PartyUpdateInput; where?: PartyWhereInput },
+    args: { data: PartyUpdateInput; where?: PartyWhereInput }
   ) => BatchPayload;
   upsertParty: (
     args: {
       where: PartyWhereUniqueInput;
       create: PartyCreateInput;
       update: PartyUpdateInput;
-    },
+    }
   ) => Party;
   deleteParty: (where: PartyWhereUniqueInput) => Party;
   deleteManyParties: (where?: PartyWhereInput) => BatchPayload;
   createUser: (data: UserCreateInput) => User;
   updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput },
+    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
   ) => User;
   updateManyUsers: (
-    args: { data: UserUpdateInput; where?: UserWhereInput },
+    args: { data: UserUpdateInput; where?: UserWhereInput }
   ) => BatchPayload;
   upsertUser: (
     args: {
       where: UserWhereUniqueInput;
       create: UserCreateInput;
       update: UserUpdateInput;
-    },
+    }
   ) => User;
   deleteUser: (where: UserWhereUniqueInput) => User;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayload;
@@ -129,10 +129,10 @@ export interface Prisma {
 
 export interface Subscription {
   party: (
-    where?: PartySubscriptionWhereInput,
+    where?: PartySubscriptionWhereInput
   ) => PartySubscriptionPayloadSubscription;
   user: (
-    where?: UserSubscriptionWhereInput,
+    where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
 }
 
@@ -145,34 +145,38 @@ export interface ClientConstructor<T> {
  */
 
 export type PartyOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'activeTrackIndex_ASC'
-  | 'activeTrackIndex_DESC'
-  | 'ownerUserId_ASC'
-  | 'ownerUserId_DESC'
-  | 'playlistId_ASC'
-  | 'playlistId_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "activeTrackIndex_ASC"
+  | "activeTrackIndex_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "ownerUserId_ASC"
+  | "ownerUserId_DESC"
+  | "playlistId_ASC"
+  | "playlistId_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type UserOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
-
-export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export interface PartyUpdatepartyMemberIdsInput {
+  set?: String[] | String;
+}
+
+export interface PartyCreatepartyMemberIdsInput {
   set?: String[] | String;
 }
 
@@ -180,8 +184,54 @@ export type PartyWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface PartyCreatepartyMemberIdsInput {
-  set?: String[] | String;
+export interface UserUpdateInput {
+  name?: String;
+}
+
+export interface UserWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: UserWhereInput[] | UserWhereInput;
+  OR?: UserWhereInput[] | UserWhereInput;
+  NOT?: UserWhereInput[] | UserWhereInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface PartyCreateInput {
+  name: String;
+  activeTrackIndex?: Int;
+  ownerUserId: String;
+  playlistId: String;
+  partyMemberIds?: PartyCreatepartyMemberIdsInput;
 }
 
 export interface PartyWhereInput {
@@ -221,6 +271,22 @@ export interface PartyWhereInput {
   activeTrackIndex_lte?: Int;
   activeTrackIndex_gt?: Int;
   activeTrackIndex_gte?: Int;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   ownerUserId?: String;
   ownerUserId_not?: String;
   ownerUserId_in?: String[] | String;
@@ -254,67 +320,6 @@ export interface PartyWhereInput {
   NOT?: PartyWhereInput[] | PartyWhereInput;
 }
 
-export interface PartySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PartyWhereInput;
-  AND?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-  OR?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-  NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-}
-
-export interface UserWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: UserWhereInput[] | UserWhereInput;
-  OR?: UserWhereInput[] | UserWhereInput;
-  NOT?: UserWhereInput[] | UserWhereInput;
-}
-
-export interface PartyCreateInput {
-  name: String;
-  activeTrackIndex?: Int;
-  ownerUserId: String;
-  playlistId: String;
-  partyMemberIds?: PartyCreatepartyMemberIdsInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface UserUpdateInput {
-  name?: String;
-}
-
 export interface PartyUpdateInput {
   name?: String;
   activeTrackIndex?: Int;
@@ -338,6 +343,17 @@ export interface UserCreateInput {
   name: String;
 }
 
+export interface PartySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PartyWhereInput;
+  AND?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+  OR?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+  NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+}
+
 export interface NodeNode {
   id: ID_Output;
 }
@@ -356,29 +372,6 @@ export interface UserEdgeSubscription
     Fragmentable {
   node: <T = UserSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PageInfoNode {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfo extends Promise<PageInfoNode>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfoNode>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserPreviousValuesNode {
@@ -400,6 +393,24 @@ export interface UserPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
+export interface UserConnectionNode {}
+
+export interface UserConnection
+  extends Promise<UserConnectionNode>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<UserEdgeNode>>() => T;
+  aggregate: <T = AggregateUser>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnectionNode>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
 export interface PartyConnectionNode {}
 
 export interface PartyConnection
@@ -418,22 +429,20 @@ export interface PartyConnectionSubscription
   aggregate: <T = AggregatePartySubscription>() => T;
 }
 
-export interface UserConnectionNode {}
-
-export interface UserConnection
-  extends Promise<UserConnectionNode>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<UserEdgeNode>>() => T;
-  aggregate: <T = AggregateUser>() => T;
+export interface AggregateUserNode {
+  count: Int;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnectionNode>>,
+export interface AggregateUser
+  extends Promise<AggregateUserNode>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUserNode>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PartySubscriptionPayloadNode {
@@ -463,6 +472,8 @@ export interface PartyPreviousValuesNode {
   id: ID_Output;
   name: String;
   activeTrackIndex?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   ownerUserId: String;
   playlistId: String;
   partyMemberIds: String[];
@@ -474,6 +485,8 @@ export interface PartyPreviousValues
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   activeTrackIndex: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
   playlistId: () => Promise<String>;
   partyMemberIds: () => Promise<String[]>;
@@ -485,6 +498,8 @@ export interface PartyPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   activeTrackIndex: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
   playlistId: () => Promise<AsyncIterator<String>>;
   partyMemberIds: () => Promise<AsyncIterator<String[]>>;
@@ -523,26 +538,12 @@ export interface UserSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateUserNode {
-  count: Int;
-}
-
-export interface AggregateUser
-  extends Promise<AggregateUserNode>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUserNode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
 export interface PartyNode {
   id: ID_Output;
   name: String;
   activeTrackIndex?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   ownerUserId: String;
   playlistId: String;
   partyMemberIds: String[];
@@ -552,6 +553,8 @@ export interface Party extends Promise<PartyNode>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   activeTrackIndex: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
   playlistId: () => Promise<String>;
   partyMemberIds: () => Promise<String[]>;
@@ -563,6 +566,8 @@ export interface PartySubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   activeTrackIndex: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
   playlistId: () => Promise<AsyncIterator<String>>;
   partyMemberIds: () => Promise<AsyncIterator<String[]>>;
@@ -580,6 +585,29 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayloadNode>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface PageInfoNode {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfo extends Promise<PageInfoNode>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfoNode>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserSubscriptionPayloadNode {
@@ -622,9 +650,21 @@ export interface AggregatePartySubscription
 }
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+DateTime scalar input type, allowing Date
 */
-export type Int = number;
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
+
+export type Long = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -633,11 +673,9 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
-export type Boolean = boolean;
-
-export type Long = string;
+export type Int = number;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
@@ -650,6 +688,6 @@ export type String = string;
 
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
-  endpoint: `http://localhost:4467`,
+  endpoint: `http://localhost:4467`
 });
 export const prisma = new Prisma();

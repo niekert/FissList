@@ -18,7 +18,7 @@ const ListItem = styled.div<{ isSelected: boolean }>`
   transition: background-color 2s ease-out;
   background-color: ${props =>
     props.isSelected
-      ? transparentize(0.92, props.theme.colors.cta)
+      ? props.theme.colors.activeBackground
       : props.theme.colors.primary};
   max-width: 100%;
   border-bottom: 1px solid

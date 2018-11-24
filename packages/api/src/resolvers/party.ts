@@ -6,6 +6,8 @@ interface PartyResult {
   playlistId: string;
   name: string;
   activeTrackIndex: number;
+  createdAt: string;
+  updatedAt: string;
   playlist: {
     id: string;
   };
@@ -23,6 +25,8 @@ async function party(
     name: party.name,
     playlistId: party.playlistId,
     playlist: { id: party.playlistId },
+    createdAt: party.createdAt,
+    updatedAt: party.updatedAt,
     activeTrackIndex: party.activeTrackIndex,
   };
 }
@@ -38,6 +42,8 @@ async function parties(
     id: party.id!,
     name: party.name!,
     activeTrackIndex: 0,
+    createdAt: party.createdAt,
+    updatedAt: party.updatedAt,
     playlistId: party.playlistId!,
     playlist: {
       id: party.playlistId!,

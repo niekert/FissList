@@ -4,6 +4,7 @@ enum Actions {
   TOGGLE_TRACK,
   COMMIT_TRACKS,
   RESET_COMMIT_SUCCESS,
+  CLEAR_SELECTED_TRACKS,
 }
 
 export interface State {
@@ -16,6 +17,7 @@ export type Reducer = (s: State, a: any) => State;
 export interface Context extends State {
   toggleTrack: (trackId) => void;
   commitTracks: () => void;
+  clearSelectedTracks: () => void;
 }
 
 const initialState = {
@@ -49,6 +51,12 @@ function selectedTracksReducer(state: State, action) {
         commitSuccess: true,
       };
     }
+    case Actions.CLEAR_SELECTED_TRACKS: {
+      return {
+        ...state,
+        selectedTracks: [],
+      };
+    }
     case Actions.RESET_COMMIT_SUCCESS: {
       return {
         ...state,
@@ -69,6 +77,7 @@ const SelectedTracksContext = React.createContext<Context>({
   selectedTracks: [],
   unseenTracks: [],
   commitSuccess: false,
+  clearSelectedTracks: noProvider,
   toggleTrack: noProvider,
   commitTracks: noProvider,
 });
@@ -114,8 +123,16 @@ export function SelectedTracksContainer({
     });
   }, []);
 
+  const clearSelectedTracks = React.useCallback(
+    () =>
+      dispatch({
+        type: Actions.CLEAR_SELECTED_TRACKS,
+      }),
+    [],
+  );
+
   const context = React.useMemo<Context>(
-    () => ({ ...state, toggleTrack, commitTracks }),
+    () => ({ ...state, toggleTrack, commitTracks, clearSelectedTracks }),
     [state],
   );
 

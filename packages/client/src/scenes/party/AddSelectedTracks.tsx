@@ -6,6 +6,8 @@ import { GET_PARTY } from './PartyQuery';
 import AddTracksMutation from './mutations/AddTracksMutation';
 import TracksAdded from './TracksAdded';
 import styled from 'styled-components';
+import IconButton from 'components/IconButton';
+import CloseIcon from 'icons/CloseIcon';
 
 const PosedSelectedTracks = posed.div({
   enter: {
@@ -29,8 +31,22 @@ const SelectedTracksWrapper = styled(PosedSelectedTracks)`
   width: 100%;
 `;
 
+const PullRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CtaButton = styled(Button)`
+  margin-right: ${props => props.theme.spacing[2]};
+`;
+
 function AddSelectedTracks({ partyId }: { partyId: string }) {
-  const { selectedTracks, commitTracks, commitSuccess } = useSelectedTracks();
+  const {
+    selectedTracks,
+    clearSelectedTracks,
+    commitTracks,
+    commitSuccess,
+  } = useSelectedTracks();
 
   return (
     <AddTracksMutation
@@ -52,19 +68,24 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
                 <b>{selectedTracks.length}</b>
                 {' tracks selected'}
               </span>
-              <Button
-                isLoading={loading}
-                onClick={() => {
-                  mutate({
-                    variables: {
-                      partyId,
-                      trackIds: selectedTracks,
-                    },
-                  });
-                }}
-              >
-                Add to queue
-              </Button>
+              <PullRight>
+                <CtaButton
+                  isLoading={loading}
+                  onClick={() => {
+                    mutate({
+                      variables: {
+                        partyId,
+                        trackIds: selectedTracks,
+                      },
+                    });
+                  }}
+                >
+                  Add to queue
+                </CtaButton>
+                <IconButton onClick={clearSelectedTracks}>
+                  <CloseIcon />
+                </IconButton>
+              </PullRight>
             </SelectedTracksWrapper>
           )}
           {commitSuccess && (

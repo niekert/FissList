@@ -34,7 +34,7 @@ const Playlist = styled.div<{ isSelected: boolean }>`
   ${props =>
     props.isSelected &&
     css`
-      background: ${transparentize(0.8, props.theme.colors.cta)};
+      background: ${props.theme.colors.activeBackground};
     `};
 `;
 

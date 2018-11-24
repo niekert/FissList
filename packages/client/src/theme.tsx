@@ -11,6 +11,7 @@ const typography = new Typography(oceanBeachTheme);
 const DEFAULT_THEME = {
   colors: {
     cta: '#05f',
+    activeBackground: '#f0f6ff',
     spotify: '#1DB954',
     black: '#191414',
     outline: '#CCD9DF',
@@ -20,7 +21,7 @@ const DEFAULT_THEME = {
   textColors: {
     active: '#000',
     primary: 'rgba(0, 0, 0, 0.73)',
-    secondary: '#6f6f6f',
+    secondary: '#555555',
   },
 };
 

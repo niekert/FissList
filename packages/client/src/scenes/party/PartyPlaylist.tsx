@@ -19,7 +19,7 @@ const PlaylistItem = styled.div<{ isActive: boolean }>`
   ${props =>
     props.isActive &&
     css`
-      background: ${transparentize(0.9, props.theme.colors.cta)};
+      background: ${props.theme.colors.activeBackground};
     `}
 `;
 

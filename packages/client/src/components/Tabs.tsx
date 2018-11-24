@@ -34,7 +34,7 @@ const StyledTab = styled.button<{ isActive?: boolean }>`
   flex: 1;
   min-height: 42px;
   background-color: ${props =>
-    props.isActive ? transparentize(0.95, props.theme.colors.cta) : 'white'};
+    props.isActive ? props.theme.colors.activeBackground : 'white'};
   color: ${props =>
     props.isActive
       ? props.theme.textColors.active
