@@ -8,7 +8,7 @@ const StyledPage = styled.div`
   align-items: center;
   justify-content: flex-start;
   max-width: 1000px;
-  height: 100vh;
+
   margin: 0 auto;
 `;
 

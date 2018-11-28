@@ -53,12 +53,11 @@ function PartyPlaylist({ tracks, id, activeTrackIndex }: Props) {
 
   return (
     <ContextUriContext.Provider value={`spotify:playlist:${id}`}>
-      <FlexVirtualizedList<PlaylistInfo_tracks_items>
-        itemSize={70}
-        items={tracks.items}
-      >
-        {renderTrack}
-      </FlexVirtualizedList>
+      {tracks.items.map((item, index) => (
+        <PlaylistItem key={item.track.id} isActive={activeTrackIndex === index}>
+          <Track {...item.track} />
+        </PlaylistItem>
+      ))}
     </ContextUriContext.Provider>
   );
 }

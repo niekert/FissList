@@ -27,7 +27,6 @@ const ActiveLine = styled.div`
 const TabsWrapper = styled.div`
   display: flex;
   width: 100%;
-  padding-top: ${props => props.theme.spacing[1]};
 `;
 
 const StyledTab = styled.button<{ isActive?: boolean }>`

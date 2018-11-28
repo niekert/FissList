@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import Confetti from 'react-confetti';
 import { Label, Input, Button } from 'components/Form';
 import { Text, Title } from 'components/Typography';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -44,6 +45,13 @@ function NewPartyCard({ partyId, name, history }: IProps) {
   const link = `${window.location.origin}/party/${partyId}`;
   return (
     <Page>
+      <Confetti
+        width={window.innerWidth}
+        height={window.innerHeight}
+        numberOfPieces={400}
+        recycle={false}
+      />
+
       <PoseGroup>
         <Wrapper key="new-party-card" initialPose="exit">
           <Title>🎉</Title>

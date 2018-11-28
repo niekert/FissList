@@ -14,6 +14,7 @@ import styled from 'styled-components';
 
 const ListItem = styled.div<{ isSelected: boolean }>`
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   transition: background-color 2s ease-out;
   background-color: ${props =>
@@ -70,12 +71,24 @@ export function TrackSelectList({ tracks, id }: PlaylistInfo) {
 
   return (
     <ContextUriContext.Provider value={`spotify:playlist:${id}`}>
-      <FlexVirtualizedList<PlaylistInfo_tracks_items>
-        itemSize={70}
-        items={tracks.items}
-      >
-        {renderTrack}
-      </FlexVirtualizedList>
+      {tracks.items.map(data => (
+        <ListItem
+          key={data.track.id}
+          isSelected={selectedTracks.includes(data.track.id)}
+        >
+          <SelectWrapper>
+            <Checkbox
+              checked={selectedTracks.includes(data.track.id)}
+              value={data.track.id}
+              onChange={e => toggleTrack(e.target.value)}
+            />
+          </SelectWrapper>
+          <StyledTrack
+            {...data.track}
+            onClick={trackId => toggleTrack(trackId)}
+          />
+        </ListItem>
+      ))}
     </ContextUriContext.Provider>
   );
 }

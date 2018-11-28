@@ -21,10 +21,10 @@ import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
 
-const PlayerCard = styled(Card)`
+const TabsCard = styled(Card)`
   display: flex;
   position: sticky;
-  z-index: 1;
+  z-index: 5;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   margin-bottom: 0;
@@ -43,7 +43,6 @@ const SpinnerWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  overflow: auto;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -116,18 +115,18 @@ export default function Party({ match, location, history }: IProps) {
               )}
               {data && data.party && (
                 <SelectedTracksContainer>
-                  <PlayerCard>
-                    <PlayerWrapper>
-                      <Player
-                        activeFeedUri={data.party.playlistId}
-                        partyId={data.party.id}
-                      />
-                    </PlayerWrapper>
+                  <PlayerWrapper>
+                    <Player
+                      activeFeedUri={data.party.playlistId}
+                      partyId={data.party.id}
+                    />
+                  </PlayerWrapper>
+                  <TabsCard>
                     <Tabs activeTab={activeTab} onChange={onTabChange}>
                       <Tab name={PlayerTabs.Queue}>Queue</Tab>
                       <Tab name={PlayerTabs.Browse}>Browse</Tab>
                     </Tabs>
-                  </PlayerCard>
+                  </TabsCard>
                   <ContentWrapper>
                     <Switch>
                       <Route
