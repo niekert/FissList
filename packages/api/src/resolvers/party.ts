@@ -114,9 +114,14 @@ async function addTracks(
   );
   const activeTrackIndex = party.activeTrackIndex || 0;
 
+  // TODO: Something with track weight when it's voted for twice.
+  const filteredNewTracks = args.trackIds.filter(
+    trackId => !currentTrackIds.includes(trackId),
+  );
+
   const newTrackOrder = [
     ...currentTrackIds.slice(0, activeTrackIndex + 1),
-    ...args.trackIds,
+    ...filteredNewTracks,
     ...currentTrackIds.slice(activeTrackIndex + 1),
   ];
 

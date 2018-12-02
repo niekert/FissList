@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import { PoseGroup } from 'react-pose';
 import Button from 'components/Button';
 import Spinner from 'components/Spinner';
-import { transparentize } from 'polished';
 import GetPlaylists from 'queries/GetOwnPlaylists';
 
 interface IProps {

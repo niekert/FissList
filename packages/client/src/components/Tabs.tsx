@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import useComponentSize from 'use-component-size-typed';
+import useComponentSize from '@rehooks/component-size';
 import { Spring } from 'react-spring';
-import { transparentize } from 'polished';
 
 const TabsContainer = styled.div`
   display: flex;

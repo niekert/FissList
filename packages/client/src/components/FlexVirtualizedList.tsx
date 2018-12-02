@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useComponentSize from 'use-component-size-typed';
+import useComponentSize from '@rehooks/component-size';
 import { FixedSizeList as List } from 'react-window';
 import styled from 'styled-components';
 

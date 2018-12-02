@@ -45,6 +45,7 @@ const SpinnerWrapper = styled.div`
 const ContentWrapper = styled.div`
   flex: 1;
   display: flex;
+  min-height: 100vh;
   flex-direction: column;
   overflow: hidden;
   width: 100%;
@@ -89,10 +90,10 @@ export default function Party({ match, location, history }: IProps) {
   };
 
   const activeTab = getActivetab(match, location);
-
-  React.useLayoutEffect(
+  React.useMutationEffect(
     () => {
-      window.scrollTo(0, 0);
+      // TODO: This 140 is hacky af, need to get player height or something?
+      window.scrollTo(0, Math.min(window.scrollY, 140));
     },
     [activeTab],
   );
@@ -136,6 +137,7 @@ export default function Party({ match, location, history }: IProps) {
                       <Route
                         render={() => (
                           <PartyPlaylist
+                            partyId={data.party.id}
                             {...data.party.playlist}
                             activeTrackIndex={
                               data.party.activeTrackIndex || undefined

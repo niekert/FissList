@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   align-items: center;
   box-shadow: rgba(200, 223, 245, 0.2) 0px -8px 16px 0px;

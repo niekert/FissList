@@ -16,6 +16,7 @@ const DEFAULT_THEME = {
     black: '#191414',
     outline: '#CCD9DF',
     primary: '#FFF',
+    new: '#2daf49',
   },
   spacing: ['0px', '8px', '16px', '24px'],
   textColors: {

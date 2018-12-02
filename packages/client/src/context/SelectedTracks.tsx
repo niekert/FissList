@@ -5,6 +5,7 @@ enum Actions {
   COMMIT_TRACKS,
   RESET_COMMIT_SUCCESS,
   CLEAR_SELECTED_TRACKS,
+  MARK_TRACK_SEEN,
 }
 
 export interface State {
@@ -17,6 +18,7 @@ export type Reducer = (s: State, a: any) => State;
 export interface Context extends State {
   toggleTrack: (trackId) => void;
   commitTracks: () => void;
+  markTrackSeen: (trackId) => void;
   clearSelectedTracks: () => void;
 }
 
@@ -43,10 +45,18 @@ function selectedTracksReducer(state: State, action) {
         selectedTracks: [...state.selectedTracks, action.payload],
       };
     }
+    case Actions.MARK_TRACK_SEEN: {
+      return {
+        ...state,
+        unseenTracks: state.unseenTracks.filter(
+          trackId => trackId !== action.payload.trackId,
+        ),
+      };
+    }
     case Actions.COMMIT_TRACKS: {
       return {
         ...state,
-        unseenTracks: [...initialState.selectedTracks],
+        unseenTracks: [...state.selectedTracks],
         selectedTracks: [],
         commitSuccess: true,
       };
@@ -80,6 +90,7 @@ const SelectedTracksContext = React.createContext<Context>({
   clearSelectedTracks: noProvider,
   toggleTrack: noProvider,
   commitTracks: noProvider,
+  markTrackSeen: noProvider,
 });
 
 export function SelectedTracksContainer({
@@ -131,8 +142,23 @@ export function SelectedTracksContainer({
     [],
   );
 
+  const markTrackSeen = React.useCallback(trackId => {
+    dispatch({
+      type: Actions.MARK_TRACK_SEEN,
+      payload: {
+        trackId,
+      },
+    });
+  }, []);
+
   const context = React.useMemo<Context>(
-    () => ({ ...state, toggleTrack, commitTracks, clearSelectedTracks }),
+    () => ({
+      ...state,
+      toggleTrack,
+      commitTracks,
+      clearSelectedTracks,
+      markTrackSeen,
+    }),
     [state],
   );
 

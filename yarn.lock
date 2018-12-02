@@ -1027,10 +1027,10 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
-"@rehooks/component-size@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@rehooks/component-size/-/component-size-1.0.1.tgz#a1dc2992d367a4ec17429d92c542f8a19fd693e2"
-  integrity sha512-yzXzxqC8pkwoO7tjcrf3fW9RRG9eCNjS2fNQpfcQ5AyxNs8OsMZ+D2CtNg02bPOQaoHq1888aEJBMrjBznlW5Q==
+"@rehooks/component-size@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@rehooks/component-size/-/component-size-1.0.2.tgz#b93d5f39bc9f47a6c0feb39690ae07156bc65863"
+  integrity sha512-bjuKCFEIr1eDNvK/ET2SWl/xCKloywupJyfKQqZ6GaEKhnlCI2YV10rv9wTNrbSnzoHraktig9YYC0e69RowLA==
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -5784,6 +5784,11 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
   integrity sha1-ftGxQQxqDg94z5XTuEQMY/eLhhQ=
 
+intersection-observer@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.5.1.tgz#e340fc56ce74290fe2b2394d1ce88c4353ac6dfa"
+  integrity sha512-Zd7Plneq82kiXFixs7bX62YnuZ0BMRci9br7io88LwDyF3V43cQMI+G5IiTlTNTt+LsDUppl19J/M2Fp9UkH6g==
+
 into-stream@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/into-stream/-/into-stream-3.1.0.tgz#96fb0a936c12babd6ff1752a17d05616abd094c6"
@@ -8823,6 +8828,14 @@ react-helmet@^5.2.0:
     object-assign "^4.1.1"
     prop-types "^15.5.4"
     react-side-effect "^1.1.0"
+
+react-intersection-visible-hook@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/react-intersection-visible-hook/-/react-intersection-visible-hook-1.4.2.tgz#f3b9bda57376cc596157ba99a34774c5c780acd8"
+  integrity sha512-64nGqcI6sg/+NUPenlerHyl2PtdgU6WARH2LOpewOZGjK09RxdnMfBAhZuI6Q2jpnCmFtwPhjd5PRlVIuf8U4A==
+  dependencies:
+    intersection-observer "^0.5.1"
+    react "^16.7.0-alpha.0"
 
 react-is@^16.3.2:
   version "16.5.2"

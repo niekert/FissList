@@ -21,7 +21,7 @@ const PosedSelectedTracks = posed.div({
 const SelectedTracksWrapper = styled(PosedSelectedTracks)`
   min-height: 70px;
   display: flex;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   background: ${props => props.theme.colors.primary};
   align-items: center;
