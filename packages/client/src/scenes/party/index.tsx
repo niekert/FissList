@@ -13,6 +13,7 @@ import {
 } from 'react-router';
 import { Card } from 'components/Card';
 import styled from 'styled-components';
+import { ChangedPartyTracksProvider } from 'context/ChangedPartyTracksContext';
 import { Tabs, Tab } from 'components/Tabs';
 import PartySubscription from './PartyChangesSubscription';
 import AddSelectedTracks from './AddSelectedTracks';
@@ -99,61 +100,63 @@ export default function Party({ match, location, history }: IProps) {
   );
 
   return (
-    <PartyIdContext.Provider value={match.params.partyId}>
-      <PartySubscription partyId={match.params.partyId} />
-      <PlayerContainer>
-        <PartyQuery
-          variables={{
-            partyId: match.params.partyId,
-          }}
-        >
-          {({ data, loading }) => (
-            <Page>
-              {(!data || !data.party) && (
-                <SpinnerWrapper>
-                  <Spinner />
-                </SpinnerWrapper>
-              )}
-              {data && data.party && (
-                <SelectedTracksContainer>
-                  <PlayerWrapper>
-                    <Player
-                      activeFeedUri={data.party.playlistId}
-                      partyId={data.party.id}
-                    />
-                  </PlayerWrapper>
-                  <TabsCard>
-                    <Tabs activeTab={activeTab} onChange={onTabChange}>
-                      <Tab name={PlayerTabs.Queue}>Queue</Tab>
-                      <Tab name={PlayerTabs.Browse}>Browse</Tab>
-                    </Tabs>
-                  </TabsCard>
-                  <ContentWrapper>
-                    <Switch>
-                      <Route
-                        path={`${match.path}/browse`}
-                        component={PlayLists}
+    <ChangedPartyTracksProvider partyId={match.params.partyId}>
+      <PartyIdContext.Provider value={match.params.partyId}>
+        <PartySubscription partyId={match.params.partyId} />
+        <PlayerContainer>
+          <PartyQuery
+            variables={{
+              partyId: match.params.partyId,
+            }}
+          >
+            {({ data, loading }) => (
+              <Page>
+                {(!data || !data.party) && (
+                  <SpinnerWrapper>
+                    <Spinner />
+                  </SpinnerWrapper>
+                )}
+                {data && data.party && (
+                  <SelectedTracksContainer>
+                    <PlayerWrapper>
+                      <Player
+                        activeFeedUri={data.party.playlistId}
+                        partyId={data.party.id}
                       />
-                      <Route
-                        render={() => (
-                          <PartyPlaylist
-                            partyId={data.party.id}
-                            {...data.party.playlist}
-                            activeTrackIndex={
-                              data.party.activeTrackIndex || undefined
-                            }
-                          />
-                        )}
-                      />
-                    </Switch>
-                  </ContentWrapper>
-                  <AddSelectedTracks partyId={data.party.id} />
-                </SelectedTracksContainer>
-              )}
-            </Page>
-          )}
-        </PartyQuery>
-      </PlayerContainer>
-    </PartyIdContext.Provider>
+                    </PlayerWrapper>
+                    <TabsCard>
+                      <Tabs activeTab={activeTab} onChange={onTabChange}>
+                        <Tab name={PlayerTabs.Queue}>Queue</Tab>
+                        <Tab name={PlayerTabs.Browse}>Browse</Tab>
+                      </Tabs>
+                    </TabsCard>
+                    <ContentWrapper>
+                      <Switch>
+                        <Route
+                          path={`${match.path}/browse`}
+                          component={PlayLists}
+                        />
+                        <Route
+                          render={() => (
+                            <PartyPlaylist
+                              partyId={data.party.id}
+                              {...data.party.playlist}
+                              activeTrackIndex={
+                                data.party.activeTrackIndex || undefined
+                              }
+                            />
+                          )}
+                        />
+                      </Switch>
+                    </ContentWrapper>
+                    <AddSelectedTracks partyId={data.party.id} />
+                  </SelectedTracksContainer>
+                )}
+              </Page>
+            )}
+          </PartyQuery>
+        </PlayerContainer>
+      </PartyIdContext.Provider>
+    </ChangedPartyTracksProvider>
   );
 }

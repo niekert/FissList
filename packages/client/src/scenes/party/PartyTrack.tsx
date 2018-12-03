@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { useChangedTracks } from 'context/ChangedPartyTracksContext';
 import styled, { css } from 'styled-components';
 import useVisibility from 'react-intersection-visible-hook';
 import { PlaylistInfo_tracks_items } from 'fragments/__generated__/PlaylistInfo';
 import Track from 'components/Track';
-import { useSelectedTracks } from 'context/SelectedTracks';
 import { transparentize } from 'polished';
 import posed, { PoseGroup } from 'react-pose';
 
@@ -50,7 +50,7 @@ interface Props extends PlaylistInfo_tracks_items {
 }
 
 function PartyTrack({ isActive, addedAt, track, playTrack }: Props) {
-  const { unseenTracks, markTrackSeen } = useSelectedTracks();
+  const { changedTrackIds, markTrackSeen } = useChangedTracks();
   const newlyAddedRef = React.useRef(undefined);
   const { isIntersecting } = useVisibility(newlyAddedRef);
 
@@ -59,7 +59,7 @@ function PartyTrack({ isActive, addedAt, track, playTrack }: Props) {
       if (isIntersecting) {
         const timeout = setTimeout(() => {
           markTrackSeen(track.id);
-        }, 2000);
+        }, 3000);
 
         return () => clearTimeout(timeout);
       }
@@ -77,7 +77,7 @@ function PartyTrack({ isActive, addedAt, track, playTrack }: Props) {
     >
       <Track {...track} />
       <PoseGroup animateOnMount={true}>
-        {unseenTracks.includes(track.id) && (
+        {changedTrackIds.includes(track.id) && (
           <NewlyAdded ref={newlyAddedRef} key="newlyAdded">
             New!
           </NewlyAdded>

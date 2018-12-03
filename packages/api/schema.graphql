@@ -132,4 +132,5 @@ type Mutation {
 
 type Subscription {
   party(partyId: String!): Party
+  partyTracksChanged(partyId: String!): [String!]!
 }

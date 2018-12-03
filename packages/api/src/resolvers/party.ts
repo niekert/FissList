@@ -1,5 +1,7 @@
 import { Context, Party } from '../types';
 import { Playlist } from '../spotify';
+import { withFilter } from 'graphql-subscriptions';
+import pubsub, { PubsubEvents } from '../pubsub';
 
 interface PartyResult {
   id: string;
@@ -11,6 +13,11 @@ interface PartyResult {
   playlist: {
     id: string;
   };
+}
+
+interface TracksChangedPayload {
+  partyId: string;
+  changedTrackIds: string[];
 }
 
 async function party(
@@ -132,6 +139,11 @@ async function addTracks(
     }),
   });
 
+  pubsub.publish(PubsubEvents.PartyTracksChanged, {
+    partyId: args.partyId,
+    changedTrackIds: filteredNewTracks,
+  });
+
   return party;
 }
 
@@ -164,6 +176,16 @@ export default {
     party: {
       subscribe: partySubscription,
       resolve: payload => payload,
+    },
+    partyTracksChanged: {
+      resolve: (payload: TracksChangedPayload) => {
+        return payload.changedTrackIds;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(PubsubEvents.PartyTracksChanged),
+        (payload: TracksChangedPayload, variables: { partyId: string }) =>
+          payload.partyId === variables.partyId,
+      ),
     },
   },
 };

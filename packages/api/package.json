@@ -11,6 +11,7 @@
     "concurrently": "^4.0.1",
     "express": "^4.16.4",
     "graphql": "^0.13",
+    "graphql-subscriptions": "^1.0.0",
     "graphql-tag": "^2.10.0",
     "graphql-tools": "^4.0.3",
     "graphql-yoga": "1.16.1",
