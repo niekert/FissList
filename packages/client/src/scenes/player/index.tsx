@@ -9,6 +9,7 @@ import NoPlayerFound from './NoPlayerFound';
 
 const SecondaryOptions = styled.div`
   display: flex;
+  align-self: center;
 `;
 
 interface Props {

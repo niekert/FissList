@@ -57,11 +57,9 @@ function PartyTrack({ isActive, addedAt, track, playTrack }: Props) {
   React.useEffect(
     () => {
       if (isIntersecting) {
-        const timeout = setTimeout(() => {
+        setTimeout(() => {
           markTrackSeen(track.id);
         }, 3000);
-
-        return () => clearTimeout(timeout);
       }
 
       return;

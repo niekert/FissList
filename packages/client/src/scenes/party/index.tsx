@@ -25,6 +25,9 @@ import PartyPlaylist from './PartyPlaylist';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
 
+// FIXME: Remove this ugly hardcode
+const PLAYER_HEIGHT_PX = 156;
+
 const TabsCard = styled(Card)`
   display: flex;
   position: sticky;
@@ -61,6 +64,9 @@ const SettingsTabIcon = styled(SettingsIcon)`
 `;
 
 const PlayerWrapper = styled.div`
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
   padding: ${props => props.theme.spacing[2]};
 `;
 
@@ -108,7 +114,7 @@ export default function Party({ match, location, history }: IProps) {
   React.useMutationEffect(
     () => {
       // TODO: This 140 is hacky af, need to get player height or something?
-      window.scrollTo(0, Math.min(window.scrollY, 156));
+      window.scrollTo(0, Math.min(window.scrollY, PLAYER_HEIGHT_PX));
     },
     [activeTab],
   );
@@ -176,7 +182,6 @@ export default function Party({ match, location, history }: IProps) {
               </SelectedTracksContainer>
             )}
           </Page>
-          )
         </PlayerContainer>
       </PartyIdContext.Provider>
     </ChangedPartyTracksProvider>

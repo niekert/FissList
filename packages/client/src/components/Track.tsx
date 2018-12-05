@@ -15,12 +15,12 @@ const Wrapper = styled.div<{ isNowPlaying?: boolean }>`
 const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   overflow: hidden;
 `;
 
 const Title = styled.span`
   font-weight: 600;
-  margin-bottom: ${props => props.theme.spacing[1]};
 `;
 
 const Artist = styled.span`

@@ -54,8 +54,10 @@ export default function PartyNameForm({ partyId, partyName }: Props) {
     }
 
     mutate({
-      partyId,
-      name: name.value,
+      variables: {
+        partyId,
+        name: name.value,
+      },
     });
   };
 

@@ -19,6 +19,7 @@ const Image = styled.img`
 
 const ContentWrapper = styled.div`
   display: flex;
+  max-width: 100%;
   flex-direction: column;
 `;
 
