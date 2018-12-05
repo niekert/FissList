@@ -42,9 +42,11 @@ export default function Player({ activeFeedUri, partyId }: Props) {
   );
 
   const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    playerContext!.setActiveDevice({
-      variables: { deviceId: e.target.value },
-    });
+    if (e.target.value) {
+      playerContext!.setActiveDevice({
+        variables: { deviceId: e.target.value },
+      });
+    }
   };
 
   if (

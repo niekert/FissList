@@ -49,6 +49,7 @@
     "raf": "3.4.1",
     "react": "^16.7.0-alpha.0",
     "react-apollo": "^2.2.4",
+    "react-apollo-hooks": "^0.2.1",
     "react-confetti": "^2.3.0",
     "react-dev-utils": "^6.1.1",
     "react-dom": "^16.7.0-alpha.0",

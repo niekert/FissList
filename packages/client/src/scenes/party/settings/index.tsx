@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { PageHeading } from 'components/Typography';
 
 import PartyNameForm from './PartyNameForm';
@@ -13,7 +14,13 @@ const Section = styled.div`
   margin-bottom: ${props => props.theme.spacing[2]};
 `;
 
-function PartySettings() {
+interface Props extends RouteComponentProps<{ partyId: string }> {
+  partyName: string;
+}
+
+function PartySettings({ match, partyName }: Props) {
+  const { partyId } = match.params;
+
   return (
     <>
       <PageHeading
@@ -24,7 +31,7 @@ function PartySettings() {
         Party settings
       </PageHeading>
       <Section>
-        <PartyNameForm />
+        <PartyNameForm partyId={partyId} partyName={partyName} />
       </Section>
       <Section>
         <PartyMembers />

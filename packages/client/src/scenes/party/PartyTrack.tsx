@@ -40,7 +40,7 @@ const NewlyAdded = styled(PosedNewLabel)`
   flex-shrink: 0;
   font-weight: 600;
   white-space: nowrap;
-  color: ${props => props.theme.colors.new};
+  color: ${props => props.theme.colors.success};
   padding-right: ${props => props.theme.spacing[1]};
 `;
 

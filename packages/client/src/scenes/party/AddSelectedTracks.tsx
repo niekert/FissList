@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelectedTracks } from 'context/SelectedTracks';
 import Button from 'components/Button';
 import posed, { PoseGroup } from 'react-pose';
-import { GET_PARTY } from './PartyQuery';
+import { GET_PARTY } from './usePartyQuery';
 import AddTracksMutation from './mutations/AddTracksMutation';
 import TracksAdded from './TracksAdded';
 import styled from 'styled-components';

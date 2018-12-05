@@ -10,6 +10,7 @@ import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import App from './App';
 
 const authLink = setContext((_, { headers }) => {
@@ -78,7 +79,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <ApolloHooksProvider client={client}>
+      <App />
+    </ApolloHooksProvider>
   </ApolloProvider>,
   document.getElementById('root') as HTMLElement,
 );

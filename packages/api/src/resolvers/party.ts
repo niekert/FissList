@@ -175,6 +175,19 @@ async function partySubscription(
     .node();
 }
 
+async function updatePartyName(
+  _,
+  args: { partyId: string; name: string },
+  context: Context,
+) {
+  return context.prisma.updateParty({
+    where: { id: args.partyId },
+    data: {
+      name: args.name,
+    },
+  });
+}
+
 export default {
   Query: {
     parties,
@@ -183,6 +196,7 @@ export default {
   Mutation: {
     createParty,
     addTracks,
+    updatePartyName,
   },
   Me: {
     parties,

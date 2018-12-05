@@ -65,6 +65,7 @@ export default function Devices({
             value={activeDevice.id || ''}
             onChange={onDeviceChange}
           >
+            <option value="">Select a device...</option>
             {devices
               .filter(device => !!device.id)
               .map(device => (
