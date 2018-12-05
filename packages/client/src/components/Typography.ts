@@ -12,3 +12,8 @@ export const Title = styled.h1`
   color: ${props => props.theme.textColors.primary};
   text-align: center;
 `;
+
+export const PageHeading = styled.h2`
+  margin-top: ${props => props.theme.spacing[2]};
+  text-align: left;
+`;

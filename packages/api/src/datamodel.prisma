@@ -11,6 +11,6 @@ type Party {
   updatedAt: DateTime!
   ownerUserId: String!
   playlistId: String!
-  trackIds: [String!]!
+  trackUris: [String!]!
   partyMemberIds: [String!]
 }

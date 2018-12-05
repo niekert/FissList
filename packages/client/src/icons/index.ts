@@ -7,3 +7,4 @@ export { default as PhoneIcon } from './PhoneIcon';
 export { default as LaptopIcon } from './LaptopIcon';
 export { default as SpeakerIcon } from './SpeakerIcon';
 export { default as BackIcon } from './BackIcon';
+export { default as SettingsIcon } from './SettingsIcon';

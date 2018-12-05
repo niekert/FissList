@@ -12,7 +12,7 @@ import {
   Route,
 } from 'react-router';
 import { Card } from 'components/Card';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ChangedPartyTracksProvider } from 'context/ChangedPartyTracksContext';
 import { Tabs, Tab } from 'components/Tabs';
 import PartySubscription from './PartyChangesSubscription';
@@ -21,6 +21,8 @@ import { PlayerContainer } from 'context/player';
 import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
+import { SettingsIcon } from 'icons';
+import PartySettings from './settings';
 
 const TabsCard = styled(Card)`
   display: flex;
@@ -52,6 +54,11 @@ const ContentWrapper = styled.div`
   width: 100%;
 `;
 
+const SettingsTabIcon = styled(SettingsIcon)`
+  width: 20px;
+  height: 20px;
+`;
+
 const PlayerWrapper = styled.div`
   padding: ${props => `${props.theme.spacing[2]} ${props.theme.spacing[2]} 0`};
 `;
@@ -63,8 +70,10 @@ interface IProps extends RouteComponentProps<{ partyId: string }> {
 enum PlayerTabs {
   Queue = 'queue',
   Browse = 'browse',
+  Settings = 'settings',
 }
 
+// TODO: this is super hacky and ugly, lol
 const getActivetab = (match: Match, location: Location) => {
   const relativePath = location.pathname.replace(match.url, '');
 
@@ -76,6 +85,10 @@ const getActivetab = (match: Match, location: Location) => {
     return PlayerTabs.Browse;
   }
 
+  if (relativePath.includes('/settings')) {
+    return PlayerTabs.Settings;
+  }
+
   return PlayerTabs.Queue;
 };
 
@@ -85,9 +98,7 @@ export default function Party({ match, location, history }: IProps) {
       history.replace(match.url);
     }
 
-    if (tab === PlayerTabs.Browse) {
-      history.replace(`${match.url}/browse`);
-    }
+    history.replace(`${match.url}/${tab}`);
   };
 
   const activeTab = getActivetab(match, location);
@@ -128,6 +139,15 @@ export default function Party({ match, location, history }: IProps) {
                       <Tabs activeTab={activeTab} onChange={onTabChange}>
                         <Tab name={PlayerTabs.Queue}>Queue</Tab>
                         <Tab name={PlayerTabs.Browse}>Browse</Tab>
+                        <Tab
+                          name={PlayerTabs.Settings}
+                          css={css`
+                            flex: 0;
+                            flex-basis: 50px;
+                          `}
+                        >
+                          <SettingsTabIcon />
+                        </Tab>
                       </Tabs>
                     </TabsCard>
                     <ContentWrapper>
@@ -135,6 +155,10 @@ export default function Party({ match, location, history }: IProps) {
                         <Route
                           path={`${match.path}/browse`}
                           component={PlayLists}
+                        />
+                        <Route
+                          path={`${match.path}/settings`}
+                          component={PartySettings}
                         />
                         <Route
                           render={() => (

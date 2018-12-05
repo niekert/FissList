@@ -829,6 +829,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.6.6.tgz#004b98298d04c7ca3b4f50ca2035d4f60d2eed1b"
   integrity sha512-h4t4jFjtm1YV7UirAFuSuFGyLa+NNxjdkq6DpFLANNQY5rHueFZHVY+8Cu1HYVP6DrheB0kv4m5xPjo7eKT7yQ==
 
+"@emotion/unitless@^0.7.0":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
+  integrity sha512-4zAPlpDEh2VwXswwr/t8xGNDGg8RQiPxtxZ3qQEXyQsBV39ptTdESCjuBvGze1nLMVrxmTIKmnO/nAV8Tqjjzg==
+
 "@heroku-cli/color@^1.1.3":
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/@heroku-cli/color/-/color-1.1.10.tgz#a9326b25da187fa64f28404f32c0708a37d7fbab"
@@ -1261,10 +1266,10 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/styled-components@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.0.tgz#87d193ccfd4768c3b7606404646f3564c18830d0"
-  integrity sha512-B2OuPjx5LG+JIgDid7mR9WCYQ4XqWgOe9D6oyUtnEVES4D3S4rtyD0Vgp7BzAk6YAkLM6m4MqK/9Ityl5SwwTg==
+"@types/styled-components@^4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.3.tgz#8d33a8e782e795c1da411b71a0e911a82968dd95"
+  integrity sha512-KufaiYcIbfm9z5ikqCJuhjXPCfTdv1GXLe4Ad1Qb12LjeE8FWocuwqMnIgYMMkflsqVAIv7xckcK5eU1l2qHdA==
   dependencies:
     "@types/node" "*"
     "@types/react" "*"
@@ -2390,12 +2395,21 @@ babel-plugin-macros@2.4.2:
     cosmiconfig "^5.0.5"
     resolve "^1.8.1"
 
-"babel-plugin-styled-components@>= 1", babel-plugin-styled-components@^1.8.0:
+"babel-plugin-styled-components@>= 1":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.8.0.tgz#9dd054c8e86825203449a852a5746f29f2dab857"
   integrity sha512-PcrdbXFO/9Plo9JURIj8G0Dsz+Ct8r+NvjoLh6qPt8Y/3EIAj1gHGW1ocPY1IkQbXZLBEZZSRBAxJem1KFdBXg==
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.0.0"
+    lodash "^4.17.10"
+
+babel-plugin-styled-components@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.7.2.tgz#770afa4fed00d816754c6bbe18888f8456b038dd"
+  integrity sha512-4dhLMyEEh3fZk7RqG0iv7kHJ7/hyvxi0rEyxhEUBnDeBKhemlSAkiG+CllKkul/Bl3969PzD65KdGuXu0nnOzQ==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.0.0"
+    "@babel/plugin-syntax-jsx" "^7.0.0"
     lodash "^4.17.10"
 
 babel-plugin-syntax-object-rest-spread@^6.13.0:
@@ -10063,12 +10077,13 @@ style-value-types@^3.0.6, style-value-types@^3.0.7:
   resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.0.7.tgz#6e7a22cc8b1a4465193268ed66ad5f2a82579054"
   integrity sha512-7vzeicDiPNnJjvTYfJbQhZ7P3OCkXfvkJOJQ+ifFnXNTA/7KBxMZacHLvlRjM5/TtXbVdrZE6u+2nzSUSPrbSQ==
 
-styled-components@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.0.3.tgz#6c1a95a93857aa613fdfc26ad40899217100d8c3"
-  integrity sha512-oEZovK4xMGAMhOA9h74dCYJsp3IwUFhEvtYe4gwTy0cBZ3a17YMxBfM2oXsEoED9f+HCM5UQZW2h297n4u8hUw==
+styled-components@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.1.2.tgz#f8a685e3b2bcd03c5beac7f2c02bb6ad237da9b3"
+  integrity sha512-NdvWatJ2WLqZxAvto+oH0k7GAC/TlAUJTrHoXJddjbCrU6U23EmVbb9LXJBF+d6q6hH+g9nQYOWYPUeX/Vlc2w==
   dependencies:
     "@emotion/is-prop-valid" "^0.6.8"
+    "@emotion/unitless" "^0.7.0"
     babel-plugin-styled-components ">= 1"
     css-to-react-native "^2.2.2"
     memoize-one "^4.0.0"

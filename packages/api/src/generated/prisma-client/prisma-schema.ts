@@ -54,6 +54,7 @@ type Party {
   updatedAt: DateTime!
   ownerUserId: String!
   playlistId: String!
+  trackUris: [String!]!
   partyMemberIds: [String!]!
 }
 
@@ -68,10 +69,15 @@ input PartyCreateInput {
   activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
+  trackUris: PartyCreatetrackUrisInput
   partyMemberIds: PartyCreatepartyMemberIdsInput
 }
 
 input PartyCreatepartyMemberIdsInput {
+  set: [String!]
+}
+
+input PartyCreatetrackUrisInput {
   set: [String!]
 }
 
@@ -105,6 +111,7 @@ type PartyPreviousValues {
   updatedAt: DateTime!
   ownerUserId: String!
   playlistId: String!
+  trackUris: [String!]!
   partyMemberIds: [String!]!
 }
 
@@ -131,10 +138,15 @@ input PartyUpdateInput {
   activeTrackIndex: Int
   ownerUserId: String
   playlistId: String
+  trackUris: PartyUpdatetrackUrisInput
   partyMemberIds: PartyUpdatepartyMemberIdsInput
 }
 
 input PartyUpdatepartyMemberIdsInput {
+  set: [String!]
+}
+
+input PartyUpdatetrackUrisInput {
   set: [String!]
 }
 

@@ -160,8 +160,6 @@ export type PartyOrderByInput =
   | "playlistId_ASC"
   | "playlistId_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -172,11 +170,9 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export interface PartyUpdatepartyMemberIdsInput {
-  set?: String[] | String;
-}
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface PartyCreatepartyMemberIdsInput {
+export interface PartyUpdatetrackUrisInput {
   set?: String[] | String;
 }
 
@@ -184,54 +180,8 @@ export type PartyWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface UserUpdateInput {
-  name?: String;
-}
-
-export interface UserWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: UserWhereInput[] | UserWhereInput;
-  OR?: UserWhereInput[] | UserWhereInput;
-  NOT?: UserWhereInput[] | UserWhereInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface PartyCreateInput {
-  name: String;
-  activeTrackIndex?: Int;
-  ownerUserId: String;
-  playlistId: String;
-  partyMemberIds?: PartyCreatepartyMemberIdsInput;
+export interface PartyCreatepartyMemberIdsInput {
+  set?: String[] | String;
 }
 
 export interface PartyWhereInput {
@@ -320,11 +270,86 @@ export interface PartyWhereInput {
   NOT?: PartyWhereInput[] | PartyWhereInput;
 }
 
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserCreateInput {
+  name: String;
+}
+
+export interface PartyCreateInput {
+  name: String;
+  activeTrackIndex?: Int;
+  ownerUserId: String;
+  playlistId: String;
+  trackUris?: PartyCreatetrackUrisInput;
+  partyMemberIds?: PartyCreatepartyMemberIdsInput;
+}
+
+export interface PartySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PartyWhereInput;
+  AND?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+  OR?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+  NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
+}
+
+export interface UserWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: UserWhereInput[] | UserWhereInput;
+  OR?: UserWhereInput[] | UserWhereInput;
+  NOT?: UserWhereInput[] | UserWhereInput;
+}
+
+export interface PartyCreatetrackUrisInput {
+  set?: String[] | String;
+}
+
+export interface PartyUpdatepartyMemberIdsInput {
+  set?: String[] | String;
+}
+
+export interface UserUpdateInput {
+  name?: String;
+}
+
 export interface PartyUpdateInput {
   name?: String;
   activeTrackIndex?: Int;
   ownerUserId?: String;
   playlistId?: String;
+  trackUris?: PartyUpdatetrackUrisInput;
   partyMemberIds?: PartyUpdatepartyMemberIdsInput;
 }
 
@@ -339,94 +364,8 @@ export interface UserSubscriptionWhereInput {
   NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
-export interface UserCreateInput {
-  name: String;
-}
-
-export interface PartySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PartyWhereInput;
-  AND?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-  OR?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-  NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
-}
-
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface UserEdgeNode {
-  cursor: String;
-}
-
-export interface UserEdge extends Promise<UserEdgeNode>, Fragmentable {
-  node: <T = User>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdgeNode>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserPreviousValuesNode {
-  id: ID_Output;
-  name: String;
-}
-
-export interface UserPreviousValues
-  extends Promise<UserPreviousValuesNode>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValuesNode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserConnectionNode {}
-
-export interface UserConnection
-  extends Promise<UserConnectionNode>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<UserEdgeNode>>() => T;
-  aggregate: <T = AggregateUser>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnectionNode>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface PartyConnectionNode {}
-
-export interface PartyConnection
-  extends Promise<PartyConnectionNode>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<PartyEdgeNode>>() => T;
-  aggregate: <T = AggregateParty>() => T;
-}
-
-export interface PartyConnectionSubscription
-  extends Promise<AsyncIterator<PartyConnectionNode>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PartyEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePartySubscription>() => T;
 }
 
 export interface AggregateUserNode {
@@ -443,148 +382,6 @@ export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUserNode>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PartySubscriptionPayloadNode {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface PartySubscriptionPayload
-  extends Promise<PartySubscriptionPayloadNode>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = Party>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PartyPreviousValues>() => T;
-}
-
-export interface PartySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PartySubscriptionPayloadNode>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PartySubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PartyPreviousValuesSubscription>() => T;
-}
-
-export interface PartyPreviousValuesNode {
-  id: ID_Output;
-  name: String;
-  activeTrackIndex?: Int;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  ownerUserId: String;
-  playlistId: String;
-  partyMemberIds: String[];
-}
-
-export interface PartyPreviousValues
-  extends Promise<PartyPreviousValuesNode>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  activeTrackIndex: () => Promise<Int>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  ownerUserId: () => Promise<String>;
-  playlistId: () => Promise<String>;
-  partyMemberIds: () => Promise<String[]>;
-}
-
-export interface PartyPreviousValuesSubscription
-  extends Promise<AsyncIterator<PartyPreviousValuesNode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  ownerUserId: () => Promise<AsyncIterator<String>>;
-  playlistId: () => Promise<AsyncIterator<String>>;
-  partyMemberIds: () => Promise<AsyncIterator<String[]>>;
-}
-
-export interface PartyEdgeNode {
-  cursor: String;
-}
-
-export interface PartyEdge extends Promise<PartyEdgeNode>, Fragmentable {
-  node: <T = Party>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PartyEdgeSubscription
-  extends Promise<AsyncIterator<PartyEdgeNode>>,
-    Fragmentable {
-  node: <T = PartySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserNode {
-  id: ID_Output;
-  name: String;
-}
-
-export interface User extends Promise<UserNode>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<UserNode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PartyNode {
-  id: ID_Output;
-  name: String;
-  activeTrackIndex?: Int;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  ownerUserId: String;
-  playlistId: String;
-  partyMemberIds: String[];
-}
-
-export interface Party extends Promise<PartyNode>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  activeTrackIndex: () => Promise<Int>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  ownerUserId: () => Promise<String>;
-  playlistId: () => Promise<String>;
-  partyMemberIds: () => Promise<String[]>;
-}
-
-export interface PartySubscription
-  extends Promise<AsyncIterator<PartyNode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  ownerUserId: () => Promise<AsyncIterator<String>>;
-  playlistId: () => Promise<AsyncIterator<String>>;
-  partyMemberIds: () => Promise<AsyncIterator<String[]>>;
-}
-
-export interface BatchPayloadNode {
-  count: Long;
-}
-
-export interface BatchPayload extends Promise<BatchPayloadNode>, Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayloadNode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface PageInfoNode {
@@ -610,6 +407,225 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface PartySubscriptionPayloadNode {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface PartySubscriptionPayload
+  extends Promise<PartySubscriptionPayloadNode>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = Party>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PartyPreviousValues>() => T;
+}
+
+export interface PartySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PartySubscriptionPayloadNode>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PartySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PartyPreviousValuesSubscription>() => T;
+}
+
+export interface BatchPayloadNode {
+  count: Long;
+}
+
+export interface BatchPayload extends Promise<BatchPayloadNode>, Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayloadNode>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UserPreviousValuesNode {
+  id: ID_Output;
+  name: String;
+}
+
+export interface UserPreviousValues
+  extends Promise<UserPreviousValuesNode>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValuesNode>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserNode {
+  id: ID_Output;
+  name: String;
+}
+
+export interface User extends Promise<UserNode>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<UserNode>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PartyPreviousValuesNode {
+  id: ID_Output;
+  name: String;
+  activeTrackIndex?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  ownerUserId: String;
+  playlistId: String;
+  trackUris: String[];
+  partyMemberIds: String[];
+}
+
+export interface PartyPreviousValues
+  extends Promise<PartyPreviousValuesNode>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  activeTrackIndex: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  ownerUserId: () => Promise<String>;
+  playlistId: () => Promise<String>;
+  trackUris: () => Promise<String[]>;
+  partyMemberIds: () => Promise<String[]>;
+}
+
+export interface PartyPreviousValuesSubscription
+  extends Promise<AsyncIterator<PartyPreviousValuesNode>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  ownerUserId: () => Promise<AsyncIterator<String>>;
+  playlistId: () => Promise<AsyncIterator<String>>;
+  trackUris: () => Promise<AsyncIterator<String[]>>;
+  partyMemberIds: () => Promise<AsyncIterator<String[]>>;
+}
+
+export interface PartyNode {
+  id: ID_Output;
+  name: String;
+  activeTrackIndex?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  ownerUserId: String;
+  playlistId: String;
+  trackUris: String[];
+  partyMemberIds: String[];
+}
+
+export interface Party extends Promise<PartyNode>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  activeTrackIndex: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  ownerUserId: () => Promise<String>;
+  playlistId: () => Promise<String>;
+  trackUris: () => Promise<String[]>;
+  partyMemberIds: () => Promise<String[]>;
+}
+
+export interface PartySubscription
+  extends Promise<AsyncIterator<PartyNode>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  ownerUserId: () => Promise<AsyncIterator<String>>;
+  playlistId: () => Promise<AsyncIterator<String>>;
+  trackUris: () => Promise<AsyncIterator<String[]>>;
+  partyMemberIds: () => Promise<AsyncIterator<String[]>>;
+}
+
+export interface PartyConnectionNode {}
+
+export interface PartyConnection
+  extends Promise<PartyConnectionNode>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<PartyEdgeNode>>() => T;
+  aggregate: <T = AggregateParty>() => T;
+}
+
+export interface PartyConnectionSubscription
+  extends Promise<AsyncIterator<PartyConnectionNode>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PartyEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePartySubscription>() => T;
+}
+
+export interface UserEdgeNode {
+  cursor: String;
+}
+
+export interface UserEdge extends Promise<UserEdgeNode>, Fragmentable {
+  node: <T = User>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdgeNode>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePartyNode {
+  count: Int;
+}
+
+export interface AggregateParty
+  extends Promise<AggregatePartyNode>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePartySubscription
+  extends Promise<AsyncIterator<AggregatePartyNode>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnectionNode {}
+
+export interface UserConnection
+  extends Promise<UserConnectionNode>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<UserEdgeNode>>() => T;
+  aggregate: <T = AggregateUser>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnectionNode>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
 export interface UserSubscriptionPayloadNode {
   mutation: MutationType;
   updatedFields?: String[];
@@ -633,21 +649,34 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface AggregatePartyNode {
-  count: Int;
+export interface PartyEdgeNode {
+  cursor: String;
 }
 
-export interface AggregateParty
-  extends Promise<AggregatePartyNode>,
-    Fragmentable {
-  count: () => Promise<Int>;
+export interface PartyEdge extends Promise<PartyEdgeNode>, Fragmentable {
+  node: <T = Party>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregatePartySubscription
-  extends Promise<AsyncIterator<AggregatePartyNode>>,
+export interface PartyEdgeSubscription
+  extends Promise<AsyncIterator<PartyEdgeNode>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = PartySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
+
+export type Long = string;
+
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /*
 DateTime scalar input type, allowing Date
@@ -658,19 +687,6 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
-
-export type Long = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 

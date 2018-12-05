@@ -23,6 +23,8 @@ const HiddenSelect = styled.select`
   appearance: none;
   opacity: 0;
   position: absolute;
+  left: 0;
+  width: 100%;
   top: 0;
   bottom: 0;
 `;

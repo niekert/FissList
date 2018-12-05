@@ -19,6 +19,9 @@ const GlobalStyle = createGlobalStyle`
     -webkit-overflow-scrolling: touch;
   }
 
+form {
+  margin-bottom: 0;
+}
 `;
 
 function App() {

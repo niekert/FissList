@@ -58,6 +58,7 @@ StyledButton.defaultProps = {
 
 interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
+  buttonType?: 'primary' | 'destructive';
   children: React.ReactNode;
 }
 

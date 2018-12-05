@@ -99,6 +99,9 @@ async function createParty(
   return context.prisma.createParty({
     name,
     playlistId: partyPlaylist.id,
+    trackUris: {
+      set: trackUris,
+    },
     ownerUserId: user.id,
   });
 }
@@ -132,12 +135,24 @@ async function addTracks(
     ...currentTrackIds.slice(activeTrackIndex + 1),
   ];
 
+  const trackUris = newTrackOrder.map(trackId => `spotify:track:${trackId}`);
+
   await context.spotify.fetchResource(`/playlists/${party.playlistId}/tracks`, {
     method: 'PUT',
     body: JSON.stringify({
-      uris: newTrackOrder.map(trackId => `spotify:track:${trackId}`),
+      uris: trackUris,
     }),
   });
+
+  await context.prisma.updateParty({
+    where: { id: args.partyId },
+    data: {
+      trackUris: {
+        set: trackUris,
+      },
+    },
+  });
+  await context.prisma.party({ id: args.partyId });
 
   pubsub.publish(PubsubEvents.PartyTracksChanged, {
     partyId: args.partyId,

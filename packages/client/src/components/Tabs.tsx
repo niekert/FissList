@@ -42,6 +42,9 @@ const StyledTab = styled.button<{ isActive?: boolean }>`
   outline: none;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 // tslint:disable-next-line
@@ -122,6 +125,7 @@ export function Tabs({ activeTab, onChange, children }: ITabs) {
 export function Tab({
   name,
   children,
+  ...props
 }: {
   name: string;
   children: React.ReactNode;
@@ -137,6 +141,7 @@ export function Tab({
       onClick={() => {
         setActiveTab(name);
       }}
+      {...props}
     >
       {children}
     </StyledTab>
