@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'styled-components';
 import Button from 'components/Button';
 import styled from 'styled-components';
 
@@ -10,7 +11,13 @@ function NoPlayerFound({ onRetry, isLoading }) {
     <>
       <Title>No player found</Title>
       <p>Open the spotify app on your Phone or Laptop and click retry.</p>
-      <Button onClick={onRetry} isLoading={isLoading}>
+      <Button
+        css={css`
+          align-self: flex-start;
+        `}
+        onClick={onRetry}
+        isLoading={isLoading}
+      >
         Retry
       </Button>
     </>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import DeviceType from 'components/DeviceType';
 import { DeviceInfo } from 'fragments/__generated__/DeviceInfo';
 

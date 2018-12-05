@@ -1,6 +1,8 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
+import { Permissions } from "./../../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: UpdatePartyName
 // ====================================================
@@ -46,6 +48,7 @@ export interface UpdatePartyName_updatePartyName {
   activeTrackIndex: number | null;
   name: string;
   playlistId: string;
+  permission: Permissions;
   playlist: UpdatePartyName_updatePartyName_playlist;
 }
 

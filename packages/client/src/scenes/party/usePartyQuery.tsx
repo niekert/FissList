@@ -18,6 +18,9 @@ export const GET_PARTY = gql`
 
 export function usePartyQuery(partyId: string) {
   return useQuery<GetPartyById, GetPartyByIdVariables>(GET_PARTY, {
+    errorPolicy: 'all',
+    // TODO: Enable suspense here
+    suspend: false,
     variables: {
       partyId,
     },

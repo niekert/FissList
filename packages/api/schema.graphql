@@ -23,11 +23,18 @@ type PagedPlaylists {
   next: String!
 }
 
+enum Permissions {
+  NONE
+  MEMBER
+  ADMIN
+}
+
 # Regular type definitions for Bar, Foo, Baz types...
 
 type Party {
   id: ID!
   name: String!
+  permission: Permissions!
   activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
@@ -127,6 +134,7 @@ type Mutation {
   ): PlayStateChange
   createParty(name: String!, playlistId: String!): Party
   addTracks(partyId: String, trackIds: [String]!): Party
+  deleteParty(partyId: String): Boolean
   updatePartyName(partyId: String!, name: String!): Party
   setActiveDevice(deviceId: String): Boolean
 }

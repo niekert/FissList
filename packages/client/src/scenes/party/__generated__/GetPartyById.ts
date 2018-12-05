@@ -1,6 +1,8 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
+import { Permissions } from "./../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: GetPartyById
 // ====================================================
@@ -46,6 +48,7 @@ export interface GetPartyById_party {
   activeTrackIndex: number | null;
   name: string;
   playlistId: string;
+  permission: Permissions;
   playlist: GetPartyById_party_playlist;
 }
 

@@ -50,21 +50,21 @@ const link = split(
   }),
   from([
     authLink,
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) {
-        // TODO: figure out error handling
-        graphQLErrors.map(({ message, locations, path }) =>
-          // tslint:disable-next-line
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-      }
-      if (networkError) {
-        // tslint:disable-next-line
-        console.log(`[Network error]: ${networkError}`);
-      }
-    }),
+    // onError(({ graphQLErrors, networkError }) => {
+    //   if (graphQLErrors) {
+    //     // TODO: figure out error handling
+    //     graphQLErrors.map(({ message, locations, path }) =>
+    //       // tslint:disable-next-line
+    //       console.log(
+    //         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+    //       ),
+    //     );
+    //   }
+    //   if (networkError) {
+    //     // tslint:disable-next-line
+    //     console.log(`[Network error]: ${networkError}`);
+    //   }
+    // }),
     new HttpLink({
       uri: `${API_HOST}/graphql`,
       credentials: 'same-origin',

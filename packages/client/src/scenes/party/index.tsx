@@ -24,6 +24,7 @@ import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
+import { Permissions } from 'globalTypes';
 
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 156;
@@ -100,7 +101,7 @@ const getActivetab = (match: Match, location: Location) => {
 };
 
 export default function Party({ match, location, history }: IProps) {
-  const { data } = usePartyQuery(match.params.partyId);
+  const { data, errors } = usePartyQuery(match.params.partyId);
 
   const onTabChange = tab => {
     if (tab === PlayerTabs.Queue) {
@@ -118,6 +119,15 @@ export default function Party({ match, location, history }: IProps) {
     },
     [activeTab],
   );
+  console.log('errors', errors);
+
+  if (!data || !data.party) {
+    return (
+      <SpinnerWrapper>
+        <Spinner />
+      </SpinnerWrapper>
+    );
+  }
 
   return (
     <ChangedPartyTracksProvider partyId={match.params.partyId}>
@@ -125,11 +135,6 @@ export default function Party({ match, location, history }: IProps) {
         <PartySubscription partyId={match.params.partyId} />
         <PlayerContainer>
           <Page>
-            {(!data || !data.party) && (
-              <SpinnerWrapper>
-                <Spinner />
-              </SpinnerWrapper>
-            )}
             {data && data.party && (
               <SelectedTracksContainer>
                 <PlayerWrapper>
@@ -142,15 +147,17 @@ export default function Party({ match, location, history }: IProps) {
                   <Tabs activeTab={activeTab} onChange={onTabChange}>
                     <Tab name={PlayerTabs.Queue}>Queue</Tab>
                     <Tab name={PlayerTabs.Browse}>Browse</Tab>
-                    <Tab
-                      name={PlayerTabs.Settings}
-                      css={css`
-                        flex: 0;
-                        flex-basis: 50px;
-                      `}
-                    >
-                      <SettingsTabIcon />
-                    </Tab>
+                    {data.party.permission === Permissions.ADMIN && (
+                      <Tab
+                        name={PlayerTabs.Settings}
+                        css={css`
+                          flex: 0;
+                          flex-basis: 50px;
+                        `}
+                      >
+                        <SettingsTabIcon />
+                      </Tab>
+                    )}
                   </Tabs>
                 </TabsCard>
                 <ContentWrapper>
@@ -159,12 +166,17 @@ export default function Party({ match, location, history }: IProps) {
                       path={`${match.path}/browse`}
                       component={PlayLists}
                     />
-                    <Route
-                      path={`${match.path}/settings`}
-                      render={props => (
-                        <PartySettings {...props} partyName={data.party.name} />
-                      )}
-                    />
+                    {data.party.permission === Permissions.ADMIN && (
+                      <Route
+                        path={`${match.path}/settings`}
+                        render={props => (
+                          <PartySettings
+                            {...props}
+                            partyName={data.party.name}
+                          />
+                        )}
+                      />
+                    )}
                     <Route
                       render={() => (
                         <PartyPlaylist

@@ -2,8 +2,9 @@ import * as React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
 import GetMe from 'queries/GetMe';
-import { BrowserRouter } from 'react-router-dom';
-import { Route, Switch } from 'react-router';
+import ErrorBoundary from 'components/ErrorBoundary';
+import { Route, Router, Switch } from 'react-router';
+import createHistory from 'history/createBrowserHistory';
 import Spinner from 'components/Spinner';
 import NewParty from 'scenes/newParty';
 import SelectType from 'scenes/selectType';
@@ -25,39 +26,43 @@ form {
 }
 `;
 
+const history = createHistory();
+
 function App() {
   return (
     <Theme>
-      <BrowserRouter>
-        <React.Suspense fallback={<Spinner />}>
-          <Route path="/auth" component={Auth} />
+      <ErrorBoundary>
+        <Router history={history}>
+          <React.Suspense fallback={<Spinner />}>
+            <Route path="/auth" component={Auth} />
 
-          <GlobalStyle />
-          <GetMe>
-            {result => {
-              const { loading, data } = result;
-              if (loading) {
-                return null;
-              }
+            <GlobalStyle />
+            <GetMe>
+              {result => {
+                const { loading, data } = result;
+                if (loading) {
+                  return null;
+                }
 
-              if (!data || !data.me) {
-                return <Landing />;
-              }
+                if (!data || !data.me) {
+                  return <Landing />;
+                }
 
-              return (
-                <CurrentUserContext.Provider value={result}>
-                  <Switch>
-                    <Route path="/new" component={NewParty} />
-                    <Route path="/join" component={JoinParty} />
-                    <Route path="/party/:partyId" component={Party} />
-                    <Route path="" component={SelectType} />
-                  </Switch>
-                </CurrentUserContext.Provider>
-              );
-            }}
-          </GetMe>
-        </React.Suspense>
-      </BrowserRouter>
+                return (
+                  <CurrentUserContext.Provider value={result}>
+                    <Switch>
+                      <Route path="/new" component={NewParty} />
+                      <Route path="/join" component={JoinParty} />
+                      <Route path="/party/:partyId" component={Party} />
+                      <Route path="" component={SelectType} />
+                    </Switch>
+                  </CurrentUserContext.Provider>
+                );
+              }}
+            </GetMe>
+          </React.Suspense>
+        </Router>
+      </ErrorBoundary>
     </Theme>
   );
 }

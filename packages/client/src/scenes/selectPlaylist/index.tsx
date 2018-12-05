@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { PoseGroup } from 'react-pose';
 import Button from 'components/Button';
 import Spinner from 'components/Spinner';

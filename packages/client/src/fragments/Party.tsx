@@ -7,6 +7,7 @@ export const PartyInfo = gql`
     activeTrackIndex
     name
     playlistId
+    permission
     playlist {
       ...PlaylistInfo
     }

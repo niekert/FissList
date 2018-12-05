@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Title, Text } from 'components/Typography';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { Card, CardTitle } from 'components/Card';
 import { PoseGroup } from 'react-pose';
 import PosedListItem from 'components/PosedListItem';

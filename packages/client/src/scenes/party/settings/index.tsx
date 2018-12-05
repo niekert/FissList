@@ -37,7 +37,7 @@ function PartySettings({ match, partyName }: Props) {
         <PartyMembers />
       </Section>
       <Section>
-        <DeleteParty />
+        <DeleteParty partyId={partyId} />
       </Section>
     </>
   );

@@ -23,6 +23,7 @@ interface ContextValue {
 }
 
 export const Context = React.createContext<ContextValue>({
+  // tslint:disable-next-line
   markTrackSeen: () => {},
   changedTrackIds: [],
 });
