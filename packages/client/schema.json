@@ -472,6 +472,22 @@
             "deprecationReason": null
           },
           {
+            "name": "requestedUserIds",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "partyMembers",
             "description": "",
             "args": [],
@@ -541,6 +557,12 @@
           },
           {
             "name": "ADMIN",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PENDING",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null

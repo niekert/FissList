@@ -1,6 +1,6 @@
 import { Context, SpotifyUser } from '../types';
 import { PartyNode } from '../generated/prisma-client';
-import { ForbiddenError, UnauthorizedError } from 'apollo-server';
+import { ForbiddenError } from 'apollo-server';
 import { Playlist } from '../spotify';
 import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
@@ -9,6 +9,7 @@ import { GraphQLError } from 'graphql';
 interface PartyResult {
   id: string;
   playlistId: string;
+  requestedUserIds?: string[];
   name: string;
   activeTrackIndex: number;
   createdAt: string;
@@ -57,11 +58,14 @@ async function party(
 ): Promise<PartyResult> {
   const user = await context.spotify.fetchCurrentUser();
   const party = await context.prisma.party({ id: args.partyId });
+  const permission = getPermissionForParty(party, user);
 
   return {
     id: party.id,
     name: party.name,
-    permission: getPermissionForParty(party, user),
+    permission: permission,
+    requestedUserIds:
+      permission === Permissions.Admin ? party.requestedUserIds : undefined,
     playlistId: party.playlistId,
     playlist: { id: party.playlistId },
     createdAt: party.createdAt,
@@ -262,7 +266,7 @@ async function grantPartyAccess(
   const party = await context.prisma.party({ id: args.partyId });
 
   if (me.id !== party.ownerUserId) {
-    throw new UnauthorizedError('Not authorized');
+    throw new ForbiddenError('Not authorized');
   }
 
   const newRequestIds = party.requestedUserIds.filter(

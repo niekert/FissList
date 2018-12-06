@@ -4,13 +4,14 @@ import { usePartyQuery } from './usePartyQuery';
 import Spinner from 'components/Spinner';
 import PartyIdContext from 'context/PartyIdContext';
 import { SelectedTracksContainer } from 'context/SelectedTracks';
+import UnreadBadge from 'components/UnreadBadge';
 import Page from 'components/Page';
 import { Location } from 'history';
 import {
   RouteComponentProps,
   match as Match,
-  Switch,
   Route,
+  Switch,
 } from 'react-router';
 import { Card } from 'components/Card';
 import styled, { css } from 'styled-components';
@@ -166,6 +167,17 @@ export default function Party({ match, location, history }: IProps) {
                         `}
                       >
                         <SettingsTabIcon />
+                        {data.party.requestedUserIds &&
+                          data.party.requestedUserIds.length > 0 && (
+                            <UnreadBadge
+                              css={css`
+                                position: absolute;
+                                top: 2px;
+                                right: 8px;
+                              `}
+                              count={data.party.requestedUserIds.length}
+                            />
+                          )}
                       </Tab>
                     )}
                   </Tabs>

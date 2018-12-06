@@ -17,6 +17,7 @@ const DEFAULT_THEME = {
     outline: '#CCD9DF',
     primary: '#FFF',
     success: '#2daf49',
+    notification: '#DB5850',
   },
   spacing: ['0px', '8px', '16px', '24px'],
   textColors: {

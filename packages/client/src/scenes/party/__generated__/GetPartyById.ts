@@ -49,6 +49,7 @@ export interface GetPartyById_party {
   name: string;
   playlistId: string;
   permission: Permissions;
+  requestedUserIds: (string | null)[] | null;
   playlist: GetPartyById_party_playlist;
 }
 

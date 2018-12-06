@@ -49,6 +49,7 @@ export interface UpdatePartyName_updatePartyName {
   name: string;
   playlistId: string;
   permission: Permissions;
+  requestedUserIds: (string | null)[] | null;
   playlist: UpdatePartyName_updatePartyName_playlist;
 }
 

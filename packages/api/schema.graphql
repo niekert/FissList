@@ -39,6 +39,7 @@ type Party {
   activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
+  requestedUserIds: [String]
   partyMembers: [PartyMember]
   playlist: Playlist!
 }
