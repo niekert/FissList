@@ -109,6 +109,6 @@ apolloServer.applyMiddleware({ app });
 
 apolloServer.installSubscriptionHandlers(httpServer);
 
-httpServer.listen(4000, () =>
+httpServer.listen(process.env.PORT || 4000, () =>
   console.log(`Server is running on ${process.env.HOST}`),
 );
