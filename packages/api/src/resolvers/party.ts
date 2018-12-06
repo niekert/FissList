@@ -155,8 +155,9 @@ async function addTracks(
     context.prisma.party({ id: args.partyId }),
     context.spotify.fetchCurrentUser(),
   ]);
+  const permission = getPermissionForParty(party, me);
 
-  if (party.ownerUserId !== me.id || !party.partyUserIds.includes(me.id)) {
+  if (![Permissions.Admin, Permissions.Member].includes(permission)) {
     throw new GraphQLError('Unauthorized to change the party');
   }
 
