@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "build": "npm run build-sass && npm run build-ts && npm run tslint && npm run copy-static-assets",
+    "build": "npm run build-ts",
     "serve": "node dist/index.js",
     "schema:download": "apollo schema:download --endpoint=http://localhost:4000",
     "types": "apollo codegen:generate --queries=blaa --schema=./schema.graphql --target=typescript",

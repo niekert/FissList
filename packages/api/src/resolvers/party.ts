@@ -1,5 +1,5 @@
 import { Context, SpotifyUser } from '../types';
-import { PartyNode } from '../generated/prisma-client';
+import { Party } from '../generated/prisma-client';
 import { ForbiddenError } from 'apollo-server';
 import { Playlist } from '../spotify';
 import { withFilter } from 'graphql-subscriptions';
@@ -28,7 +28,7 @@ enum Permissions {
 }
 
 const getPermissionForParty = (
-  party: PartyNode,
+  party: Party,
   user: SpotifyUser,
 ): Permissions => {
   if (party.ownerUserId === user.id) {
