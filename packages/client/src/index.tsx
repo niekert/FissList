@@ -41,7 +41,7 @@ const link = split(
     );
   },
   new WebSocketLink({
-    uri: `ws://${API_HOST}/graphql`,
+    uri: `wss://${API_HOST}/graphql`,
     options: {
       reconnect: true,
       connectionParams: getConnectionParams(),
