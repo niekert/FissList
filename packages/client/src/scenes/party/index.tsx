@@ -127,11 +127,14 @@ export default function Party({ match, location, history }: IProps) {
 
   if ([Permissions.NONE, Permissions.PENDING].includes(data.party.permission)) {
     return (
-      <JoinParty
-        partyId={data.party.id}
-        partyName={data.party.name}
-        permission={data.party.permission}
-      />
+      <>
+        <PartySubscription partyId={match.params.partyId} />
+        <JoinParty
+          partyId={data.party.id}
+          partyName={data.party.name}
+          permission={data.party.permission}
+        />
+      </>
     );
   }
 

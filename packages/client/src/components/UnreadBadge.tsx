@@ -4,13 +4,13 @@ import { number } from 'prop-types';
 
 const Badge = styled.span`
   min-width: 17px;
-  min-height: 17px;
+  min-height: 16px;
   background: ${props => props.theme.colors.notification};
   color: ${props => props.theme.colors.primary};
   text-align: center;
   font-size: 13px;
 
-  line-height: 1;
+  line-height: 17px;
 
   ${props =>
     props.stretch

@@ -50,6 +50,7 @@ export interface PartySubscription_party {
   playlistId: string;
   permission: Permissions;
   requestedUserIds: string[] | null;
+  partyUserIds: string[] | null;
   playlist: PartySubscription_party_playlist;
 }
 

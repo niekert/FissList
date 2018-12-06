@@ -40,13 +40,8 @@ type Party {
   ownerUserId: String!
   playlistId: String!
   requestedUserIds: [String!]
-  partyMembers: [PartyMember]
+  partyUserIds: [String!]
   playlist: Playlist!
-}
-
-type PartyMember {
-  id: ID!
-  spotifyUserid: String!
 }
 
 type Artist {

@@ -1,30 +1,111 @@
 import * as React from 'react';
+import gql from 'graphql-tag';
 import { usePartyContext } from '../context';
-import { FormField } from 'components/Form';
-import styled from 'styled-components';
+import IconButton from 'components/IconButton';
+import { CheckmarkIcon, CloseIcon } from 'icons';
+import { useMutation } from 'react-apollo-hooks';
+import {
+  ActionList,
+  ActionListItem,
+  ActionListGroupTitle,
+} from 'components/ActionList';
+import { transparentize } from 'polished';
+import styled, { css } from 'styled-components';
+import { PartyInfo } from 'fragments/Party';
+import {
+  GrantPartyAccess,
+  GrantPartyAccessVariables,
+} from './__generated__/GrantPartyAccess';
 
-const MemberList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const MemberItem = styled.li`
-  font-weight: 500;
-  margin-bottom: 0;
-  border-bottom: 1px solid ${props => props.theme.colors.outline};
-`;
+// tslint:disable-next-line
+const Wrapper = styled.div;
 
 export default function PartyNameForm() {
   const party = usePartyContext();
+  const grantAccessMutation = useMutation<
+    GrantPartyAccess,
+    GrantPartyAccessVariables
+  >(gql`
+    mutation GrantPartyAccess($partyId: String!, $userId: String!) {
+      grantPartyAccess(partyId: $partyId, userId: $userId) {
+        ...PartyInfo
+      }
+    }
+
+    ${PartyInfo}
+  `);
+
+  const onGrantAccess = userId => {
+    grantAccessMutation({
+      variables: {
+        userId,
+        partyId: party.id,
+      },
+      optimisticResponse: {
+        grantPartyAccess: {
+          __typename: 'Party',
+          ...party,
+          requestedUserIds: party.requestedUserIds!.filter(
+            requestedUserId => requestedUserId !== userId,
+          ),
+          partyUserIds: [...(party.partyUserIds || []), userId],
+        },
+      },
+    });
+  };
 
   return (
     <form>
-      <MemberList>
-        {party.requestedUserIds!.map(userId => (
-          <MemberItem key={userId}>{userId}</MemberItem>
+      <ActionList>
+        {party.requestedUserIds &&
+          party.requestedUserIds.length && [
+            <ActionListGroupTitle key="members">
+              Requested access
+            </ActionListGroupTitle>,
+            ...party.requestedUserIds!.map(userId => (
+              <ActionListItem
+                key={userId}
+                label={userId}
+                actions={
+                  <>
+                    <IconButton
+                      type="button"
+                      size="small"
+                      withBackground={true}
+                      css={css`
+                        color: ${props => props.theme.colors.danger};
+                        background: ${props =>
+                          transparentize(0.75, props.theme.colors.danger)};
+                        margin-right: ${props => props.theme.spacing[1]};
+                      `}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <IconButton
+                      type="button"
+                      size="small"
+                      withBackground={true}
+                      onClick={() => onGrantAccess(userId)}
+                      css={css`
+                        background: ${props =>
+                          transparentize(0.75, props.theme.colors.success)};
+                        color: ${props => props.theme.colors.success};
+                      `}
+                    >
+                      <CheckmarkIcon />
+                    </IconButton>
+                  </>
+                }
+              />
+            )),
+          ]}
+        <ActionListGroupTitle key="activeMembers">
+          Active members
+        </ActionListGroupTitle>
+        {party.partyUserIds!.map(userId => (
+          <ActionListItem key={userId} label={userId} />
         ))}
-      </MemberList>
+      </ActionList>
     </form>
   );
 }

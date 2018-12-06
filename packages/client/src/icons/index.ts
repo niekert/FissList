@@ -9,3 +9,5 @@ export { default as SpeakerIcon } from './SpeakerIcon';
 export { default as BackIcon } from './BackIcon';
 export { default as SettingsIcon } from './SettingsIcon';
 export { default as AddIcon } from './AddIcon';
+export { default as CheckmarkIcon } from './CheckMarkIcon';
+export { default as CloseIcon } from './CloseIcon';

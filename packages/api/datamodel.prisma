@@ -14,5 +14,5 @@ type Party {
   trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
-  partyUserIds: [String!]
+  partyUserIds: [String!]!
 }

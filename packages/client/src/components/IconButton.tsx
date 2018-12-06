@@ -1,6 +1,14 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export default styled.button`
+const sizes = {
+  small: 22,
+  normal: 28,
+};
+
+const IconButton = styled.button<{
+  size?: 'small' | 'normal';
+  withBackground?: boolean;
+}>`
   background: none;
   color: ${props => props.theme.textColors.primary};
   outline: none;
@@ -12,7 +20,20 @@ export default styled.button`
   border-radius: 50%;
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: ${props => sizes[props.size]}px;
+    height: ${props => sizes[props.size]}px;
   }
+
+  ${props =>
+    props.withBackground &&
+    css`
+      padding: 2px;
+      border-radius: 50%;
+    `}
 `;
+
+IconButton.defaultProps = {
+  size: 'normal',
+};
+
+export default IconButton;
