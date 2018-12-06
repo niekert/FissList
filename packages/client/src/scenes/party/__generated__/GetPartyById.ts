@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { Permissions } from "./../../../../__generated__/globalTypes";
+import { Permissions } from './../../../../__generated__/globalTypes';
 
 // ====================================================
 // GraphQL query operation: GetPartyById

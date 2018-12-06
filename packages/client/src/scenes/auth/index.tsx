@@ -12,8 +12,6 @@ function AuthCallback({ history }: RouteComponentProps) {
         localStorage.setItem('refreshToken', query.refreshToken as string);
       }
 
-      console.log('welkom in die block a maattie');
-
       history.replace(sessionStorage.getItem('loginUri') || '', {
         replace: true,
       });

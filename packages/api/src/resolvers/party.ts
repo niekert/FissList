@@ -292,12 +292,18 @@ async function updatePartyName(
   args: { partyId: string; name: string },
   context: Context,
 ) {
-  return context.prisma.updateParty({
+  const me = await context.spotify.fetchCurrentUser();
+  const party = await context.prisma.updateParty({
     where: { id: args.partyId },
     data: {
       name: args.name,
     },
   });
+
+  return {
+    ...party,
+    permission: getPermissionForParty(party, me),
+  };
 }
 
 export default {
