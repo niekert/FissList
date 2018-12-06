@@ -71,6 +71,8 @@ const link = split(
   ]),
 );
 
+console.log('apihost', API_HOST);
+
 const client = new ApolloClient({
   link,
   cache: new InMemoryCache(),
