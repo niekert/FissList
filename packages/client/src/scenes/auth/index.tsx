@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';;
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { parse, OutputParams } from 'query-string';
 
 function AuthCallback({ history }: RouteComponentProps) {
@@ -12,7 +12,11 @@ function AuthCallback({ history }: RouteComponentProps) {
         localStorage.setItem('refreshToken', query.refreshToken as string);
       }
 
-      history.replace('/', { replace: true });
+      console.log('welkom in die block a maattie');
+
+      history.replace(sessionStorage.getItem('loginUri') || '', {
+        replace: true,
+      });
     },
     [location!.search],
   );
