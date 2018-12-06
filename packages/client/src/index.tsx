@@ -5,7 +5,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloClient } from 'apollo-client';
 import { getMainDefinition } from 'apollo-utilities';
 import { split, from } from 'apollo-link';
-import { API_HOST } from 'app-constants';
+import { API_HOST, WS_SUBSCRIPTION_HOST } from 'app-constants';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
@@ -41,7 +41,7 @@ const link = split(
     );
   },
   new WebSocketLink({
-    uri: `wss://${API_HOST}/graphql`,
+    uri: `${WS_SUBSCRIPTION_HOST}`,
     options: {
       reconnect: true,
       connectionParams: getConnectionParams(),
@@ -65,13 +65,11 @@ const link = split(
     //   }
     // }),
     new HttpLink({
-      uri: `https://${API_HOST}/graphql`,
+      uri: `${API_HOST}/graphql`,
       credentials: 'same-origin',
     }),
   ]),
 );
-
-console.log('apihost', API_HOST);
 
 const client = new ApolloClient({
   link,
