@@ -49,7 +49,7 @@ export interface PartySubscription_party {
   name: string;
   playlistId: string;
   permission: Permissions;
-  requestedUserIds: (string | null)[] | null;
+  requestedUserIds: string[] | null;
   playlist: PartySubscription_party_playlist;
 }
 

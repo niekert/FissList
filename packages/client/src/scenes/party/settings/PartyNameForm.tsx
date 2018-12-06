@@ -74,10 +74,22 @@ export default function PartyNameForm({ partyId, partyName }: Props) {
   );
 
   return (
-    <form onSubmit={onSubmit}>
-      <FormField label="Party name">
-        <Input type="Text" {...name} disabled={isLoading || isSuccess} />
-      </FormField>
+    <form
+      onSubmit={onSubmit}
+      css={css`
+        display: flex;
+        flex-direction: column;
+      `}
+    >
+      <Input
+        type="Text"
+        {...name}
+        disabled={isLoading || isSuccess}
+        css={css`
+          margin-bottom: ${props => props.theme.spacing[2]};
+        `}
+      />
+
       <div
         css={css`
           display: flex;

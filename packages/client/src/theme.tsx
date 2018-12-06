@@ -21,7 +21,7 @@ const DEFAULT_THEME = {
   },
   spacing: ['0px', '8px', '16px', '24px'],
   textColors: {
-    active: '#000',
+    active: '#333',
     primary: 'rgba(0, 0, 0, 0.73)',
     secondary: '#555555',
   },

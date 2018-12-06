@@ -49,6 +49,6 @@ export interface PartyInfo {
   name: string;
   playlistId: string;
   permission: Permissions;
-  requestedUserIds: (string | null)[] | null;
+  requestedUserIds: string[] | null;
   playlist: PartyInfo_playlist;
 }

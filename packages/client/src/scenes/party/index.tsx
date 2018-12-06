@@ -1,8 +1,6 @@
 import * as React from 'react';
-
 import { usePartyQuery } from './usePartyQuery';
 import Spinner from 'components/Spinner';
-import PartyIdContext from 'context/PartyIdContext';
 import { SelectedTracksContainer } from 'context/SelectedTracks';
 import UnreadBadge from 'components/UnreadBadge';
 import Page from 'components/Page';
@@ -16,6 +14,7 @@ import { Tabs, Tab } from 'components/Tabs';
 import PartySubscription from './PartyChangesSubscription';
 import AddSelectedTracks from './AddSelectedTracks';
 import { PlayerContainer } from 'context/player';
+import { PartyContext } from './context';
 import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
@@ -138,7 +137,7 @@ export default function Party({ match, location, history }: IProps) {
 
   return (
     <ChangedPartyTracksProvider partyId={match.params.partyId}>
-      <PartyIdContext.Provider value={match.params.partyId}>
+      <PartyContext.Provider value={data.party}>
         <PartySubscription partyId={match.params.partyId} />
         <PlayerContainer>
           <Page>
@@ -190,6 +189,11 @@ export default function Party({ match, location, history }: IProps) {
                         render={props => (
                           <PartySettings
                             {...props}
+                            requestedUserCount={
+                              data.party.requestedUserIds
+                                ? data.party.requestedUserIds.length
+                                : 0
+                            }
                             partyName={data.party.name}
                           />
                         )}
@@ -213,7 +217,7 @@ export default function Party({ match, location, history }: IProps) {
             )}
           </Page>
         </PlayerContainer>
-      </PartyIdContext.Provider>
+      </PartyContext.Provider>
     </ChangedPartyTracksProvider>
   );
 }
