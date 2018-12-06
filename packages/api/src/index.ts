@@ -29,7 +29,7 @@ const app = express();
 
 app.use(cors());
 
-app.use(express.static(__dirname + '/www/static'));
+app.use('/static', express.static(__dirname + '/www/static'));
 
 app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, 'www/index.html'));
