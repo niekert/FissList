@@ -1,6 +1,6 @@
 import { Context, SpotifyUser } from '../types';
 import { PartyNode } from '../generated/prisma-client';
-import { ForbiddenError } from 'apollo-server';
+import { ForbiddenError, UnauthorizedError } from 'apollo-server';
 import { Playlist } from '../spotify';
 import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
@@ -22,6 +22,7 @@ interface PartyResult {
 enum Permissions {
   Admin = 'ADMIN',
   Member = 'MEMBER',
+  Pending = 'PENDING',
   None = 'NONE',
 }
 
@@ -33,8 +34,12 @@ const getPermissionForParty = (
     return Permissions.Admin;
   }
 
-  if (party.partyMemberIds.includes(user.id)) {
+  if (party.partyUserIds.includes(user.id)) {
     return Permissions.Member;
+  }
+
+  if (party.requestedUserIds.includes(user.id)) {
+    return Permissions.Pending;
   }
 
   return Permissions.None;
@@ -52,10 +57,6 @@ async function party(
 ): Promise<PartyResult> {
   const user = await context.spotify.fetchCurrentUser();
   const party = await context.prisma.party({ id: args.partyId });
-  const permission = getPermissionForParty(party, user);
-  if (permission === Permissions.None) {
-    throw new ForbiddenError('Unauthorized to join the party');
-  }
 
   return {
     id: party.id,
@@ -151,7 +152,7 @@ async function addTracks(
     context.spotify.fetchCurrentUser(),
   ]);
 
-  if (party.ownerUserId !== me.id || !party.partyMemberIds.includes(me.id)) {
+  if (party.ownerUserId !== me.id || !party.partyUserIds.includes(me.id)) {
     throw new GraphQLError('Unauthorized to change the party');
   }
 
@@ -209,6 +210,7 @@ async function partySubscription(
   return await context.prisma.$subscribe
     .party({
       node: { id: args.partyId },
+      updatedFields_contains_some: ['activeTrackIndex', 'trackUris'],
       mutation_in: ['UPDATED'],
     })
     .node();
@@ -228,6 +230,57 @@ async function deleteParty(_, args: { partyId: string }, context: Context) {
   await context.prisma.deleteParty({ id: args.partyId });
 
   return true;
+}
+
+async function requestPartyAccess(
+  _,
+  args: { partyId: string },
+  context: Context,
+) {
+  const me = await context.spotify.fetchCurrentUser();
+  const party = await context.prisma.party({ id: args.partyId });
+
+  const newRequestedMembers = [...party.requestedUserIds, me.id];
+  const uniqueMembers = Array.from(new Set(newRequestedMembers));
+
+  return context.prisma.updateParty({
+    where: { id: args.partyId },
+    data: {
+      requestedUserIds: {
+        set: uniqueMembers,
+      },
+    },
+  });
+}
+
+async function grantPartyAccess(
+  _,
+  args: { partyId: string; userId: string },
+  context: Context,
+) {
+  const me = await context.spotify.fetchCurrentUser();
+  const party = await context.prisma.party({ id: args.partyId });
+
+  if (me.id !== party.ownerUserId) {
+    throw new UnauthorizedError('Not authorized');
+  }
+
+  const newRequestIds = party.requestedUserIds.filter(
+    userId => userId !== args.userId,
+  );
+  const newMemberIds = [...party.partyUserIds, args.userId];
+
+  return context.prisma.updateParty({
+    where: { id: args.partyId },
+    data: {
+      requestedUserIds: {
+        set: newRequestIds,
+      },
+      partyUserIds: {
+        set: newMemberIds,
+      },
+    },
+  });
 }
 
 async function updatePartyName(
@@ -253,6 +306,8 @@ export default {
     addTracks,
     updatePartyName,
     deleteParty,
+    requestPartyAccess,
+    grantPartyAccess,
   },
   Me: {
     parties,

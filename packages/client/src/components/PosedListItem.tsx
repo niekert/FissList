@@ -15,6 +15,9 @@ const PosedListItem = posed.div({
   exit: {
     opacity: 0,
     transform: 'translateY(15px)',
+    transition: {
+      duration: 150,
+    },
   },
   props: {
     i: 0,

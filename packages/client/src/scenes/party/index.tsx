@@ -22,6 +22,7 @@ import { PlayerContainer } from 'context/player';
 import Player from 'scenes/player';
 import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
+import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
 import { Permissions } from 'globalTypes';
@@ -44,7 +45,7 @@ const TabsCard = styled(Card)`
 
 const SpinnerWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -119,13 +120,22 @@ export default function Party({ match, location, history }: IProps) {
     },
     [activeTab],
   );
-  console.log('errors', errors);
 
   if (!data || !data.party) {
     return (
       <SpinnerWrapper>
         <Spinner />
       </SpinnerWrapper>
+    );
+  }
+
+  if ([Permissions.NONE, Permissions.PENDING].includes(data.party.permission)) {
+    return (
+      <JoinParty
+        partyId={data.party.id}
+        partyName={data.party.name}
+        permission={data.party.permission}
+      />
     );
   }
 

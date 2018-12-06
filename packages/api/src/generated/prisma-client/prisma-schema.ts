@@ -55,7 +55,9 @@ type Party {
   ownerUserId: String!
   playlistId: String!
   trackUris: [String!]!
-  partyMemberIds: [String!]!
+  requestedUserIds: [String!]!
+  bannedUserIds: [String!]!
+  partyUserIds: [String!]!
 }
 
 type PartyConnection {
@@ -64,16 +66,26 @@ type PartyConnection {
   aggregate: AggregateParty!
 }
 
+input PartyCreatebannedUserIdsInput {
+  set: [String!]
+}
+
 input PartyCreateInput {
   name: String!
   activeTrackIndex: Int
   ownerUserId: String!
   playlistId: String!
   trackUris: PartyCreatetrackUrisInput
-  partyMemberIds: PartyCreatepartyMemberIdsInput
+  requestedUserIds: PartyCreaterequestedUserIdsInput
+  bannedUserIds: PartyCreatebannedUserIdsInput
+  partyUserIds: PartyCreatepartyUserIdsInput
 }
 
-input PartyCreatepartyMemberIdsInput {
+input PartyCreatepartyUserIdsInput {
+  set: [String!]
+}
+
+input PartyCreaterequestedUserIdsInput {
   set: [String!]
 }
 
@@ -112,7 +124,9 @@ type PartyPreviousValues {
   ownerUserId: String!
   playlistId: String!
   trackUris: [String!]!
-  partyMemberIds: [String!]!
+  requestedUserIds: [String!]!
+  bannedUserIds: [String!]!
+  partyUserIds: [String!]!
 }
 
 type PartySubscriptionPayload {
@@ -133,16 +147,26 @@ input PartySubscriptionWhereInput {
   NOT: [PartySubscriptionWhereInput!]
 }
 
+input PartyUpdatebannedUserIdsInput {
+  set: [String!]
+}
+
 input PartyUpdateInput {
   name: String
   activeTrackIndex: Int
   ownerUserId: String
   playlistId: String
   trackUris: PartyUpdatetrackUrisInput
-  partyMemberIds: PartyUpdatepartyMemberIdsInput
+  requestedUserIds: PartyUpdaterequestedUserIdsInput
+  bannedUserIds: PartyUpdatebannedUserIdsInput
+  partyUserIds: PartyUpdatepartyUserIdsInput
 }
 
-input PartyUpdatepartyMemberIdsInput {
+input PartyUpdatepartyUserIdsInput {
+  set: [String!]
+}
+
+input PartyUpdaterequestedUserIdsInput {
   set: [String!]
 }
 

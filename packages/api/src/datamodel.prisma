@@ -12,5 +12,7 @@ type Party {
   ownerUserId: String!
   playlistId: String!
   trackUris: [String!]!
-  partyMemberIds: [String!]
+  requestedUserIds: [String!]!
+  bannedUserIds: [String!]!
+  partyUserIds: [String!]
 }
