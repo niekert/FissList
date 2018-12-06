@@ -1,5 +1,6 @@
-endpoint: http://localhost:4467
+endpoint: https://heroku-3a2922e17a.herokuapp.com/api/dev
 datamodel: datamodel.prisma
+
 generate:
   - generator: typescript-client
     output: ./src/generated/prisma-client/

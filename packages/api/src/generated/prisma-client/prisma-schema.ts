@@ -17,13 +17,13 @@ scalar Long
 type Mutation {
   createParty(data: PartyCreateInput!): Party!
   updateParty(data: PartyUpdateInput!, where: PartyWhereUniqueInput!): Party
-  updateManyParties(data: PartyUpdateInput!, where: PartyWhereInput): BatchPayload!
+  updateManyParties(data: PartyUpdateManyMutationInput!, where: PartyWhereInput): BatchPayload!
   upsertParty(where: PartyWhereUniqueInput!, create: PartyCreateInput!, update: PartyUpdateInput!): Party!
   deleteParty(where: PartyWhereUniqueInput!): Party
   deleteManyParties(where: PartyWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
@@ -152,6 +152,17 @@ input PartyUpdatebannedUserIdsInput {
 }
 
 input PartyUpdateInput {
+  name: String
+  activeTrackIndex: Int
+  ownerUserId: String
+  playlistId: String
+  trackUris: PartyUpdatetrackUrisInput
+  requestedUserIds: PartyUpdaterequestedUserIdsInput
+  bannedUserIds: PartyUpdatebannedUserIdsInput
+  partyUserIds: PartyUpdatepartyUserIdsInput
+}
+
+input PartyUpdateManyMutationInput {
   name: String
   activeTrackIndex: Int
   ownerUserId: String
@@ -334,6 +345,10 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  name: String
+}
+
+input UserUpdateManyMutationInput {
   name: String
 }
 
