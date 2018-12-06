@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { RouteComponentProps, withRouter } from 'react-router-dom';;
+import { RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { Card } from 'components/Card';
 import IconButton from 'components/IconButton';
 import BackIcon from 'icons/BackIcon';

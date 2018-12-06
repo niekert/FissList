@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
 import { PageHeading } from 'components/Typography';
 
 import PartyNameForm from './PartyNameForm';

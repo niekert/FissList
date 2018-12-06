@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import Confetti from 'react-confetti';
 import { Label, Input, Button } from 'components/Form';
 import { Text, Title } from 'components/Typography';
-import { withRouter, RouteComponentProps } from 'react-router-dom';;
+import { RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import Page from 'components/Page';
 import { Card } from 'components/Card';
 import posed, { PoseGroup } from 'react-pose';
@@ -38,6 +39,7 @@ const OpenPartyButton = styled(Button)`
 
 interface IProps extends RouteComponentProps {
   partyId: string;
+  history;
   name: string;
 }
 

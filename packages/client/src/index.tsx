@@ -6,7 +6,6 @@ import { ApolloClient } from 'apollo-client';
 import { getMainDefinition } from 'apollo-utilities';
 import { split, from } from 'apollo-link';
 import { API_HOST } from 'app-constants';
-import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';

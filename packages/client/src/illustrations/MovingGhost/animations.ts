@@ -1,4 +1,4 @@
-import { styler, tween, merge, action, easing } from 'popmotion';
+import { styler, tween, merge, action } from 'popmotion';
 
 export function blissfulAnimation(ghostRef: any) {
   const mouth = styler(ghostRef.querySelector('#Combined-Shape'), {});
