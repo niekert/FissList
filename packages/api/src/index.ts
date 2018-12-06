@@ -9,6 +9,7 @@ import { GraphQLServer, PubSub } from 'graphql-yoga';
 import { config } from 'dotenv';
 import { merge } from 'lodash';
 import playlistResolvers from './resolvers/playlist';
+import * as path from 'path';
 import partyResolvers from './resolvers/party';
 import userResolvers from './resolvers/user';
 import playerResolvers from './resolvers/player';
@@ -27,6 +28,12 @@ const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
 const app = express();
 
 app.use(cors());
+
+app.use(express.static(__dirname + '/www/static'));
+
+app.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, 'www/index.html'));
+});
 
 const pubsub = new PubSub();
 
