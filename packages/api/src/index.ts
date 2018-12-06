@@ -11,6 +11,7 @@ import { merge } from 'lodash';
 import playlistResolvers from './resolvers/playlist';
 import * as path from 'path';
 import partyResolvers from './resolvers/party';
+import * as fallback from 'express-history-api-fallback';
 import userResolvers from './resolvers/user';
 import playerResolvers from './resolvers/player';
 import { makeHttpService, scopes } from './spotify';
@@ -29,11 +30,7 @@ const app = express();
 
 app.use(cors());
 
-app.use('/static', express.static(__dirname + '/www/static'));
-
-app.get('*', function(request, response) {
-  response.sendFile(path.resolve(__dirname, 'www/index.html'));
-});
+app.use('/static', express.static(path.resolve(__dirname, 'www/static')));
 
 const pubsub = new PubSub();
 
@@ -110,6 +107,8 @@ app.get('/auth-callback', async (req, res) => {
 
   res.end();
 });
+
+app.use(fallback('index.html', { root: path.resolve(__dirname, 'www') }));
 
 const httpServer = createServer(app);
 apolloServer.applyMiddleware({ app });

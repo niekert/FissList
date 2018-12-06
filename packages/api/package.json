@@ -13,6 +13,7 @@
     "camelcase-keys": "^5.0.0",
     "concurrently": "^4.0.1",
     "express": "^4.16.4",
+    "express-history-api-fallback": "^2.2.1",
     "graphql": "^0.13",
     "graphql-subscriptions": "^1.0.0",
     "graphql-tag": "^2.10.0",
@@ -22,6 +23,7 @@
     "node-fetch": "^2.2.1",
     "nodemon": "^1.18.7",
     "prisma-client-lib": "^1.23.0-test.3",
+    "serve-static": "^1.13.2",
     "subscriptions-transport-ws": "^0.9.15"
   },
   "scripts": {
