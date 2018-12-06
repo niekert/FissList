@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Confetti from 'react-confetti';
 import { Label, Input, Button } from 'components/Form';
 import { Text, Title } from 'components/Typography';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router-dom';;
 import Page from 'components/Page';
 import { Card } from 'components/Card';
 import posed, { PoseGroup } from 'react-pose';

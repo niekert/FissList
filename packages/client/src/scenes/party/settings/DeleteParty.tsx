@@ -1,6 +1,6 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router-dom';;
 import styled from 'styled-components';
 import { Button } from 'components/Form';
 import { FormField } from 'components/Form';

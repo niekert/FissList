@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Title, Text } from 'components/Typography';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';;
 import { Card, CardTitle } from 'components/Card';
 import { PoseGroup } from 'react-pose';
 import PosedListItem from 'components/PosedListItem';
@@ -10,7 +10,7 @@ import useLogout from 'hooks/logout';
 import OptionCard from './OptionCard';
 import styled from 'styled-components';
 import CurrentUserContext, { CurrentUser } from 'context/CurrentUser';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';;
 
 const PartyOptions = styled.div`
   max-width: 350px;

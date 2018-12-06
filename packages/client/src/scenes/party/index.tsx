@@ -12,7 +12,7 @@ import {
   match as Match,
   Route,
   Switch,
-} from 'react-router';
+} from 'react-router-dom';;
 import { Card } from 'components/Card';
 import styled, { css } from 'styled-components';
 import { ChangedPartyTracksProvider } from 'context/ChangedPartyTracksContext';

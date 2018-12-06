@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router-dom';;
 import { parse, OutputParams } from 'query-string';
 
 function AuthCallback({ history }: RouteComponentProps) {

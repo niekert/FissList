@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Card } from 'components/Card';
 import IconButton from 'components/IconButton';
 import BackIcon from 'icons/BackIcon';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router-dom';;
 
 const BackButton = styled(IconButton)`
   margin: 0 auto;

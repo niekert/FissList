@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PlaylistQuery from './PlaylistQuery';
 import { Switch, Route } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';;
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';

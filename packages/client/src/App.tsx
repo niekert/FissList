@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
 import GetMe from 'queries/GetMe';
 import ErrorBoundary from 'components/ErrorBoundary';
-import { Route, Router, Switch } from 'react-router';
+import { Route, Router, Switch } from 'react-router-dom';;
 import createHistory from 'history/createBrowserHistory';
 import Spinner from 'components/Spinner';
 import NewParty from 'scenes/newParty';
