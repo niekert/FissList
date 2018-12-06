@@ -6,7 +6,7 @@ import * as express from 'express';
 import { importSchema } from 'graphql-import';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import { GraphQLServer, PubSub } from 'graphql-yoga';
-import { config } from 'dotEnv';
+import { config } from 'dotenv';
 import { merge } from 'lodash';
 import playlistResolvers from './resolvers/playlist';
 import partyResolvers from './resolvers/party';
