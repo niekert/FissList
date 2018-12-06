@@ -215,7 +215,6 @@ async function partySubscription(
   return await context.prisma.$subscribe
     .party({
       node: { id: args.partyId },
-      updatedFields_contains_some: ['activeTrackIndex', 'trackUris'],
       mutation_in: ['UPDATED'],
     })
     .node();
