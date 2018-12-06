@@ -2,6 +2,9 @@
   "name": "client",
   "version": "0.1.0",
   "proxy": "http://localhost:4000",
+  "engines": {
+    "node": "9.x.x"
+  },
   "scripts": {
     "schema:download": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "codegen:generate": "apollo codegen:generate --queries=./**/*.tsx --schema=./schema.json --target=typescript --tagName=gql",

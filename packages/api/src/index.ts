@@ -26,8 +26,6 @@ const resolvers = merge(
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
 const app = express();
 
-console.log('redirect URI', REDIRECT_URI);
-
 app.use(cors());
 
 const pubsub = new PubSub();
