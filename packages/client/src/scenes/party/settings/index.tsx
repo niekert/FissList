@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';;
+import { RouteComponentProps } from 'react-router-dom';
 import { PageHeading } from 'components/Typography';
 
 import PartyNameForm from './PartyNameForm';
@@ -31,10 +31,10 @@ function PartySettings({ match, partyName }: Props) {
         Party settings
       </PageHeading>
       <Section>
-        <PartyNameForm partyId={partyId} partyName={partyName} />
+        <PartyMembers />
       </Section>
       <Section>
-        <PartyMembers />
+        <PartyNameForm partyId={partyId} partyName={partyName} />
       </Section>
       <Section>
         <DeleteParty partyId={partyId} />

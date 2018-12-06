@@ -7,12 +7,8 @@ import { SelectedTracksContainer } from 'context/SelectedTracks';
 import UnreadBadge from 'components/UnreadBadge';
 import Page from 'components/Page';
 import { Location } from 'history';
-import {
-  RouteComponentProps,
-  match as Match,
-  Route,
-  Switch,
-} from 'react-router-dom';;
+import { RouteComponentProps } from 'react-router';
+import { match as Match, Route, Switch } from 'react-router-dom';
 import { Card } from 'components/Card';
 import styled, { css } from 'styled-components';
 import { ChangedPartyTracksProvider } from 'context/ChangedPartyTracksContext';
