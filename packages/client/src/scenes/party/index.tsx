@@ -20,7 +20,6 @@ import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
 import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
-import { WebPlayerContextContainer } from '../webPlayer';
 import PartySettings from './settings';
 import { Permissions } from 'globalTypes';
 
@@ -144,84 +143,82 @@ export default function Party({ match, location, history }: IProps) {
       <PartyContext.Provider value={data.party}>
         <PartySubscription partyId={match.params.partyId} />
         <PlayerContainer>
-          <WebPlayerContextContainer>
-            <Page>
-              {data && data.party && (
-                <SelectedTracksContainer>
-                  <PlayerWrapper>
-                    <Player
-                      activeFeedUri={data.party.playlistId}
-                      partyId={data.party.id}
-                    />
-                  </PlayerWrapper>
-                  <TabsCard>
-                    <Tabs activeTab={activeTab} onChange={onTabChange}>
-                      <Tab name={PlayerTabs.Queue}>Queue</Tab>
-                      <Tab name={PlayerTabs.Browse}>Browse</Tab>
-                      {data.party.permission === Permissions.ADMIN && (
-                        <Tab
-                          name={PlayerTabs.Settings}
-                          css={css`
-                            flex: 0;
-                            flex-basis: 50px;
-                          `}
-                        >
-                          <SettingsTabIcon />
-                          {data.party.requestedUserIds &&
-                            data.party.requestedUserIds.length > 0 && (
-                              <UnreadBadge
-                                css={css`
-                                  position: absolute;
-                                  top: 2px;
-                                  right: 8px;
-                                `}
-                                count={data.party.requestedUserIds.length}
-                              />
-                            )}
-                        </Tab>
-                      )}
-                    </Tabs>
-                  </TabsCard>
-                  <ContentWrapper>
-                    <Switch>
-                      <Route
-                        path={`${match.path}/browse`}
-                        component={PlayLists}
-                      />
-                      {data.party.permission === Permissions.ADMIN && (
-                        <Route
-                          path={`${match.path}/settings`}
-                          render={props => (
-                            <PartySettings
-                              {...props}
-                              requestedUserCount={
-                                data.party.requestedUserIds
-                                  ? data.party.requestedUserIds.length
-                                  : 0
-                              }
-                              partyName={data.party.name}
+          <Page>
+            {data && data.party && (
+              <SelectedTracksContainer>
+                <PlayerWrapper>
+                  <Player
+                    activeFeedUri={data.party.playlistId}
+                    partyId={data.party.id}
+                  />
+                </PlayerWrapper>
+                <TabsCard>
+                  <Tabs activeTab={activeTab} onChange={onTabChange}>
+                    <Tab name={PlayerTabs.Queue}>Queue</Tab>
+                    <Tab name={PlayerTabs.Browse}>Browse</Tab>
+                    {data.party.permission === Permissions.ADMIN && (
+                      <Tab
+                        name={PlayerTabs.Settings}
+                        css={css`
+                          flex: 0;
+                          flex-basis: 50px;
+                        `}
+                      >
+                        <SettingsTabIcon />
+                        {data.party.requestedUserIds &&
+                          data.party.requestedUserIds.length > 0 && (
+                            <UnreadBadge
+                              css={css`
+                                position: absolute;
+                                top: 2px;
+                                right: 8px;
+                              `}
+                              count={data.party.requestedUserIds.length}
                             />
                           )}
-                        />
-                      )}
+                      </Tab>
+                    )}
+                  </Tabs>
+                </TabsCard>
+                <ContentWrapper>
+                  <Switch>
+                    <Route
+                      path={`${match.path}/browse`}
+                      component={PlayLists}
+                    />
+                    {data.party.permission === Permissions.ADMIN && (
                       <Route
-                        render={() => (
-                          <PartyPlaylist
-                            partyId={data.party.id}
-                            {...data.party.playlist}
-                            activeTrackIndex={
-                              data.party.activeTrackIndex || undefined
+                        path={`${match.path}/settings`}
+                        render={props => (
+                          <PartySettings
+                            {...props}
+                            requestedUserCount={
+                              data.party.requestedUserIds
+                                ? data.party.requestedUserIds.length
+                                : 0
                             }
+                            partyName={data.party.name}
                           />
                         )}
                       />
-                    </Switch>
-                  </ContentWrapper>
-                  <AddSelectedTracks partyId={data.party.id} />
-                </SelectedTracksContainer>
-              )}
-            </Page>
-          </WebPlayerContextContainer>
+                    )}
+                    <Route
+                      render={() => (
+                        <PartyPlaylist
+                          partyId={data.party.id}
+                          {...data.party.playlist}
+                          activeTrackIndex={
+                            data.party.activeTrackIndex || undefined
+                          }
+                        />
+                      )}
+                    />
+                  </Switch>
+                </ContentWrapper>
+                <AddSelectedTracks partyId={data.party.id} />
+              </SelectedTracksContainer>
+            )}
+          </Page>
         </PlayerContainer>
       </PartyContext.Provider>
     </ChangedPartyTracksProvider>

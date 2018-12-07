@@ -4,9 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { API_HOST } from 'app-constants';
 import ConnectSpotifyButton from 'components/ConnectSpotifyButton';
 
-interface Props extends RouteComponentProps {}
-
-function SpotifyConnect({ location }: Props) {
+function SpotifyConnect({ location }: RouteComponentProps) {
   const [, setIsConnecting] = React.useState(false);
 
   const onClick = () => {

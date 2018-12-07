@@ -28,13 +28,9 @@ export default function Player({ activeFeedUri, partyId }: Props) {
 
       playerContext.togglePlayState({
         type,
+        uris,
+        playlistUri,
         partyId,
-        optimisticResponse: {
-          togglePlayState: {
-            __typename: 'PlayStateChange',
-            isPlaying: type !== 'pause',
-          },
-        },
       });
     },
     [],

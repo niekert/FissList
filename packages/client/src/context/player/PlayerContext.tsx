@@ -1,6 +1,5 @@
 import { createContext } from 'react';
 import { PlayerQueryResult } from './usePlayerQuery';
-import { Player } from './__generated__/Player';
 
 export interface TogglePlayStateOptions {
   type: string;
