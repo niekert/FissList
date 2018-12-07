@@ -120,7 +120,7 @@ export function makeHttpService(accessKey: string): HttpService {
 
     if (status === 400) {
       throw new GraphQLError('Invalid request');
-    }
+      }
 
     return data;
   }
