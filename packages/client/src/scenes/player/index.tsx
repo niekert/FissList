@@ -43,9 +43,10 @@ export default function Player({ activeFeedUri, partyId }: Props) {
   };
 
   if (
-    (playerContext!.networkStatus === NetworkStatus.ready &&
+    ((playerContext!.networkStatus === NetworkStatus.ready &&
       !playerContext!.data!.player) ||
-    playerContext!.networkStatus === NetworkStatus.refetch
+      playerContext!.networkStatus === NetworkStatus.refetch) &&
+    !playerContext!.webSdkDeviceId
   ) {
     return (
       <NoPlayerFound
@@ -55,17 +56,13 @@ export default function Player({ activeFeedUri, partyId }: Props) {
     );
   }
 
-  if (!playerContext || !playerContext.data || !playerContext.data.player) {
-    return null;
-  }
+  const { player } = playerContext!.data;
 
-  const { player } = playerContext.data;
-
-  const isPlaying = player && player.isPlaying;
+  const isPlaying = player ? player.isPlaying : false;
 
   return (
     <>
-      {player.item && <ActiveTrack {...player.item} />}
+      {player && player.item && <ActiveTrack {...player.item} />}
       <SecondaryOptions>
         <TrackNavigation
           // TODO: handle with reducer
@@ -75,9 +72,10 @@ export default function Player({ activeFeedUri, partyId }: Props) {
           onPlayPause={() => handlePlayState(isPlaying ? 'pause' : 'play')}
         />
         <Devices
-          activeDevice={player.device}
-          isPlaying={player.isPlaying}
-          devices={player.devices || []}
+          activeDevice={player ? player.device : null}
+          isPlaying={isPlaying}
+          devices={(player && player.devices) || []}
+          webSdkDeviceId={playerContext!.webSdkDeviceId}
           onDeviceChange={handleDeviceChange}
         />
       </SecondaryOptions>

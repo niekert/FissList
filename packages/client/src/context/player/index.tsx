@@ -1,9 +1,8 @@
 import * as React from 'react';
 import PlayerContext, { PlayerContextValue } from './PlayerContext';
 import { PlayerContainer as SpotifyConnectContainer } from './SpotifyConnectPlayer';
-import { WebSdkPlayerContainer } from './WebSdkPlayer';
 
-export const PlayerContainer = WebSdkPlayerContainer;
+export const PlayerContainer = SpotifyConnectContainer;
 
 export type PlayerContextValue = PlayerContextValue;
 

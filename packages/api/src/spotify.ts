@@ -48,7 +48,8 @@ export interface Track {
 export const scopes: string = [
   'user-read-playback-state',
   'user-read-currently-playing',
-  'user-modify-playback-state',
+  'streaming',
+  'user-read-birthdate',
   'user-modify-playback-state',
   'user-read-private',
   'playlist-read-private',
@@ -120,7 +121,7 @@ export function makeHttpService(accessKey: string): HttpService {
 
     if (status === 400) {
       throw new GraphQLError('Invalid request');
-      }
+    }
 
     return data;
   }

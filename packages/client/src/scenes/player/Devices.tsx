@@ -38,7 +38,8 @@ const ChangeDeviceText = styled.span`
 interface IProps {
   activeDevice: DeviceInfo | null;
   devices?: DeviceInfo[];
-  onDeviceChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onDeviceChange: (e: any) => void;
+  webSdkDeviceId?: string;
   isPlaying: boolean;
 }
 
@@ -46,6 +47,7 @@ export default function Devices({
   activeDevice,
   devices = [],
   onDeviceChange,
+  webSdkDeviceId,
 }: IProps) {
   const selectRef = React.useRef<any>(undefined);
   const onDeviceClick = () => {
@@ -68,6 +70,11 @@ export default function Devices({
             <option disabled={true} value="">
               Select a device...
             </option>
+            {webSdkDeviceId && (
+              <option key={webSdkDeviceId} value={webSdkDeviceId}>
+                PAmpa play no man swa
+              </option>
+            )}
             {devices
               .filter(device => !!device.id)
               .map(device => (
