@@ -1,11 +1,19 @@
 import { createContext } from 'react';
-import { PlayerQueryResult } from './PlayerQuery';
-import { TogglePlayingMutationFn } from './TogglePlayStateMutation';
-import { SetActiveDeviceMutationFn } from './SetDeviceMutation';
+import { PlayerQueryResult } from './usePlayerQuery';
+import { Player } from './__generated__/Player';
+
+export interface TogglePlayStateOptions {
+  type: string;
+  partyId: string;
+  uris?: string[];
+  playlistUri?: string;
+  offsetUri?: string;
+  contextUri?: string;
+}
 
 export type PlayerContextValue = PlayerQueryResult & {
-  togglePlayState: TogglePlayingMutationFn;
-  setActiveDevice: SetActiveDeviceMutationFn;
+  togglePlayState: (options: TogglePlayStateOptions) => void;
+  setActiveDevice: (deviceId: string) => void;
 };
 
 export default createContext<PlayerContextValue | undefined>(undefined);

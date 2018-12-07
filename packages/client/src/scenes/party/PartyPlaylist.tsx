@@ -14,11 +14,9 @@ function PartyPlaylist({ tracks, partyId, id, activeTrackIndex }: Props) {
 
   const playTrack = trackId => {
     player!.togglePlayState({
-      variables: {
-        type: 'play',
-        partyId,
-        offsetUri: `spotify:track:${trackId}`,
-      },
+      type: 'play',
+      partyId,
+      offsetUri: `spotify:track:${trackId}`,
     });
   };
 

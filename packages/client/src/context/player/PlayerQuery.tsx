@@ -31,7 +31,7 @@ interface IProps {
   children: (me: QueryResult<Player>) => React.ReactNode;
 }
 
-export type PlayerQueryResult = QueryResult<Player>;
+export type PlayerQueryResult = ApolloQueryResult<Player>;
 export type Player = Player;
 
 export default function PlayerQueryComponent({ children }: IProps) {

@@ -27,10 +27,8 @@ export default function Player({ activeFeedUri, partyId }: Props) {
       }
 
       playerContext.togglePlayState({
-        variables: {
-          type,
-          partyId,
-        },
+        type,
+        partyId,
         optimisticResponse: {
           togglePlayState: {
             __typename: 'PlayStateChange',
@@ -44,9 +42,7 @@ export default function Player({ activeFeedUri, partyId }: Props) {
 
   const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value) {
-      playerContext!.setActiveDevice({
-        variables: { deviceId: e.target.value },
-      });
+      playerContext!.setActiveDevice(e.target.value);
     }
   };
 
