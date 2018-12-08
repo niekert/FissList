@@ -4,7 +4,7 @@ import {
   useSetActiveDeviceMutation,
   useSetTogglePlayStateMutation,
 } from './mutations';
-import { useSpotifyWebSdk, StateChange } from 'hooks/spotifyWebSdk';
+import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import PlayerContext, { TogglePlayStateOptions } from './PlayerContext';
 import { Context } from 'context/ChangedPartyTracksContext';
 
@@ -15,15 +15,18 @@ interface IProps {
 export function PlayerContainer({ children }: IProps) {
   // need HOOKS for graphql smh
   const player = usePlayerQuery();
-  const onPlayerStateChanged = React.useCallback((state: StateChange) => {
-    if (!state) {
-      return;
-    }
+  const onPlayerStateChanged = React.useCallback(
+    (state: Spotify.PlaybackState) => {
+      if (!state) {
+        return;
+      }
 
-    if (state.context.uri) {
-      console.log('new uri', state.track_window.current_track.id);
-    }
-  }, []);
+      if (state.context.uri) {
+        console.log('new uri', state.track_window.current_track.id);
+      }
+    },
+    [],
+  );
 
   const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
     name: 'PampaPlay',

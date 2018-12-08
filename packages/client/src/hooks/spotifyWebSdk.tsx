@@ -10,7 +10,7 @@ interface Options {
   getOAuthToken: () => Promise<string>;
   accountError?: (e: any) => void;
   onReady?: (deviceId: string) => void;
-  onPlayerStateChanged?: (state: StateChange) => void;
+  onPlayerStateChanged?: Spotify.PlaybackStateListener;
 }
 
 interface WebPlayTrack {
@@ -20,15 +20,6 @@ interface WebPlayTrack {
   name: string;
 }
 
-export interface StateChange {
-  context: {
-    uri: string;
-    metadata: any;
-  };
-  track_window: {
-    current_track: WebPlayTrack;
-  };
-}
 export function useSpotifyWebSdk({
   name,
   getOAuthToken,
