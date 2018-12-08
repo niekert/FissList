@@ -10939,6 +10939,13 @@ use-component-size-typed@1.0.2:
   resolved "https://registry.yarnpkg.com/use-component-size-typed/-/use-component-size-typed-1.0.2.tgz#1844b3009f9002ecc056598e621f6eedf40a1a97"
   integrity sha512-KiU8nEwsAca0RPSgXMUp8ubn+VppQT/yL0MJzgll/0y9ZmBQgDlNfjGi2VnX8ChNRERSrd7Q/Hn+yrzl6d5ozw==
 
+use-spotify-web-playback-sdk@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/use-spotify-web-playback-sdk/-/use-spotify-web-playback-sdk-0.0.9.tgz#e9a7c057f56062fe7fe2efc0e145af1b6a814f79"
+  integrity sha512-abdQ62tFZafa+W7rFSnWfnUCgGdmw4j/rrR8Xs9VBztSw6ARrzgPrz54iRKlkQGZHP8+QnGvCkNvyJ/I6etJSw==
+  dependencies:
+    the-platform "^0.9.3"
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"

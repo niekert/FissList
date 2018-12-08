@@ -4,8 +4,9 @@ import {
   useSetActiveDeviceMutation,
   useSetTogglePlayStateMutation,
 } from './mutations';
-import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
+import { useSpotifyWebSdk, StateChange } from 'hooks/spotifyWebSdk';
 import PlayerContext, { TogglePlayStateOptions } from './PlayerContext';
+import { Context } from 'context/ChangedPartyTracksContext';
 
 interface IProps {
   children: React.ReactNode;
@@ -14,9 +15,22 @@ interface IProps {
 export function PlayerContainer({ children }: IProps) {
   // need HOOKS for graphql smh
   const player = usePlayerQuery();
-  const { script: webSdkScript, deviceId: webSdkDeviceId } = useSpotifyWebSdk({
+  const onPlayerStateChanged = React.useCallback((state: StateChange) => {
+    if (!state) {
+      return;
+    }
+
+    if (state.context.uri) {
+      console.log('new uri', state.track_window.current_track.id);
+    }
+  }, []);
+
+  const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
     name: 'PampaPlay',
-    getOAuthToken: () => localStorage.getItem('accessToken') as string,
+
+    getOAuthToken: () =>
+      Promise.resolve(localStorage.getItem('accessToken') as string),
+    onPlayerStateChanged,
   });
 
   const setActiveDevice = useSetActiveDeviceMutation();
@@ -37,12 +51,13 @@ export function PlayerContainer({ children }: IProps) {
     [],
   );
 
-  const handleActiveDevice = (deviceId: string) => {
-    setActiveDevice({
+  const handleActiveDevice = async (deviceId: string) => {
+    await setActiveDevice({
       variables: {
         deviceId,
       },
     });
+    player.refetch();
   };
 
   React.useEffect(
@@ -64,7 +79,7 @@ export function PlayerContainer({ children }: IProps) {
         webSdkDeviceId,
       }}
     >
-      {webSdkScript}
+      {script}
       {children}
     </PlayerContext.Provider>
   );

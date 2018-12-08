@@ -70,11 +70,7 @@ export default function Devices({
             <option disabled={true} value="">
               Select a device...
             </option>
-            {webSdkDeviceId && (
-              <option key={webSdkDeviceId} value={webSdkDeviceId}>
-                PAmpa play no man swa
-              </option>
-            )}
+
             {devices
               .filter(device => !!device.id)
               .map(device => (

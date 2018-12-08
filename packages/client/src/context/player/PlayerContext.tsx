@@ -12,7 +12,7 @@ export interface TogglePlayStateOptions {
 
 export type PlayerContextValue = PlayerQueryResult & {
   togglePlayState: (options: TogglePlayStateOptions) => void;
-  webSdkDeviceId?: string;
+  webSdkDeviceId: string | null;
   setActiveDevice: (deviceId: string) => void;
 };
 

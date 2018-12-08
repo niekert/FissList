@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
 import GetMe from 'queries/GetMe';
 import ErrorBoundary from 'components/ErrorBoundary';
-import { Route, Router, Switch } from 'react-router-dom';;
+import { Route, Router, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import Spinner from 'components/Spinner';
 import NewParty from 'scenes/newParty';
@@ -21,9 +21,13 @@ const GlobalStyle = createGlobalStyle`
     -webkit-overflow-scrolling: touch;
   }
 
-form {
-  margin-bottom: 0;
-}
+  form {
+    margin-bottom: 0;
+  }
+`;
+
+const PageLoader = styled(Spinner)`
+  min-height: 100vh;
 `;
 
 const history = createHistory();
@@ -33,7 +37,7 @@ function App() {
     <Theme>
       <ErrorBoundary>
         <Router history={history}>
-          <React.Suspense fallback={<Spinner />}>
+          <React.Suspense fallback={<PageLoader />}>
             <Route path="/auth" component={Auth} />
 
             <GlobalStyle />
@@ -41,7 +45,7 @@ function App() {
               {result => {
                 const { loading, data } = result;
                 if (loading) {
-                  return null;
+                  return <PageLoader />;
                 }
 
                 if (!data || !data.me) {

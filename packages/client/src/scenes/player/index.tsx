@@ -75,7 +75,7 @@ export default function Player({ activeFeedUri, partyId }: Props) {
           activeDevice={player ? player.device : null}
           isPlaying={isPlaying}
           devices={(player && player.devices) || []}
-          webSdkDeviceId={playerContext!.webSdkDeviceId}
+          webSdkDeviceId={playerContext!.webSdkDeviceId || undefined}
           onDeviceChange={handleDeviceChange}
         />
       </SecondaryOptions>

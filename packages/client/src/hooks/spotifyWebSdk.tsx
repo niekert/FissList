@@ -3,16 +3,31 @@ import { Script } from 'the-platform';
 import { placeholder } from 'polished';
 
 // tslint:disable-next-line
-const noop = e => {
-  console.log('wa is di', e);
-};
+const noop = e => {};
 
 interface Options {
   name: string;
-  getOAuthToken: () => string;
+  getOAuthToken: () => Promise<string>;
   accountError?: (e: any) => void;
   onReady?: (deviceId: string) => void;
-  onPlayerStateChanged?: (state: any) => void;
+  onPlayerStateChanged?: (state: StateChange) => void;
+}
+
+interface WebPlayTrack {
+  uri: string;
+  id: string;
+  type: 'track' | 'episode';
+  name: string;
+}
+
+export interface StateChange {
+  context: {
+    uri: string;
+    metadata: any;
+  };
+  track_window: {
+    current_track: WebPlayTrack;
+  };
 }
 export function useSpotifyWebSdk({
   name,
@@ -30,14 +45,16 @@ export function useSpotifyWebSdk({
     (window as any).onSpotifyWebPlaybackSDKReady = () => {
       playerRef.current = new Spotify.Player({
         name,
-        getOAuthToken: cb => cb(getOAuthToken()),
+        getOAuthToken: async cb => {
+          const token = await getOAuthToken();
+          cb(token);
+        },
       });
       setIsReady(true);
     };
   }, []);
 
   const handleReady = React.useCallback(({ device_id: readyDeviceId }) => {
-    console.log('is ready', readyDeviceId);
     setDeviceId(readyDeviceId);
 
     if (onReady) {
