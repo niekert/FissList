@@ -50,6 +50,7 @@ export interface GrantPartyAccess_grantPartyAccess {
   playlistId: string;
   permission: Permissions;
   requestedUserIds: string[] | null;
+  ownerUserId: string;
   partyUserIds: string[] | null;
   playlist: GrantPartyAccess_grantPartyAccess_playlist;
 }

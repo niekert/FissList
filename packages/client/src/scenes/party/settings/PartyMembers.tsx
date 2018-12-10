@@ -57,6 +57,10 @@ export default function PartyNameForm() {
   return (
     <form>
       <ActionList>
+        <ActionListGroupTitle key="party-owners-section">
+          Party owner
+        </ActionListGroupTitle>
+        <ActionListItem key="admin" label={party.ownerUserId} />
         {party.requestedUserIds &&
           party.requestedUserIds.length && [
             <ActionListGroupTitle key="members">
@@ -99,12 +103,16 @@ export default function PartyNameForm() {
               />
             )),
           ]}
-        <ActionListGroupTitle key="activeMembers">
-          Active members
-        </ActionListGroupTitle>
-        {party.partyUserIds!.map(userId => (
-          <ActionListItem key={userId} label={userId} />
-        ))}
+        {party.partyUserIds && party.partyUserIds.length && (
+          <>
+            <ActionListGroupTitle key="activeMembers">
+              Active members
+            </ActionListGroupTitle>
+            {party.partyUserIds!.map(userId => (
+              <ActionListItem key={userId} label={userId} />
+            ))}
+          </>
+        )}
       </ActionList>
     </form>
   );

@@ -4,6 +4,7 @@ import {
   useSetActiveDeviceMutation,
   useSetTogglePlayStateMutation,
 } from './mutations';
+import { GET_PARTY, usePartyContext } from 'scenes/party';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import PlayerContext, { TogglePlayStateOptions } from './PlayerContext';
 import { Context } from 'context/ChangedPartyTracksContext';
@@ -15,14 +16,42 @@ interface IProps {
 export function PlayerContainer({ children }: IProps) {
   // need HOOKS for graphql smh
   const player = usePlayerQuery();
+  const party = usePartyContext();
+  const setActiveDevice = useSetActiveDeviceMutation();
+  const togglePlayState = useSetTogglePlayStateMutation();
+
+  console.log('party track index', party.activeTrackIndex);
   const onPlayerStateChanged = React.useCallback(
-    (state: Spotify.PlaybackState) => {
+    async (state: Spotify.PlaybackState) => {
       if (!state) {
         return;
       }
 
-      if (state.context.uri) {
-        console.log('new uri', state.track_window.current_track.id);
+      if (state.context.uri && state.position === 0) {
+        const nextExpectedTrack = party!.playlist.tracks.items[
+          (party!.activeTrackIndex || 0) + 1
+        ];
+
+        console.log(
+          'expecint got play',
+          nextExpectedTrack.track.name,
+          'got:',
+          state.track_window.current_track.name,
+        );
+        if (
+          state.track_window.current_track.id === nextExpectedTrack.track.id
+        ) {
+          // Correct track is playing
+          return;
+        }
+
+        // togglePlayState({
+        //   variables: {
+        //     contextUri: `spotify:track:${nextExpectedTrack.track.id}`,
+        //     partyId: party!.id,
+        //     type: 'play',
+        //   },
+        // });
       }
     },
     [],
@@ -36,19 +65,19 @@ export function PlayerContainer({ children }: IProps) {
     onPlayerStateChanged,
   });
 
-  const setActiveDevice = useSetActiveDeviceMutation();
-  const togglePlayState = useSetTogglePlayStateMutation();
-
   const handlePlayState = React.useCallback(
-    ({ type, partyId, offsetUri, contextUri }: TogglePlayStateOptions) => {
+    ({ type, offsetUri, contextUri }: TogglePlayStateOptions) => {
       togglePlayState({
         variables: {
           type,
-          partyId,
+          partyId: party.id,
           contextUri,
           offsetUri,
         },
-        refetchQueries: [{ query: PLAYER_QUERY }],
+        refetchQueries: [
+          { query: PLAYER_QUERY },
+          { query: GET_PARTY, variables: { partyId: party.id } },
+        ],
       });
     },
     [],

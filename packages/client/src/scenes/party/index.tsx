@@ -15,13 +15,16 @@ import PartySubscription from './PartyChangesSubscription';
 import AddSelectedTracks from './AddSelectedTracks';
 import { PlayerContainer } from 'context/player';
 import { PartyContext } from './context';
-import Player from 'scenes/player';
+import Player from './scenes/player';
 import PlayLists from 'scenes/playlists';
 import PartyPlaylist from './PartyPlaylist';
 import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
 import { Permissions } from 'globalTypes';
+
+export { usePartyContext } from './context';
+export { GET_PARTY } from './usePartyQuery';
 
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 156;

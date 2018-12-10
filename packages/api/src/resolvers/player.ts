@@ -86,6 +86,10 @@ export async function togglePlayState(
   context: Context,
 ) {
   const party = await context.prisma.party({ id: args.partyId });
+  const [player, playlist] = await Promise.all([
+    context.spotify.fetchResource<Player>('/me/player'),
+    context.spotify.fetchResource<Playlist>(`/playlists/${party.playlistId}`),
+  ]);
 
   let retVal;
   if (args.type === PlayState.Play) {
@@ -106,6 +110,16 @@ export async function togglePlayState(
       },
     );
 
+    const trackIndex = playlist.data.tracks.items.findIndex(
+      track => track.track.id === player.data.item.id,
+    );
+    await context.prisma.updateParty({
+      where: { id: args.partyId },
+      data: {
+        activeTrackIndex: trackIndex,
+      },
+    });
+
     retVal = {
       isPlaying: true,
     };
@@ -123,11 +137,6 @@ export async function togglePlayState(
 
   //FIXME: fetching player state is not update on time. should inv
   await new Promise(resolve => setTimeout(resolve, 500));
-
-  const player = await context.spotify.fetchResource<Player>('/me/player');
-  const playlist = await context.spotify.fetchResource<Playlist>(
-    `/playlists/${party.playlistId}`,
-  );
 
   const trackIndex = playlist.data.tracks.items.findIndex(
     track => track.track.id === player.data.item.id,

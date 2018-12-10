@@ -9,6 +9,7 @@ export const PartyInfo = gql`
     playlistId
     permission
     requestedUserIds
+    ownerUserId
     partyUserIds
     playlist {
       ...PlaylistInfo

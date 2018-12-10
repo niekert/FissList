@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { usePartyContext } from '../../context';
 import { usePlayer } from 'context/player';
 import { NetworkStatus } from 'apollo-client';
 import ActiveTrack from './ActiveTrack';
