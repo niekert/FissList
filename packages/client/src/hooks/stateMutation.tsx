@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { useMutation, MutationHookOptions } from 'react-apollo-hooks';
+import {
+  useMutation,
+  MutationHookOptions,
+  FetchResult,
+} from 'react-apollo-hooks';
 import { DocumentNode } from 'graphql';
 
 export default function useStateMutation<Mutation, MutationVariables>(
@@ -7,6 +11,9 @@ export default function useStateMutation<Mutation, MutationVariables>(
 ) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [lastResult, setResult] = React.useState<
+    FetchResult<Mutation> | undefined
+  >(undefined);
 
   const mutationFn = useMutation<Mutation, MutationVariables>(query);
 
@@ -20,6 +27,7 @@ export default function useStateMutation<Mutation, MutationVariables>(
 
     setIsSuccess(!result.errors);
     setIsLoading(false);
+    setResult(result);
   };
 
   const clearSuccess = () => {
@@ -30,6 +38,8 @@ export default function useStateMutation<Mutation, MutationVariables>(
     mutate,
     isLoading,
     isSuccess,
+    data: lastResult && lastResult.data,
+    errors: lastResult && lastResult.errors,
     clearSuccess,
   };
 }
