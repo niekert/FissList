@@ -2,9 +2,9 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode, GraphQLSchema } from "graphql";
-import { makePrismaClientClass, BaseClientOptions } from "prisma-client-lib";
-import { typeDefs } from "./prisma-schema";
+import { DocumentNode, GraphQLSchema } from 'graphql';
+import { makePrismaClientClass, BaseClientOptions } from 'prisma-client-lib';
+import { typeDefs } from './prisma-schema';
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
@@ -26,7 +26,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any }
+    variables?: { [key: string]: any },
   ) => Promise<T>;
 
   /**
@@ -43,7 +43,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<Party>;
   partiesConnection: (
     args?: {
@@ -54,7 +54,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => PartyConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
@@ -66,7 +66,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => FragmentableArray<User>;
   usersConnection: (
     args?: {
@@ -77,7 +77,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    }
+    },
   ) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
@@ -87,33 +87,33 @@ export interface Prisma {
 
   createParty: (data: PartyCreateInput) => PartyPromise;
   updateParty: (
-    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput }
+    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput },
   ) => PartyPromise;
   updateManyParties: (
-    args: { data: PartyUpdateManyMutationInput; where?: PartyWhereInput }
+    args: { data: PartyUpdateManyMutationInput; where?: PartyWhereInput },
   ) => BatchPayloadPromise;
   upsertParty: (
     args: {
       where: PartyWhereUniqueInput;
       create: PartyCreateInput;
       update: PartyUpdateInput;
-    }
+    },
   ) => PartyPromise;
   deleteParty: (where: PartyWhereUniqueInput) => PartyPromise;
   deleteManyParties: (where?: PartyWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
+    args: { data: UserUpdateInput; where: UserWhereUniqueInput },
   ) => UserPromise;
   updateManyUsers: (
-    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }
+    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput },
   ) => BatchPayloadPromise;
   upsertUser: (
     args: {
       where: UserWhereUniqueInput;
       create: UserCreateInput;
       update: UserUpdateInput;
-    }
+    },
   ) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
@@ -127,10 +127,10 @@ export interface Prisma {
 
 export interface Subscription {
   party: (
-    where?: PartySubscriptionWhereInput
+    where?: PartySubscriptionWhereInput,
   ) => PartySubscriptionPayloadSubscription;
   user: (
-    where?: UserSubscriptionWhereInput
+    where?: UserSubscriptionWhereInput,
   ) => UserSubscriptionPayloadSubscription;
 }
 
@@ -143,32 +143,32 @@ export interface ClientConstructor<T> {
  */
 
 export type PartyOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "activeTrackIndex_ASC"
-  | "activeTrackIndex_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "ownerUserId_ASC"
-  | "ownerUserId_DESC"
-  | "playlistId_ASC"
-  | "playlistId_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'activeTrackIndex_ASC'
+  | 'activeTrackIndex_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  | 'ownerUserId_ASC'
+  | 'ownerUserId_DESC'
+  | 'playlistId_ASC'
+  | 'playlistId_DESC';
 
 export type UserOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC';
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
 
 export interface PartyCreatetrackUrisInput {
   set?: String[] | String;
@@ -751,13 +751,13 @@ export type Boolean = boolean;
 
 export const models = [
   {
-    name: "Party",
-    embedded: false
+    name: 'Party',
+    embedded: false,
   },
   {
-    name: "User",
-    embedded: false
-  }
+    name: 'User',
+    embedded: false,
+  },
 ];
 
 /**
@@ -767,6 +767,6 @@ export const models = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://heroku-3a2922e17a.herokuapp.com/api/dev`
+  endpoint: `http://localhost:4467`,
 });
 export const prisma = new Prisma();

@@ -20,7 +20,10 @@ export function PlayerContainer({ children }: IProps) {
   const setActiveDevice = useSetActiveDeviceMutation();
   const togglePlayState = useSetTogglePlayStateMutation();
 
-  console.log('party track index', party.activeTrackIndex);
+  if (player.data.player && player.data.player.item) {
+    console.log('active item', player.data.player.item);
+  }
+
   const onPlayerStateChanged = React.useCallback(
     async (state: Spotify.PlaybackState) => {
       if (!state) {
@@ -32,12 +35,6 @@ export function PlayerContainer({ children }: IProps) {
           (party!.activeTrackIndex || 0) + 1
         ];
 
-        console.log(
-          'expecint got play',
-          nextExpectedTrack.track.name,
-          'got:',
-          state.track_window.current_track.name,
-        );
         if (
           state.track_window.current_track.id === nextExpectedTrack.track.id
         ) {
