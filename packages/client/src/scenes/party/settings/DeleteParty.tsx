@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Button } from 'components/Form';
 import { FormField } from 'components/Form';
 import { useStateMutation } from 'hooks';
-import { GET_ME } from 'queries/GetMe';
+import { GET_ME } from 'queries/useGetMe';
 import { DeleteParty, DeletePartyVariables } from './__generated__/DeleteParty';
 
 const DeleteButton = styled(Button)`

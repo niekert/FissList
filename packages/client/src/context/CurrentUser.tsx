@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { QueryResult } from 'queries/GetMe';
+import { GetMe } from 'queries/__generated__/GetMe';
 
-export type CurrentUser = QueryResult | undefined;
+interface Context {
+  data: GetMe;
+  refetch: () => void;
+}
+
+export type CurrentUser = Context | undefined;
 export default React.createContext<CurrentUser>(undefined);

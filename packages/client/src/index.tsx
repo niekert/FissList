@@ -11,6 +11,12 @@ import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import App from './App';
+import Spinner from 'components/Spinner';
+import styled from 'styled-components';
+
+const PageLoader = styled(Spinner)`
+  min-height: 100vh;
+`;
 
 const authLink = setContext((_, { headers }) => {
   const accessKey = localStorage.getItem('accessToken');
@@ -79,7 +85,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ApolloHooksProvider client={client}>
-      <App />
+      <React.Suspense fallback={<PageLoader />}>
+        <App />
+      </React.Suspense>
     </ApolloHooksProvider>
   </ApolloProvider>,
   document.getElementById('root') as HTMLElement,

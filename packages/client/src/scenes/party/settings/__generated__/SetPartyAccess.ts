@@ -12,42 +12,6 @@ export interface SetPartyAccess_setPartyAccess_queuedTracks {
   voteCount: number;
 }
 
-export interface SetPartyAccess_setPartyAccess_playlist_tracks_items_track_artists {
-  id: string;
-  name: string;
-}
-
-export interface SetPartyAccess_setPartyAccess_playlist_tracks_items_track_images {
-  url: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface SetPartyAccess_setPartyAccess_playlist_tracks_items_track {
-  artists: SetPartyAccess_setPartyAccess_playlist_tracks_items_track_artists[];
-  images: SetPartyAccess_setPartyAccess_playlist_tracks_items_track_images[] | null;
-  id: string;
-  name: string;
-  uri: string;
-}
-
-export interface SetPartyAccess_setPartyAccess_playlist_tracks_items {
-  addedAt: string;
-  track: SetPartyAccess_setPartyAccess_playlist_tracks_items_track;
-}
-
-export interface SetPartyAccess_setPartyAccess_playlist_tracks {
-  items: SetPartyAccess_setPartyAccess_playlist_tracks_items[];
-  total: number;
-  href: string;
-}
-
-export interface SetPartyAccess_setPartyAccess_playlist {
-  name: string;
-  id: string;
-  tracks: SetPartyAccess_setPartyAccess_playlist_tracks;
-}
-
 export interface SetPartyAccess_setPartyAccess {
   id: string;
   name: string;
@@ -56,7 +20,6 @@ export interface SetPartyAccess_setPartyAccess {
   ownerUserId: string;
   partyUserIds: string[] | null;
   queuedTracks: SetPartyAccess_setPartyAccess_queuedTracks[];
-  playlist: SetPartyAccess_setPartyAccess_playlist;
 }
 
 export interface SetPartyAccess {

@@ -63,7 +63,4 @@ export default {
     playlist,
     userPlaylists,
   },
-  Party: {
-    playlist,
-  },
 };

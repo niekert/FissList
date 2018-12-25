@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { PlaylistInfo } from './Playlist';
 
 export const PartyInfo = gql`
   fragment PartyInfo on Party {
@@ -13,10 +12,5 @@ export const PartyInfo = gql`
       uri
       voteCount
     }
-    playlist {
-      ...PlaylistInfo
-    }
   }
-
-  ${PlaylistInfo}
 `;

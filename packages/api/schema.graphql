@@ -43,10 +43,8 @@ type Party {
   permission: Permissions!
   activeTrackIndex: Int
   ownerUserId: String!
-  playlistId: String!
   requestedUserIds: [String!]
   partyUserIds: [String!]
-  playlist: Playlist!
   queuedTracks: [QueuedTrack!]!
 }
 
@@ -135,7 +133,7 @@ type Mutation {
     contextUri: String
     offsetUri: String
   ): PlayStateChange
-  createParty(name: String!, playlistId: String!): Party
+  createParty(name: String!, trackUris: [String]!): Party
   addTracks(partyId: String, trackIds: [String]!): Party
   deleteParty(partyId: String): Boolean
   updatePartyName(partyId: String!, name: String!): Party

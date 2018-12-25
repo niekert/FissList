@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
-import GetMe from 'queries/GetMe';
+import { useGetMe } from 'queries/useGetMe';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { Route, Router, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
@@ -33,6 +33,8 @@ const PageLoader = styled(Spinner)`
 const history = createHistory();
 
 function App() {
+  const me = useGetMe();
+
   return (
     <Theme>
       <ErrorBoundary>
@@ -41,29 +43,22 @@ function App() {
             <Route path="/auth" component={Auth} />
 
             <GlobalStyle />
-            <GetMe>
-              {result => {
-                const { loading, data } = result;
-                if (loading) {
-                  return <PageLoader />;
-                }
+            {me.loading && <PageLoader />}
 
-                if (!data || !data.me) {
-                  return <Landing />;
-                }
+            {(!me.data || !me.data.me) && <Landing />}
 
-                return (
-                  <CurrentUserContext.Provider value={result}>
-                    <Switch>
-                      <Route path="/new" component={NewParty} />
-                      <Route path="/join" component={JoinParty} />
-                      <Route path="/party/:partyId" component={Party} />
-                      <Route path="" component={SelectType} />
-                    </Switch>
-                  </CurrentUserContext.Provider>
-                );
-              }}
-            </GetMe>
+            {me.data && me.data.me && (
+              <CurrentUserContext.Provider
+                value={{ data: me.data, refetch: me.refetch }}
+              >
+                <Switch>
+                  <Route path="/new" component={NewParty} />
+                  <Route path="/join" component={JoinParty} />
+                  <Route path="/party/:partyId" component={Party} />
+                  <Route path="" component={SelectType} />
+                </Switch>
+              </CurrentUserContext.Provider>
+            )}
           </React.Suspense>
         </Router>
       </ErrorBoundary>
