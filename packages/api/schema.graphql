@@ -135,7 +135,7 @@ type Mutation {
   updatePartyName(partyId: String!, name: String!): Party
   setActiveDevice(deviceId: String): Boolean
   requestPartyAccess(partyId: String!, userId: String): Party
-  grantPartyAccess(partyId: String!, userId: String!): Party
+  setPartyAccess(partyId: String!, userId: String!, grant: Boolean!): Party
 }
 
 type Subscription {

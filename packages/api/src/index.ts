@@ -5,7 +5,7 @@ import * as cors from 'cors';
 import * as express from 'express';
 import { importSchema } from 'graphql-import';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
-import { GraphQLServer, PubSub } from 'graphql-yoga';
+import { PubSub } from 'graphql-yoga';
 import { config } from 'dotenv';
 import { merge } from 'lodash';
 import playlistResolvers from './resolvers/playlist';
@@ -108,7 +108,7 @@ app.get('/auth-callback', async (req, res) => {
   res.end();
 });
 
-app.use(fallback('index.html', { root: path.resolve(__dirname, 'www') }));
+// app.use(fallback('index.html', { root: path.resolve(__dirname, 'www') }));
 
 const httpServer = createServer(app);
 apolloServer.applyMiddleware({ app });

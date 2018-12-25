@@ -1,5 +1,5 @@
 import { Context, SpotifyUser } from '../types';
-import { Party, PartyWhereInput } from '../generated/prisma-client';
+import { Party } from '../generated/prisma-client';
 import { ForbiddenError } from 'apollo-server';
 import { Playlist } from '../spotify';
 import { withFilter } from 'graphql-subscriptions';
@@ -68,7 +68,7 @@ async function party(
     permission: permission,
     requestedUserIds:
       permission === Permissions.Admin ? party.requestedUserIds : undefined,
-    partyUserIds: permission === Permissions.Member ? party.partyUserIds : [],
+    partyUserIds: permission !== Permissions.None ? party.partyUserIds : [],
     ownerUserId: party.ownerUserId,
     playlistId: party.playlistId,
     playlist: { id: party.playlistId },
@@ -264,9 +264,9 @@ async function requestPartyAccess(
   });
 }
 
-async function grantPartyAccess(
+async function setPartyAccess(
   _,
-  args: { partyId: string; userId: string },
+  args: { partyId: string; userId: string; grant: boolean },
   context: Context,
 ) {
   const me = await context.spotify.fetchCurrentUser();
@@ -279,7 +279,10 @@ async function grantPartyAccess(
   const newRequestIds = party.requestedUserIds.filter(
     userId => userId !== args.userId,
   );
-  const newMemberIds = [...party.partyUserIds, args.userId];
+
+  const newMemberIds = args.grant
+    ? [...party.partyUserIds, args.userId]
+    : party.partyUserIds.filter(userId => userId !== args.userId);
 
   const updatedParty = await context.prisma.updateParty({
     where: { id: args.partyId },
@@ -322,7 +325,7 @@ export default {
     updatePartyName,
     deleteParty,
     requestPartyAccess,
-    grantPartyAccess,
+    setPartyAccess,
   },
   Me: {
     parties,
