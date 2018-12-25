@@ -38,29 +38,29 @@ function App() {
   return (
     <Theme>
       <ErrorBoundary>
-        <Router history={history}>
-          <React.Suspense fallback={<PageLoader />}>
-            <Route path="/auth" component={Auth} />
+        <CurrentUserContext.Provider
+          value={{ data: me.data, refetch: me.refetch }}
+        >
+          <Router history={history}>
+            <React.Suspense fallback={<PageLoader />}>
+              <Route path="/auth" component={Auth} />
 
-            <GlobalStyle />
-            {me.loading && <PageLoader />}
+              <GlobalStyle />
+              {me.loading && <PageLoader />}
 
-            {(!me.data || !me.data.me) && <Landing />}
+              {(!me.data || !me.data.me) && <Landing />}
 
-            {me.data && me.data.me && (
-              <CurrentUserContext.Provider
-                value={{ data: me.data, refetch: me.refetch }}
-              >
+              {me.data && me.data.me && (
                 <Switch>
                   <Route path="/new" component={NewParty} />
                   <Route path="/join" component={JoinParty} />
                   <Route path="/party/:partyId" component={Party} />
                   <Route path="" component={SelectType} />
                 </Switch>
-              </CurrentUserContext.Provider>
-            )}
-          </React.Suspense>
-        </Router>
+              )}
+            </React.Suspense>
+          </Router>
+        </CurrentUserContext.Provider>
       </ErrorBoundary>
     </Theme>
   );

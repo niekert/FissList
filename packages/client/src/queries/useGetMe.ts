@@ -23,5 +23,7 @@ export const GET_ME = gql`
 `;
 
 export function useGetMe() {
-  return useQuery<GetMe>(GET_ME);
+  return useQuery<GetMe>(GET_ME, {
+    errorPolicy: 'all',
+  });
 }

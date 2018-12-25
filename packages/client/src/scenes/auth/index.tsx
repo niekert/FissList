@@ -1,8 +1,11 @@
 import * as React from 'react';
+import CurrentUserContext from 'context/CurrentUser';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { parse, OutputParams } from 'query-string';
+import { useGetMe } from 'queries/useGetMe';
 
 function AuthCallback({ history }: RouteComponentProps) {
+  const me = useGetMe();
   React.useEffect(
     () => {
       const query: OutputParams = parse(location!.search);
@@ -11,6 +14,8 @@ function AuthCallback({ history }: RouteComponentProps) {
         localStorage.setItem('accessToken', query.token as string);
         localStorage.setItem('refreshToken', query.refreshToken as string);
       }
+
+      me.refetch();
 
       history.replace(sessionStorage.getItem('loginUri') || '', {
         replace: true,
