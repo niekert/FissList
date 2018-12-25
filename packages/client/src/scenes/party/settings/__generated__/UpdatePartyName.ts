@@ -7,6 +7,11 @@ import { Permissions } from "./../../../../../__generated__/globalTypes";
 // GraphQL mutation operation: UpdatePartyName
 // ====================================================
 
+export interface UpdatePartyName_updatePartyName_queuedTracks {
+  uri: string;
+  voteCount: number;
+}
+
 export interface UpdatePartyName_updatePartyName_playlist_tracks_items_track_artists {
   id: string;
   name: string;
@@ -45,13 +50,12 @@ export interface UpdatePartyName_updatePartyName_playlist {
 
 export interface UpdatePartyName_updatePartyName {
   id: string;
-  activeTrackIndex: number | null;
   name: string;
-  playlistId: string;
   permission: Permissions;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
+  queuedTracks: UpdatePartyName_updatePartyName_queuedTracks[];
   playlist: UpdatePartyName_updatePartyName_playlist;
 }
 

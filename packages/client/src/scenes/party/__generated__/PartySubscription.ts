@@ -7,6 +7,11 @@ import { Permissions } from "./../../../../__generated__/globalTypes";
 // GraphQL subscription operation: PartySubscription
 // ====================================================
 
+export interface PartySubscription_party_queuedTracks {
+  uri: string;
+  voteCount: number;
+}
+
 export interface PartySubscription_party_playlist_tracks_items_track_artists {
   id: string;
   name: string;
@@ -45,13 +50,12 @@ export interface PartySubscription_party_playlist {
 
 export interface PartySubscription_party {
   id: string;
-  activeTrackIndex: number | null;
   name: string;
-  playlistId: string;
   permission: Permissions;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
+  queuedTracks: PartySubscription_party_queuedTracks[];
   playlist: PartySubscription_party_playlist;
 }
 

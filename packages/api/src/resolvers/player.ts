@@ -88,14 +88,11 @@ export async function togglePlayState(
   const party = await context.prisma.party({ id: args.partyId });
   const [player, playlist] = await Promise.all([
     context.spotify.fetchResource<Player>('/me/player'),
-    context.spotify.fetchResource<Playlist>(`/playlists/${party.playlistId}`),
   ]);
 
   if (args.type === PlayState.Play) {
     let contextUri = args.contextUri;
-    if (!args.contextUri) {
-      contextUri = `spotify:playlist:${party.playlistId}`;
-    }
+
     const { data, status } = await context.spotify.fetchResource(
       '/me/player/play',
       {
@@ -109,16 +106,6 @@ export async function togglePlayState(
       },
     );
 
-    const trackIndex = playlist.data.tracks.items.findIndex(
-      track => `spotify:track:${track.track.id}` === args.offsetUri,
-    );
-    await context.prisma.updateParty({
-      where: { id: args.partyId },
-      data: {
-        activeTrackIndex: trackIndex,
-      },
-    });
-
     return {
       isPlaying: true,
     };
@@ -127,20 +114,6 @@ export async function togglePlayState(
 
     const { status } = await context.spotify.fetchResource(path, {
       method,
-    });
-
-    //FIXME: fetching player state is not update on time. is there another way
-    // To detect what track is active immediately when nexting?
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    const trackIndex = playlist.data.tracks.items.findIndex(
-      track => track.track.id === player.data.item.id,
-    );
-    await context.prisma.updateParty({
-      where: { id: args.partyId },
-      data: {
-        activeTrackIndex: trackIndex,
-      },
     });
 
     return {

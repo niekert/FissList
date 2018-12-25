@@ -32,6 +32,11 @@ enum Permissions {
 
 # Regular type definitions for Bar, Foo, Baz types...
 
+type QueuedTrack {
+  uri: String!
+  voteCount: Int!
+}
+
 type Party {
   id: ID!
   name: String!
@@ -42,6 +47,7 @@ type Party {
   requestedUserIds: [String!]
   partyUserIds: [String!]
   playlist: Playlist!
+  queuedTracks: [QueuedTrack!]!
 }
 
 type Artist {

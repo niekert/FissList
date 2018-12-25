@@ -7,6 +7,11 @@ import { Permissions } from "./../../../__generated__/globalTypes";
 // GraphQL fragment: PartyInfo
 // ====================================================
 
+export interface PartyInfo_queuedTracks {
+  uri: string;
+  voteCount: number;
+}
+
 export interface PartyInfo_playlist_tracks_items_track_artists {
   id: string;
   name: string;
@@ -45,12 +50,11 @@ export interface PartyInfo_playlist {
 
 export interface PartyInfo {
   id: string;
-  activeTrackIndex: number | null;
   name: string;
-  playlistId: string;
   permission: Permissions;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
+  queuedTracks: PartyInfo_queuedTracks[];
   playlist: PartyInfo_playlist;
 }

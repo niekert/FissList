@@ -2,15 +2,16 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode, GraphQLSchema } from 'graphql';
-import { makePrismaClientClass, BaseClientOptions } from 'prisma-client-lib';
-import { typeDefs } from './prisma-schema';
+import { DocumentNode, GraphQLSchema } from "graphql";
+import { makePrismaClientClass, BaseClientOptions } from "prisma-client-lib";
+import { typeDefs } from "./prisma-schema";
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
   party: (where?: PartyWhereInput) => Promise<boolean>;
+  queuedTrack: (where?: QueuedTrackWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -26,7 +27,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any },
+    variables?: { [key: string]: any }
   ) => Promise<T>;
 
   /**
@@ -43,7 +44,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<Party>;
   partiesConnection: (
     args?: {
@@ -54,8 +55,30 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => PartyConnectionPromise;
+  queuedTracks: (
+    args?: {
+      where?: QueuedTrackWhereInput;
+      orderBy?: QueuedTrackOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<QueuedTrack>;
+  queuedTracksConnection: (
+    args?: {
+      where?: QueuedTrackWhereInput;
+      orderBy?: QueuedTrackOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => QueuedTrackConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -66,7 +89,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<User>;
   usersConnection: (
     args?: {
@@ -77,7 +100,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
@@ -87,33 +110,43 @@ export interface Prisma {
 
   createParty: (data: PartyCreateInput) => PartyPromise;
   updateParty: (
-    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput },
+    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput }
   ) => PartyPromise;
   updateManyParties: (
-    args: { data: PartyUpdateManyMutationInput; where?: PartyWhereInput },
+    args: { data: PartyUpdateManyMutationInput; where?: PartyWhereInput }
   ) => BatchPayloadPromise;
   upsertParty: (
     args: {
       where: PartyWhereUniqueInput;
       create: PartyCreateInput;
       update: PartyUpdateInput;
-    },
+    }
   ) => PartyPromise;
   deleteParty: (where: PartyWhereUniqueInput) => PartyPromise;
   deleteManyParties: (where?: PartyWhereInput) => BatchPayloadPromise;
+  createQueuedTrack: (data: QueuedTrackCreateInput) => QueuedTrackPromise;
+  updateManyQueuedTracks: (
+    args: {
+      data: QueuedTrackUpdateManyMutationInput;
+      where?: QueuedTrackWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  deleteManyQueuedTracks: (
+    where?: QueuedTrackWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput },
+    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
   ) => UserPromise;
   updateManyUsers: (
-    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput },
+    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }
   ) => BatchPayloadPromise;
   upsertUser: (
     args: {
       where: UserWhereUniqueInput;
       create: UserCreateInput;
       update: UserUpdateInput;
-    },
+    }
   ) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
@@ -127,10 +160,13 @@ export interface Prisma {
 
 export interface Subscription {
   party: (
-    where?: PartySubscriptionWhereInput,
+    where?: PartySubscriptionWhereInput
   ) => PartySubscriptionPayloadSubscription;
+  queuedTrack: (
+    where?: QueuedTrackSubscriptionWhereInput
+  ) => QueuedTrackSubscriptionPayloadSubscription;
   user: (
-    where?: UserSubscriptionWhereInput,
+    where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
 }
 
@@ -142,39 +178,142 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type QueuedTrackOrderByInput =
+  | "uri_ASC"
+  | "uri_DESC"
+  | "voteCount_ASC"
+  | "voteCount_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type PartyOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'activeTrackIndex_ASC'
-  | 'activeTrackIndex_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  | 'ownerUserId_ASC'
-  | 'ownerUserId_DESC'
-  | 'playlistId_ASC'
-  | 'playlistId_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "ownerUserId_ASC"
+  | "ownerUserId_DESC";
 
 export type UserOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
-export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
-
-export interface PartyCreatetrackUrisInput {
-  set?: String[] | String;
-}
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type PartyWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface QueuedTrackWhereInput {
+  uri?: String;
+  uri_not?: String;
+  uri_in?: String[] | String;
+  uri_not_in?: String[] | String;
+  uri_lt?: String;
+  uri_lte?: String;
+  uri_gt?: String;
+  uri_gte?: String;
+  uri_contains?: String;
+  uri_not_contains?: String;
+  uri_starts_with?: String;
+  uri_not_starts_with?: String;
+  uri_ends_with?: String;
+  uri_not_ends_with?: String;
+  voteCount?: Int;
+  voteCount_not?: Int;
+  voteCount_in?: Int[] | Int;
+  voteCount_not_in?: Int[] | Int;
+  voteCount_lt?: Int;
+  voteCount_lte?: Int;
+  voteCount_gt?: Int;
+  voteCount_gte?: Int;
+  AND?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
+  OR?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
+  NOT?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
+}
+
+export interface PartyWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  ownerUserId?: String;
+  ownerUserId_not?: String;
+  ownerUserId_in?: String[] | String;
+  ownerUserId_not_in?: String[] | String;
+  ownerUserId_lt?: String;
+  ownerUserId_lte?: String;
+  ownerUserId_gt?: String;
+  ownerUserId_gte?: String;
+  ownerUserId_contains?: String;
+  ownerUserId_not_contains?: String;
+  ownerUserId_starts_with?: String;
+  ownerUserId_not_starts_with?: String;
+  ownerUserId_ends_with?: String;
+  ownerUserId_not_ends_with?: String;
+  queuedTracks_every?: QueuedTrackWhereInput;
+  queuedTracks_some?: QueuedTrackWhereInput;
+  queuedTracks_none?: QueuedTrackWhereInput;
+  AND?: PartyWhereInput[] | PartyWhereInput;
+  OR?: PartyWhereInput[] | PartyWhereInput;
+  NOT?: PartyWhereInput[] | PartyWhereInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
@@ -212,93 +351,35 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface PartyWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  activeTrackIndex?: Int;
-  activeTrackIndex_not?: Int;
-  activeTrackIndex_in?: Int[] | Int;
-  activeTrackIndex_not_in?: Int[] | Int;
-  activeTrackIndex_lt?: Int;
-  activeTrackIndex_lte?: Int;
-  activeTrackIndex_gt?: Int;
-  activeTrackIndex_gte?: Int;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  ownerUserId?: String;
-  ownerUserId_not?: String;
-  ownerUserId_in?: String[] | String;
-  ownerUserId_not_in?: String[] | String;
-  ownerUserId_lt?: String;
-  ownerUserId_lte?: String;
-  ownerUserId_gt?: String;
-  ownerUserId_gte?: String;
-  ownerUserId_contains?: String;
-  ownerUserId_not_contains?: String;
-  ownerUserId_starts_with?: String;
-  ownerUserId_not_starts_with?: String;
-  ownerUserId_ends_with?: String;
-  ownerUserId_not_ends_with?: String;
-  playlistId?: String;
-  playlistId_not?: String;
-  playlistId_in?: String[] | String;
-  playlistId_not_in?: String[] | String;
-  playlistId_lt?: String;
-  playlistId_lte?: String;
-  playlistId_gt?: String;
-  playlistId_gte?: String;
-  playlistId_contains?: String;
-  playlistId_not_contains?: String;
-  playlistId_starts_with?: String;
-  playlistId_not_starts_with?: String;
-  playlistId_ends_with?: String;
-  playlistId_not_ends_with?: String;
-  AND?: PartyWhereInput[] | PartyWhereInput;
-  OR?: PartyWhereInput[] | PartyWhereInput;
-  NOT?: PartyWhereInput[] | PartyWhereInput;
+export interface PartyCreateInput {
+  name: String;
+  ownerUserId: String;
+  previousTrackUris?: PartyCreatepreviousTrackUrisInput;
+  queuedTracks?: QueuedTrackCreateManyInput;
+  trackUris?: PartyCreatetrackUrisInput;
+  requestedUserIds?: PartyCreaterequestedUserIdsInput;
+  bannedUserIds?: PartyCreatebannedUserIdsInput;
+  partyUserIds?: PartyCreatepartyUserIdsInput;
 }
 
-export interface PartyUpdatebannedUserIdsInput {
+export interface PartyCreatepreviousTrackUrisInput {
+  set?: String[] | String;
+}
+
+export interface QueuedTrackCreateManyInput {
+  create?: QueuedTrackCreateInput[] | QueuedTrackCreateInput;
+}
+
+export interface QueuedTrackCreateInput {
+  uri: String;
+  voteCount: Int;
+}
+
+export interface PartyCreatetrackUrisInput {
+  set?: String[] | String;
+}
+
+export interface PartyCreaterequestedUserIdsInput {
   set?: String[] | String;
 }
 
@@ -306,8 +387,112 @@ export interface PartyCreatebannedUserIdsInput {
   set?: String[] | String;
 }
 
+export interface PartyCreatepartyUserIdsInput {
+  set?: String[] | String;
+}
+
+export interface PartyUpdateInput {
+  name?: String;
+  ownerUserId?: String;
+  previousTrackUris?: PartyUpdatepreviousTrackUrisInput;
+  queuedTracks?: QueuedTrackUpdateManyInput;
+  trackUris?: PartyUpdatetrackUrisInput;
+  requestedUserIds?: PartyUpdaterequestedUserIdsInput;
+  bannedUserIds?: PartyUpdatebannedUserIdsInput;
+  partyUserIds?: PartyUpdatepartyUserIdsInput;
+}
+
+export interface PartyUpdatepreviousTrackUrisInput {
+  set?: String[] | String;
+}
+
+export interface QueuedTrackUpdateManyInput {
+  create?: QueuedTrackCreateInput[] | QueuedTrackCreateInput;
+  deleteMany?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
+  updateMany?:
+    | QueuedTrackUpdateManyWithWhereNestedInput[]
+    | QueuedTrackUpdateManyWithWhereNestedInput;
+}
+
+export interface QueuedTrackScalarWhereInput {
+  uri?: String;
+  uri_not?: String;
+  uri_in?: String[] | String;
+  uri_not_in?: String[] | String;
+  uri_lt?: String;
+  uri_lte?: String;
+  uri_gt?: String;
+  uri_gte?: String;
+  uri_contains?: String;
+  uri_not_contains?: String;
+  uri_starts_with?: String;
+  uri_not_starts_with?: String;
+  uri_ends_with?: String;
+  uri_not_ends_with?: String;
+  voteCount?: Int;
+  voteCount_not?: Int;
+  voteCount_in?: Int[] | Int;
+  voteCount_not_in?: Int[] | Int;
+  voteCount_lt?: Int;
+  voteCount_lte?: Int;
+  voteCount_gt?: Int;
+  voteCount_gte?: Int;
+  AND?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
+  OR?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
+  NOT?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
+}
+
+export interface QueuedTrackUpdateManyWithWhereNestedInput {
+  where: QueuedTrackScalarWhereInput;
+  data: QueuedTrackUpdateManyDataInput;
+}
+
+export interface QueuedTrackUpdateManyDataInput {
+  uri?: String;
+  voteCount?: Int;
+}
+
+export interface PartyUpdatetrackUrisInput {
+  set?: String[] | String;
+}
+
 export interface PartyUpdaterequestedUserIdsInput {
   set?: String[] | String;
+}
+
+export interface PartyUpdatebannedUserIdsInput {
+  set?: String[] | String;
+}
+
+export interface PartyUpdatepartyUserIdsInput {
+  set?: String[] | String;
+}
+
+export interface PartyUpdateManyMutationInput {
+  name?: String;
+  ownerUserId?: String;
+  previousTrackUris?: PartyUpdatepreviousTrackUrisInput;
+  trackUris?: PartyUpdatetrackUrisInput;
+  requestedUserIds?: PartyUpdaterequestedUserIdsInput;
+  bannedUserIds?: PartyUpdatebannedUserIdsInput;
+  partyUserIds?: PartyUpdatepartyUserIdsInput;
+}
+
+export interface QueuedTrackUpdateManyMutationInput {
+  uri?: String;
+  voteCount?: Int;
+}
+
+export interface UserCreateInput {
+  name: String;
+}
+
+export interface UserUpdateInput {
+  name?: String;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: String;
 }
 
 export interface PartySubscriptionWhereInput {
@@ -321,57 +506,15 @@ export interface PartySubscriptionWhereInput {
   NOT?: PartySubscriptionWhereInput[] | PartySubscriptionWhereInput;
 }
 
-export interface PartyUpdatetrackUrisInput {
-  set?: String[] | String;
-}
-
-export interface UserUpdateInput {
-  name?: String;
-}
-
-export interface PartyUpdateInput {
-  name?: String;
-  activeTrackIndex?: Int;
-  ownerUserId?: String;
-  playlistId?: String;
-  trackUris?: PartyUpdatetrackUrisInput;
-  requestedUserIds?: PartyUpdaterequestedUserIdsInput;
-  bannedUserIds?: PartyUpdatebannedUserIdsInput;
-  partyUserIds?: PartyUpdatepartyUserIdsInput;
-}
-
-export interface PartyUpdateManyMutationInput {
-  name?: String;
-  activeTrackIndex?: Int;
-  ownerUserId?: String;
-  playlistId?: String;
-  trackUris?: PartyUpdatetrackUrisInput;
-  requestedUserIds?: PartyUpdaterequestedUserIdsInput;
-  bannedUserIds?: PartyUpdatebannedUserIdsInput;
-  partyUserIds?: PartyUpdatepartyUserIdsInput;
-}
-
-export interface PartyUpdatepartyUserIdsInput {
-  set?: String[] | String;
-}
-
-export interface PartyCreaterequestedUserIdsInput {
-  set?: String[] | String;
-}
-
-export interface PartyCreatepartyUserIdsInput {
-  set?: String[] | String;
-}
-
-export interface PartyCreateInput {
-  name: String;
-  activeTrackIndex?: Int;
-  ownerUserId: String;
-  playlistId: String;
-  trackUris?: PartyCreatetrackUrisInput;
-  requestedUserIds?: PartyCreaterequestedUserIdsInput;
-  bannedUserIds?: PartyCreatebannedUserIdsInput;
-  partyUserIds?: PartyCreatepartyUserIdsInput;
+export interface QueuedTrackSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: QueuedTrackWhereInput;
+  AND?: QueuedTrackSubscriptionWhereInput[] | QueuedTrackSubscriptionWhereInput;
+  OR?: QueuedTrackSubscriptionWhereInput[] | QueuedTrackSubscriptionWhereInput;
+  NOT?: QueuedTrackSubscriptionWhereInput[] | QueuedTrackSubscriptionWhereInput;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -385,65 +528,17 @@ export interface UserSubscriptionWhereInput {
   NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface UserCreateInput {
-  name: String;
-}
-
-export interface UserUpdateManyMutationInput {
-  name?: String;
-}
-
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface Party {
   id: ID_Output;
   name: String;
-  activeTrackIndex?: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   ownerUserId: String;
-  playlistId: String;
+  previousTrackUris: String[];
   trackUris: String[];
   requestedUserIds: String[];
   bannedUserIds: String[];
@@ -453,11 +548,21 @@ export interface Party {
 export interface PartyPromise extends Promise<Party>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  activeTrackIndex: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
-  playlistId: () => Promise<String>;
+  previousTrackUris: () => Promise<String[]>;
+  queuedTracks: <T = FragmentableArray<QueuedTrack>>(
+    args?: {
+      where?: QueuedTrackWhereInput;
+      orderBy?: QueuedTrackOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
   trackUris: () => Promise<String[]>;
   requestedUserIds: () => Promise<String[]>;
   bannedUserIds: () => Promise<String[]>;
@@ -469,95 +574,42 @@ export interface PartySubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
-  playlistId: () => Promise<AsyncIterator<String>>;
+  previousTrackUris: () => Promise<AsyncIterator<String[]>>;
+  queuedTracks: <T = Promise<AsyncIterator<QueuedTrackSubscription>>>(
+    args?: {
+      where?: QueuedTrackWhereInput;
+      orderBy?: QueuedTrackOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
   trackUris: () => Promise<AsyncIterator<String[]>>;
   requestedUserIds: () => Promise<AsyncIterator<String[]>>;
   bannedUserIds: () => Promise<AsyncIterator<String[]>>;
   partyUserIds: () => Promise<AsyncIterator<String[]>>;
 }
 
-export interface PartyPreviousValues {
-  id: ID_Output;
-  name: String;
-  activeTrackIndex?: Int;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  ownerUserId: String;
-  playlistId: String;
-  trackUris: String[];
-  requestedUserIds: String[];
-  bannedUserIds: String[];
-  partyUserIds: String[];
+export interface QueuedTrack {
+  uri: String;
+  voteCount: Int;
 }
 
-export interface PartyPreviousValuesPromise
-  extends Promise<PartyPreviousValues>,
+export interface QueuedTrackPromise extends Promise<QueuedTrack>, Fragmentable {
+  uri: () => Promise<String>;
+  voteCount: () => Promise<Int>;
+}
+
+export interface QueuedTrackSubscription
+  extends Promise<AsyncIterator<QueuedTrack>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  activeTrackIndex: () => Promise<Int>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  ownerUserId: () => Promise<String>;
-  playlistId: () => Promise<String>;
-  trackUris: () => Promise<String[]>;
-  requestedUserIds: () => Promise<String[]>;
-  bannedUserIds: () => Promise<String[]>;
-  partyUserIds: () => Promise<String[]>;
-}
-
-export interface PartyPreviousValuesSubscription
-  extends Promise<AsyncIterator<PartyPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  activeTrackIndex: () => Promise<AsyncIterator<Int>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  ownerUserId: () => Promise<AsyncIterator<String>>;
-  playlistId: () => Promise<AsyncIterator<String>>;
-  trackUris: () => Promise<AsyncIterator<String[]>>;
-  requestedUserIds: () => Promise<AsyncIterator<String[]>>;
-  bannedUserIds: () => Promise<AsyncIterator<String[]>>;
-  partyUserIds: () => Promise<AsyncIterator<String[]>>;
-}
-
-export interface PartyEdge {
-  cursor: String;
-}
-
-export interface PartyEdgePromise extends Promise<PartyEdge>, Fragmentable {
-  node: <T = PartyPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PartyEdgeSubscription
-  extends Promise<AsyncIterator<PartyEdge>>,
-    Fragmentable {
-  node: <T = PartySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserConnection {}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  uri: () => Promise<AsyncIterator<String>>;
+  voteCount: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PartyConnection {}
@@ -601,6 +653,173 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface PartyEdge {
+  cursor: String;
+}
+
+export interface PartyEdgePromise extends Promise<PartyEdge>, Fragmentable {
+  node: <T = PartyPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PartyEdgeSubscription
+  extends Promise<AsyncIterator<PartyEdge>>,
+    Fragmentable {
+  node: <T = PartySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateParty {
+  count: Int;
+}
+
+export interface AggregatePartyPromise
+  extends Promise<AggregateParty>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePartySubscription
+  extends Promise<AsyncIterator<AggregateParty>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface QueuedTrackConnection {}
+
+export interface QueuedTrackConnectionPromise
+  extends Promise<QueuedTrackConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<QueuedTrackEdge>>() => T;
+  aggregate: <T = AggregateQueuedTrackPromise>() => T;
+}
+
+export interface QueuedTrackConnectionSubscription
+  extends Promise<AsyncIterator<QueuedTrackConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<QueuedTrackEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateQueuedTrackSubscription>() => T;
+}
+
+export interface QueuedTrackEdge {
+  cursor: String;
+}
+
+export interface QueuedTrackEdgePromise
+  extends Promise<QueuedTrackEdge>,
+    Fragmentable {
+  node: <T = QueuedTrackPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface QueuedTrackEdgeSubscription
+  extends Promise<AsyncIterator<QueuedTrackEdge>>,
+    Fragmentable {
+  node: <T = QueuedTrackSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateQueuedTrack {
+  count: Int;
+}
+
+export interface AggregateQueuedTrackPromise
+  extends Promise<AggregateQueuedTrack>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateQueuedTrackSubscription
+  extends Promise<AsyncIterator<AggregateQueuedTrack>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserConnection {}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface UserEdge {
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
 export interface PartySubscriptionPayload {
   mutation: MutationType;
   updatedFields?: String[];
@@ -624,20 +843,89 @@ export interface PartySubscriptionPayloadSubscription
   previousValues: <T = PartyPreviousValuesSubscription>() => T;
 }
 
-export interface AggregateUser {
-  count: Int;
+export interface PartyPreviousValues {
+  id: ID_Output;
+  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  ownerUserId: String;
+  previousTrackUris: String[];
+  trackUris: String[];
+  requestedUserIds: String[];
+  bannedUserIds: String[];
+  partyUserIds: String[];
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface PartyPreviousValuesPromise
+  extends Promise<PartyPreviousValues>,
     Fragmentable {
-  count: () => Promise<Int>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  ownerUserId: () => Promise<String>;
+  previousTrackUris: () => Promise<String[]>;
+  trackUris: () => Promise<String[]>;
+  requestedUserIds: () => Promise<String[]>;
+  bannedUserIds: () => Promise<String[]>;
+  partyUserIds: () => Promise<String[]>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface PartyPreviousValuesSubscription
+  extends Promise<AsyncIterator<PartyPreviousValues>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  ownerUserId: () => Promise<AsyncIterator<String>>;
+  previousTrackUris: () => Promise<AsyncIterator<String[]>>;
+  trackUris: () => Promise<AsyncIterator<String[]>>;
+  requestedUserIds: () => Promise<AsyncIterator<String[]>>;
+  bannedUserIds: () => Promise<AsyncIterator<String[]>>;
+  partyUserIds: () => Promise<AsyncIterator<String[]>>;
+}
+
+export interface QueuedTrackSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface QueuedTrackSubscriptionPayloadPromise
+  extends Promise<QueuedTrackSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = QueuedTrackPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = QueuedTrackPreviousValuesPromise>() => T;
+}
+
+export interface QueuedTrackSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<QueuedTrackSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = QueuedTrackSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = QueuedTrackPreviousValuesSubscription>() => T;
+}
+
+export interface QueuedTrackPreviousValues {
+  uri: String;
+  voteCount: Int;
+}
+
+export interface QueuedTrackPreviousValuesPromise
+  extends Promise<QueuedTrackPreviousValues>,
+    Fragmentable {
+  uri: () => Promise<String>;
+  voteCount: () => Promise<Int>;
+}
+
+export interface QueuedTrackPreviousValuesSubscription
+  extends Promise<AsyncIterator<QueuedTrackPreviousValues>>,
+    Fragmentable {
+  uri: () => Promise<AsyncIterator<String>>;
+  voteCount: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -663,64 +951,24 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface UserEdge {
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateParty {
-  count: Int;
-}
-
-export interface AggregatePartyPromise
-  extends Promise<AggregateParty>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePartySubscription
-  extends Promise<AsyncIterator<AggregateParty>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface User {
+export interface UserPreviousValues {
   id: ID_Output;
   name: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
-
-/*
-DateTime scalar input type, allowing Date
-*/
-export type DateTimeInput = Date | string;
-
-/*
-DateTime scalar output type, which is always a string
-*/
-export type DateTimeOutput = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -734,16 +982,26 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
+
+/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
-
-export type Long = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+export type Long = string;
 
 /**
  * Model Metadata
@@ -751,13 +1009,17 @@ export type Boolean = boolean;
 
 export const models = [
   {
-    name: 'Party',
-    embedded: false,
+    name: "Party",
+    embedded: false
   },
   {
-    name: 'User',
-    embedded: false,
+    name: "QueuedTrack",
+    embedded: false
   },
+  {
+    name: "User",
+    embedded: false
+  }
 ];
 
 /**
@@ -767,6 +1029,6 @@ export const models = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://localhost:4467`,
+  endpoint: `http://localhost:4467`
 });
 export const prisma = new Prisma();

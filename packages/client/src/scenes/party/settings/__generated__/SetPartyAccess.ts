@@ -7,6 +7,11 @@ import { Permissions } from "./../../../../../__generated__/globalTypes";
 // GraphQL mutation operation: SetPartyAccess
 // ====================================================
 
+export interface SetPartyAccess_setPartyAccess_queuedTracks {
+  uri: string;
+  voteCount: number;
+}
+
 export interface SetPartyAccess_setPartyAccess_playlist_tracks_items_track_artists {
   id: string;
   name: string;
@@ -45,13 +50,12 @@ export interface SetPartyAccess_setPartyAccess_playlist {
 
 export interface SetPartyAccess_setPartyAccess {
   id: string;
-  activeTrackIndex: number | null;
   name: string;
-  playlistId: string;
   permission: Permissions;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
+  queuedTracks: SetPartyAccess_setPartyAccess_queuedTracks[];
   playlist: SetPartyAccess_setPartyAccess_playlist;
 }
 

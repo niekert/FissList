@@ -4,13 +4,15 @@ import { PlaylistInfo } from './Playlist';
 export const PartyInfo = gql`
   fragment PartyInfo on Party {
     id
-    activeTrackIndex
     name
-    playlistId
     permission
     requestedUserIds
     ownerUserId
     partyUserIds
+    queuedTracks {
+      uri
+      voteCount
+    }
     playlist {
       ...PlaylistInfo
     }

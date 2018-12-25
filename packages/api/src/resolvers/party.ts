@@ -1,25 +1,20 @@
 import { Context, SpotifyUser } from '../types';
-import { Party } from '../generated/prisma-client';
+import { Party, QueuedTrack } from '../generated/prisma-client';
 import { ForbiddenError } from 'apollo-server';
-import { Playlist } from '../spotify';
 import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
 import { GraphQLError } from 'graphql';
 
 interface PartyResult {
   id: string;
-  playlistId: string;
   partyUserIds: string[];
   requestedUserIds?: string[];
   ownerUserId: string;
   name: string;
-  activeTrackIndex: number;
   createdAt: string;
   updatedAt: string;
   permission: string;
-  playlist: {
-    id: string;
-  };
+  queuedTracks?: QueuedTrack[];
 }
 
 enum Permissions {
@@ -70,11 +65,8 @@ async function party(
       permission === Permissions.Admin ? party.requestedUserIds : undefined,
     partyUserIds: permission !== Permissions.None ? party.partyUserIds : [],
     ownerUserId: party.ownerUserId,
-    playlistId: party.playlistId,
-    playlist: { id: party.playlistId },
     createdAt: party.createdAt,
     updatedAt: party.updatedAt,
-    activeTrackIndex: party.activeTrackIndex,
   };
 }
 
@@ -98,54 +90,20 @@ async function parties(
     ownerUserID: party.ownerUserId,
     createdAt: party.createdAt,
     updatedAt: party.updatedAt,
-    playlistId: party.playlistId!,
-    playlist: {
-      id: party.playlistId!,
-    },
   }));
 }
 
 async function createParty(
   _,
-  args: { name: string; playlistId: string },
+  args: { name: string; trackUris: string[] },
   context: Context,
 ) {
-  const { name, playlistId } = args;
+  const { name, trackUris } = args;
   await new Promise(resolve => setTimeout(resolve, 700));
   const user = await context.spotify.fetchCurrentUser();
 
-  const { data } = await context.spotify.fetchResource<Playlist>(
-    `/playlists/${playlistId}`,
-  );
-
-  const trackUris = data.tracks.items.map(
-    playListTrack => playListTrack.track.uri,
-  );
-
-  // Create a new playlist
-  const { data: partyPlaylist } = await context.spotify.fetchResource<Playlist>(
-    `/users/${user.id}/playlists`,
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        name,
-        public: false,
-        collaborative: true,
-      }),
-    },
-  );
-
-  // Add tracks from base playlist
-  await context.spotify.fetchResource(`/playlists/${partyPlaylist.id}/tracks`, {
-    method: 'POST',
-    body: JSON.stringify({
-      uris: trackUris,
-    }),
-  });
-
   return context.prisma.createParty({
     name,
-    playlistId: partyPlaylist.id,
     trackUris: {
       set: trackUris,
     },
@@ -168,47 +126,19 @@ async function addTracks(
     throw new GraphQLError('Unauthorized to change the party');
   }
 
-  const playlist = await context.spotify.fetchResource<Playlist>(
-    `/playlists/${party.playlistId}`,
-  );
-  const currentTrackIds = playlist.data.tracks.items.map(
-    playlistTrack => playlistTrack.track.id,
-  );
-  const activeTrackIndex = party.activeTrackIndex || 0;
-
-  // TODO: Something with track weight when it's voted for twice.
-  const filteredNewTracks = args.trackIds.filter(
-    trackId => !currentTrackIds.includes(trackId),
-  );
-
-  const newTrackOrder = [
-    ...currentTrackIds.slice(0, activeTrackIndex + 1),
-    ...filteredNewTracks,
-    ...currentTrackIds.slice(activeTrackIndex + 1),
-  ];
-
-  const trackUris = newTrackOrder.map(trackId => `spotify:track:${trackId}`);
-
-  await context.spotify.fetchResource(`/playlists/${party.playlistId}/tracks`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      uris: trackUris,
-    }),
-  });
-
-  await context.prisma.updateParty({
-    where: { id: args.partyId },
-    data: {
-      trackUris: {
-        set: trackUris,
-      },
-    },
-  });
+  // await context.prisma.updateParty({
+  //   where: { id: args.partyId },
+  //   data: {
+  //     trackUris: {
+  //       set: trackUris,
+  //     },
+  //   },
+  // });
   await context.prisma.party({ id: args.partyId });
 
   pubsub.publish(PubsubEvents.PartyTracksChanged, {
     partyId: args.partyId,
-    changedTrackIds: filteredNewTracks,
+    changedTrackIds: [], // TODO: add changed tracks
   });
 
   return party;
@@ -336,6 +266,13 @@ export default {
       const permission = getPermissionForParty(root, me);
 
       return permission;
+    },
+    queuedTracks: async (root: Party, _, context: Context) => {
+      const queuedTracks = await context.prisma
+        .party({ id: root.id })
+        .queuedTracks();
+
+      return queuedTracks;
     },
   },
   Subscription: {

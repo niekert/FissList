@@ -2,6 +2,10 @@ export const typeDefs = /* GraphQL */ `type AggregateParty {
   count: Int!
 }
 
+type AggregateQueuedTrack {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -21,6 +25,9 @@ type Mutation {
   upsertParty(where: PartyWhereUniqueInput!, create: PartyCreateInput!, update: PartyUpdateInput!): Party!
   deleteParty(where: PartyWhereUniqueInput!): Party
   deleteManyParties(where: PartyWhereInput): BatchPayload!
+  createQueuedTrack(data: QueuedTrackCreateInput!): QueuedTrack!
+  updateManyQueuedTracks(data: QueuedTrackUpdateManyMutationInput!, where: QueuedTrackWhereInput): BatchPayload!
+  deleteManyQueuedTracks(where: QueuedTrackWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -49,11 +56,11 @@ type PageInfo {
 type Party {
   id: ID!
   name: String!
-  activeTrackIndex: Int
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  playlistId: String!
+  previousTrackUris: [String!]!
+  queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack!]
   trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
@@ -72,9 +79,9 @@ input PartyCreatebannedUserIdsInput {
 
 input PartyCreateInput {
   name: String!
-  activeTrackIndex: Int
   ownerUserId: String!
-  playlistId: String!
+  previousTrackUris: PartyCreatepreviousTrackUrisInput
+  queuedTracks: QueuedTrackCreateManyInput
   trackUris: PartyCreatetrackUrisInput
   requestedUserIds: PartyCreaterequestedUserIdsInput
   bannedUserIds: PartyCreatebannedUserIdsInput
@@ -82,6 +89,10 @@ input PartyCreateInput {
 }
 
 input PartyCreatepartyUserIdsInput {
+  set: [String!]
+}
+
+input PartyCreatepreviousTrackUrisInput {
   set: [String!]
 }
 
@@ -103,26 +114,21 @@ enum PartyOrderByInput {
   id_DESC
   name_ASC
   name_DESC
-  activeTrackIndex_ASC
-  activeTrackIndex_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
   ownerUserId_ASC
   ownerUserId_DESC
-  playlistId_ASC
-  playlistId_DESC
 }
 
 type PartyPreviousValues {
   id: ID!
   name: String!
-  activeTrackIndex: Int
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  playlistId: String!
+  previousTrackUris: [String!]!
   trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
@@ -153,9 +159,9 @@ input PartyUpdatebannedUserIdsInput {
 
 input PartyUpdateInput {
   name: String
-  activeTrackIndex: Int
   ownerUserId: String
-  playlistId: String
+  previousTrackUris: PartyUpdatepreviousTrackUrisInput
+  queuedTracks: QueuedTrackUpdateManyInput
   trackUris: PartyUpdatetrackUrisInput
   requestedUserIds: PartyUpdaterequestedUserIdsInput
   bannedUserIds: PartyUpdatebannedUserIdsInput
@@ -164,9 +170,8 @@ input PartyUpdateInput {
 
 input PartyUpdateManyMutationInput {
   name: String
-  activeTrackIndex: Int
   ownerUserId: String
-  playlistId: String
+  previousTrackUris: PartyUpdatepreviousTrackUrisInput
   trackUris: PartyUpdatetrackUrisInput
   requestedUserIds: PartyUpdaterequestedUserIdsInput
   bannedUserIds: PartyUpdatebannedUserIdsInput
@@ -174,6 +179,10 @@ input PartyUpdateManyMutationInput {
 }
 
 input PartyUpdatepartyUserIdsInput {
+  set: [String!]
+}
+
+input PartyUpdatepreviousTrackUrisInput {
   set: [String!]
 }
 
@@ -214,14 +223,6 @@ input PartyWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  activeTrackIndex: Int
-  activeTrackIndex_not: Int
-  activeTrackIndex_in: [Int!]
-  activeTrackIndex_not_in: [Int!]
-  activeTrackIndex_lt: Int
-  activeTrackIndex_lte: Int
-  activeTrackIndex_gt: Int
-  activeTrackIndex_gte: Int
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -252,20 +253,9 @@ input PartyWhereInput {
   ownerUserId_not_starts_with: String
   ownerUserId_ends_with: String
   ownerUserId_not_ends_with: String
-  playlistId: String
-  playlistId_not: String
-  playlistId_in: [String!]
-  playlistId_not_in: [String!]
-  playlistId_lt: String
-  playlistId_lte: String
-  playlistId_gt: String
-  playlistId_gte: String
-  playlistId_contains: String
-  playlistId_not_contains: String
-  playlistId_starts_with: String
-  playlistId_not_starts_with: String
-  playlistId_ends_with: String
-  playlistId_not_ends_with: String
+  queuedTracks_every: QueuedTrackWhereInput
+  queuedTracks_some: QueuedTrackWhereInput
+  queuedTracks_none: QueuedTrackWhereInput
   AND: [PartyWhereInput!]
   OR: [PartyWhereInput!]
   NOT: [PartyWhereInput!]
@@ -279,14 +269,155 @@ type Query {
   party(where: PartyWhereUniqueInput!): Party
   parties(where: PartyWhereInput, orderBy: PartyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Party]!
   partiesConnection(where: PartyWhereInput, orderBy: PartyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PartyConnection!
+  queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack]!
+  queuedTracksConnection(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QueuedTrackConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+type QueuedTrack {
+  uri: String!
+  voteCount: Int!
+}
+
+type QueuedTrackConnection {
+  pageInfo: PageInfo!
+  edges: [QueuedTrackEdge]!
+  aggregate: AggregateQueuedTrack!
+}
+
+input QueuedTrackCreateInput {
+  uri: String!
+  voteCount: Int!
+}
+
+input QueuedTrackCreateManyInput {
+  create: [QueuedTrackCreateInput!]
+}
+
+type QueuedTrackEdge {
+  node: QueuedTrack!
+  cursor: String!
+}
+
+enum QueuedTrackOrderByInput {
+  uri_ASC
+  uri_DESC
+  voteCount_ASC
+  voteCount_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type QueuedTrackPreviousValues {
+  uri: String!
+  voteCount: Int!
+}
+
+input QueuedTrackScalarWhereInput {
+  uri: String
+  uri_not: String
+  uri_in: [String!]
+  uri_not_in: [String!]
+  uri_lt: String
+  uri_lte: String
+  uri_gt: String
+  uri_gte: String
+  uri_contains: String
+  uri_not_contains: String
+  uri_starts_with: String
+  uri_not_starts_with: String
+  uri_ends_with: String
+  uri_not_ends_with: String
+  voteCount: Int
+  voteCount_not: Int
+  voteCount_in: [Int!]
+  voteCount_not_in: [Int!]
+  voteCount_lt: Int
+  voteCount_lte: Int
+  voteCount_gt: Int
+  voteCount_gte: Int
+  AND: [QueuedTrackScalarWhereInput!]
+  OR: [QueuedTrackScalarWhereInput!]
+  NOT: [QueuedTrackScalarWhereInput!]
+}
+
+type QueuedTrackSubscriptionPayload {
+  mutation: MutationType!
+  node: QueuedTrack
+  updatedFields: [String!]
+  previousValues: QueuedTrackPreviousValues
+}
+
+input QueuedTrackSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: QueuedTrackWhereInput
+  AND: [QueuedTrackSubscriptionWhereInput!]
+  OR: [QueuedTrackSubscriptionWhereInput!]
+  NOT: [QueuedTrackSubscriptionWhereInput!]
+}
+
+input QueuedTrackUpdateManyDataInput {
+  uri: String
+  voteCount: Int
+}
+
+input QueuedTrackUpdateManyInput {
+  create: [QueuedTrackCreateInput!]
+  deleteMany: [QueuedTrackScalarWhereInput!]
+  updateMany: [QueuedTrackUpdateManyWithWhereNestedInput!]
+}
+
+input QueuedTrackUpdateManyMutationInput {
+  uri: String
+  voteCount: Int
+}
+
+input QueuedTrackUpdateManyWithWhereNestedInput {
+  where: QueuedTrackScalarWhereInput!
+  data: QueuedTrackUpdateManyDataInput!
+}
+
+input QueuedTrackWhereInput {
+  uri: String
+  uri_not: String
+  uri_in: [String!]
+  uri_not_in: [String!]
+  uri_lt: String
+  uri_lte: String
+  uri_gt: String
+  uri_gte: String
+  uri_contains: String
+  uri_not_contains: String
+  uri_starts_with: String
+  uri_not_starts_with: String
+  uri_ends_with: String
+  uri_not_ends_with: String
+  voteCount: Int
+  voteCount_not: Int
+  voteCount_in: [Int!]
+  voteCount_not_in: [Int!]
+  voteCount_lt: Int
+  voteCount_lte: Int
+  voteCount_gt: Int
+  voteCount_gte: Int
+  AND: [QueuedTrackWhereInput!]
+  OR: [QueuedTrackWhereInput!]
+  NOT: [QueuedTrackWhereInput!]
+}
+
 type Subscription {
   party(where: PartySubscriptionWhereInput): PartySubscriptionPayload
+  queuedTrack(where: QueuedTrackSubscriptionWhereInput): QueuedTrackSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 

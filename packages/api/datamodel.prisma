@@ -3,14 +3,19 @@ type User {
   name: String!
 }
 
+type QueuedTrack {
+  uri: String!
+  voteCount: Int!
+}
+
 type Party {
   id: ID! @unique
   name: String!
-  activeTrackIndex: Int
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  playlistId: String!
+  previousTrackUris: [String!]
+  queuedTracks: [QueuedTrack!]!
   trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
