@@ -8,8 +8,10 @@ import Devices from './Devices';
 import TrackNavigation from './TrackNavigation';
 import NoPlayerFound from './NoPlayerFound';
 
-const SecondaryOptions = styled.div`
+const PlayerWrapper = styled.div`
   display: flex;
+  width: 100%;
+  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
   align-self: center;
 `;
 
@@ -42,43 +44,38 @@ export default function Player({ partyId }: Props) {
     }
   };
 
-  if (
-    ((playerContext!.networkStatus === NetworkStatus.ready &&
-      !playerContext!.data!.player) ||
-      playerContext!.networkStatus === NetworkStatus.refetch) &&
-    !playerContext!.webSdkDeviceId
-  ) {
-    return (
-      <NoPlayerFound
-        isLoading={playerContext!.networkStatus === NetworkStatus.refetch}
-        onRetry={() => playerContext!.refetch()}
-      />
-    );
-  }
+  // if (
+  //   ((playerContext!.networkStatus === NetworkStatus.ready &&
+  //     !playerContext!.data!.player) ||
+  //     playerContext!.networkStatus === NetworkStatus.refetch) &&
+  //   !playerContext!.webSdkDeviceId
+  // ) {
+  //   return (
+  //     <NoPlayerFound
+  //       isLoading={playerContext!.networkStatus === NetworkStatus.refetch}
+  //       onRetry={() => playerContext!.refetch()}
+  //     />
+  //   );
+  // }
 
   const { player } = playerContext!.data;
 
   const isPlaying = player ? player.isPlaying : false;
 
   return (
-    <>
-      {player && player.item && <ActiveTrack {...player.item} />}
-      <SecondaryOptions>
-        <TrackNavigation
-          // TODO: handle with reducer
-          isPlaying={isPlaying}
-          onPrev={() => handlePlayState('prev')}
-          onNext={() => handlePlayState('next')}
-          onPlayPause={() => handlePlayState(isPlaying ? 'pause' : 'play')}
-        />
-        <Devices
-          activeDevice={player ? player.device : null}
-          isPlaying={isPlaying}
-          devices={(player && player.devices) || []}
-          webSdkDeviceId={playerContext!.webSdkDeviceId || undefined}
-          onDeviceChange={handleDeviceChange}
-        />
-      </SecondaryOptions>
-    </>
+    <PlayerWrapper>
+      {player && player.item && (
+        <>
+          <ActiveTrack {...player.item} />
+          <TrackNavigation
+            // TODO: handle with reducer
+            isPlaying={isPlaying}
+            onPrev={() => handlePlayState('prev')}
+            onNext={() => handlePlayState('next')}
+            onPlayPause={() => handlePlayState(isPlaying ? 'pause' : 'play')}
+          />
+        </>
+      )}
+    </PlayerWrapper>
   );
 }

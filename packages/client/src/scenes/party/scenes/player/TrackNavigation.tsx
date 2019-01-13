@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { NextIcon, PlayIcon, PauseIcon, PrevIcon } from 'icons';
 import IconButton from 'components/IconButton';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const PlayerNavigation = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex: 1;
+  margin-left: auto;
   background: white;
   padding-top: ${props => props.theme.spacing[1]};
   padding-bottom: 4px;
 `;
 
-const PlayButton = styled(IconButton)`
+const NavigateButton = styled(IconButton)`
   border-radius: 50%;
   color: ${props => props.theme.textColors.primaryText};
   cursor: pointer;
@@ -22,17 +22,8 @@ const PlayButton = styled(IconButton)`
   }
 
   svg {
-    width: 50px;
-    height: 50px;
-  }
-`;
-
-const NavigateButton = styled(PlayButton)`
-  margin: 0 ${props => props.theme.spacing[2]};
-
-  svg {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -46,12 +37,14 @@ interface IProps {
 function TrackNavigation({ isPlaying, onPrev, onNext, onPlayPause }: IProps) {
   return (
     <PlayerNavigation>
-      <NavigateButton onClick={onPrev}>
-        <PrevIcon />
-      </NavigateButton>
-      <PlayButton onClick={onPlayPause}>
+      <NavigateButton
+        onClick={onPlayPause}
+        css={css`
+          margin-right: ${props => props.theme.spacing[1]};
+        `}
+      >
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
-      </PlayButton>
+      </NavigateButton>
       <NavigateButton onClick={onNext}>
         <NextIcon />
       </NavigateButton>

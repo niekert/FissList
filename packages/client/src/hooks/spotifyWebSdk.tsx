@@ -64,7 +64,7 @@ export function useSpotifyWebSdk({
         player.addListener('not_ready', accountError);
         player.addListener('player_state_changed', onPlayerStateChanged);
 
-        // player.connect();
+        player.connect();
 
         return () => {
           player.removeListener('account_error', accountError);

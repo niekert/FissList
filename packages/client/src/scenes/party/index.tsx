@@ -29,9 +29,15 @@ export { GET_PARTY } from './queries';
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 156;
 
+const StickyTop = styled.div`
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: ${props => props.theme.colors.primary};
+`;
+
 const TabsCard = styled(Card)`
   display: flex;
-  position: sticky;
   z-index: 5;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -62,13 +68,6 @@ const ContentWrapper = styled.div`
 const SettingsTabIcon = styled(SettingsIcon)`
   width: 20px;
   height: 20px;
-`;
-
-const PlayerWrapper = styled.div`
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: ${props => props.theme.spacing[2]};
 `;
 
 interface IProps extends RouteComponentProps<{ partyId: string }> {
@@ -149,37 +148,37 @@ export default function Party({ match, location, history }: IProps) {
           <Page>
             {data && data.party && (
               <SelectedTracksContainer>
-                <PlayerWrapper>
+                <StickyTop>
                   <Player partyId={data.party.id} />
-                </PlayerWrapper>
-                <TabsCard>
-                  <Tabs activeTab={activeTab} onChange={onTabChange}>
-                    <Tab name={PlayerTabs.Queue}>Queue</Tab>
-                    <Tab name={PlayerTabs.Browse}>Browse</Tab>
-                    {data.party.permission === Permissions.ADMIN && (
-                      <Tab
-                        name={PlayerTabs.Settings}
-                        css={css`
-                          flex: 0;
-                          flex-basis: 50px;
-                        `}
-                      >
-                        <SettingsTabIcon />
-                        {data.party.requestedUserIds &&
-                          data.party.requestedUserIds.length > 0 && (
-                            <UnreadBadge
-                              css={css`
-                                position: absolute;
-                                top: 2px;
-                                right: 8px;
-                              `}
-                              count={data.party.requestedUserIds.length}
-                            />
-                          )}
-                      </Tab>
-                    )}
-                  </Tabs>
-                </TabsCard>
+                  <TabsCard>
+                    <Tabs activeTab={activeTab} onChange={onTabChange}>
+                      <Tab name={PlayerTabs.Queue}>Queue</Tab>
+                      <Tab name={PlayerTabs.Browse}>Browse</Tab>
+                      {data.party.permission === Permissions.ADMIN && (
+                        <Tab
+                          name={PlayerTabs.Settings}
+                          css={css`
+                            flex: 0;
+                            flex-basis: 50px;
+                          `}
+                        >
+                          <SettingsTabIcon />
+                          {data.party.requestedUserIds &&
+                            data.party.requestedUserIds.length > 0 && (
+                              <UnreadBadge
+                                css={css`
+                                  position: absolute;
+                                  top: 2px;
+                                  right: 8px;
+                                `}
+                                count={data.party.requestedUserIds.length}
+                              />
+                            )}
+                        </Tab>
+                      )}
+                    </Tabs>
+                  </TabsCard>
+                </StickyTop>
                 <ContentWrapper>
                   <Switch>
                     <Route
