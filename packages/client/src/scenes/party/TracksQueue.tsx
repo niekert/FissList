@@ -1,34 +1,33 @@
 import * as React from 'react';
 import { useCurrentUser } from 'context/CurrentUser';
-import { useQueuedTrackDetails } from './queries';
+import { useQueuedTracks } from './queries';
 import PartyTrack from './PartyTrack';
-
-interface QueuedTrack {
-  trackId: string;
-  userVotes: string[];
-}
+import Spinner from 'components/Spinner';
 
 interface Props {
-  queuedTracks: QueuedTrack[];
+  partyId: string;
 }
 
-function TracksQueue({ queuedTracks }: Props) {
+function TracksQueue({ partyId }: Props) {
   const currentUser = useCurrentUser();
-  const trackDetails = useQueuedTrackDetails(
-    queuedTracks.map(queuedTrack => queuedTrack.trackId),
+  const queuedTracks = useQueuedTracks(partyId);
+
+  return (
+    <>
+      {queuedTracks.data!.queuedTracks.map((queuedTrack, index) => (
+        <PartyTrack
+          track={queuedTrack.track}
+          key={`${queuedTrack.trackId}-${index}`}
+          isActive={false}
+          playTrack={() => {}}
+          isRequested={
+            !!currentUser && queuedTrack.userVotes.includes(currentUser.id)
+          }
+        />
+      ))}
+      {queuedTracks.loading && <Spinner />}
+    </>
   );
-
-  if (!trackDetails.data) {
-    console.log;
-  }
-
-  return trackDetails.data!.queuedTracks.map((track, index) => (
-    <PartyTrack
-      track={track}
-      key={`${track.id}-${index}`}
-      isActive={false}
-      playTrack={() => {}}
-      // isRequested={queuedTracks[index].userVotes.includes(currentUser && currentUser.data.me)}
-    />
-  ));
 }
+
+export default TracksQueue;

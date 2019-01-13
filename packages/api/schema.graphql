@@ -119,7 +119,7 @@ type PlayStateChange {
 
 type Query {
   me: Me
-  queuedTracks(partyId: String!, offset: Int, limit: Int): [QueuedTrack]!
+  queuedTracks(partyId: String!, offset: Int, limit: Int): [QueuedTrack!]!
   party(partyId: String!): Party!
   player: Player
   parties(ids: [String]!): [Party]!

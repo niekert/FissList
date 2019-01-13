@@ -21,21 +21,25 @@ export const GET_PARTY = gql`
 `;
 
 const QUEUED_TRACK_DETAILS = gql`
-  query QueuedTrackDetails($trackIds: [String!]!) {
-    queuedTracks(trackIds: $trackIds) {
-      ...TrackInfo
+  query QueuedTrackDetails($partyId: String!) {
+    queuedTracks(partyId: $partyId) {
+      trackId
+      track {
+        ...TrackInfo
+      }
+      userVotes
     }
   }
 
   ${TrackInfo}
 `;
 
-export function useQueuedTrackDetails(trackIds: string[]) {
+export function useQueuedTracks(partyId: string) {
   return useQuery<QueuedTrackDetails, QueuedTrackDetailsVariables>(
     QUEUED_TRACK_DETAILS,
     {
       variables: {
-        trackIds,
+        partyId,
       },
     },
   );

@@ -47,6 +47,7 @@ const NewlyAdded = styled(PosedNewLabel)`
 interface Props {
   track: TrackInfo;
   isActive: boolean;
+  isRequested: boolean;
   playTrack: (trackId: string) => void;
 }
 

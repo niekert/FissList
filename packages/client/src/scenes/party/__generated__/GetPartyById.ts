@@ -7,11 +7,6 @@ import { Permissions } from "./../../../../__generated__/globalTypes";
 // GraphQL query operation: GetPartyById
 // ====================================================
 
-export interface GetPartyById_party_queuedTracks {
-  trackId: string;
-  userVotes: string[];
-}
-
 export interface GetPartyById_party {
   id: string;
   name: string;
@@ -19,7 +14,6 @@ export interface GetPartyById_party {
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
-  queuedTracks: GetPartyById_party_queuedTracks[];
 }
 
 export interface GetPartyById {

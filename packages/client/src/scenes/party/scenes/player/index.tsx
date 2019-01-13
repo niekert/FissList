@@ -15,10 +15,9 @@ const SecondaryOptions = styled.div`
 
 interface Props {
   partyId: string;
-  activeFeedUri: string;
 }
 
-export default function Player({ activeFeedUri, partyId }: Props) {
+export default function Player({ partyId }: Props) {
   const playerContext = usePlayer();
 
   const handlePlayState = React.useCallback(

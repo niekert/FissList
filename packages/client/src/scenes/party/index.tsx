@@ -17,10 +17,10 @@ import { PlayerContainer } from 'context/player';
 import { PartyContext } from './context';
 import Player from './scenes/player';
 import PlayLists from 'scenes/playlists';
-import PartyPlaylist from './PartyPlaylist';
 import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
+import TracksQueue from './TracksQueue';
 import { Permissions } from 'globalTypes';
 
 export { usePartyContext } from './context';
@@ -150,10 +150,7 @@ export default function Party({ match, location, history }: IProps) {
             {data && data.party && (
               <SelectedTracksContainer>
                 <PlayerWrapper>
-                  <Player
-                    activeFeedUri={data.party.playlistId}
-                    partyId={data.party.id}
-                  />
+                  <Player partyId={data.party.id} />
                 </PlayerWrapper>
                 <TabsCard>
                   <Tabs activeTab={activeTab} onChange={onTabChange}>
@@ -206,11 +203,8 @@ export default function Party({ match, location, history }: IProps) {
                       />
                     )}
                     <Route
-                      render={() => (
-                        <PartyPlaylist
-                          partyId={data.party.id}
-                          {...data.party.playlist}
-                        />
+                      render={props => (
+                        <TracksQueue partyId={match.params.partyId} />
                       )}
                     />
                   </Switch>

@@ -7,11 +7,6 @@ import { Permissions } from "./../../../../../__generated__/globalTypes";
 // GraphQL mutation operation: SetPartyAccess
 // ====================================================
 
-export interface SetPartyAccess_setPartyAccess_queuedTracks {
-  trackId: string;
-  userVotes: string[];
-}
-
 export interface SetPartyAccess_setPartyAccess {
   id: string;
   name: string;
@@ -19,7 +14,6 @@ export interface SetPartyAccess_setPartyAccess {
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
-  queuedTracks: SetPartyAccess_setPartyAccess_queuedTracks[];
 }
 
 export interface SetPartyAccess {

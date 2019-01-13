@@ -7,11 +7,6 @@ import { Permissions } from "./../../../../../__generated__/globalTypes";
 // GraphQL mutation operation: UpdatePartyName
 // ====================================================
 
-export interface UpdatePartyName_updatePartyName_queuedTracks {
-  trackId: string;
-  userVotes: string[];
-}
-
 export interface UpdatePartyName_updatePartyName {
   id: string;
   name: string;
@@ -19,7 +14,6 @@ export interface UpdatePartyName_updatePartyName {
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;
-  queuedTracks: UpdatePartyName_updatePartyName_queuedTracks[];
 }
 
 export interface UpdatePartyName {

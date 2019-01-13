@@ -1,5 +1,5 @@
+import { UserInputError } from 'apollo-server';
 import { Context, Track } from '../types';
-import chunk from 'lodash.chunk';
 
 interface QueuedTrack {
   trackId: String;
@@ -15,6 +15,11 @@ async function fetchQueuedTracks(
   }: { partyId: string; offset?: number; limit?: number },
   context: Context,
 ): Promise<QueuedTrack[]> {
+  // The spotify API only supports fetching tracks in chunks of 50.
+  if (limit > 50) {
+    throw new UserInputError('Only 50 QueuedTracks can be requested at a time');
+  }
+
   const queuedPartyTracks = await context.prisma
     .party({ id: partyId })
     .queuedTracks({
@@ -27,10 +32,6 @@ async function fetchQueuedTracks(
   const { data, status } = await context.spotify.fetchResource<{
     tracks: Track[];
   }>(`/tracks?ids=${queuedTrackIds.join(',')}`);
-
-  console.log('data', data.tracks.map(track => track.name));
-
-  // The spotify API only supports fetching tracks in chunks of 50.
 
   return queuedPartyTracks.map((queuedTrack, i) => ({
     trackId: queuedTrack.trackId,
