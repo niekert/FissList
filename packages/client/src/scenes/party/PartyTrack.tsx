@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useChangedTracks } from 'context/ChangedPartyTracksContext';
 import styled, { css } from 'styled-components';
 import useVisibility from 'react-intersection-visible-hook';
-import { PlaylistInfo_tracks_items } from 'fragments/__generated__/PlaylistInfo';
+import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import Track from 'components/Track';
 import { transparentize } from 'polished';
 import posed, { PoseGroup } from 'react-pose';
@@ -44,12 +44,13 @@ const NewlyAdded = styled(PosedNewLabel)`
   padding-right: ${props => props.theme.spacing[1]};
 `;
 
-interface Props extends PlaylistInfo_tracks_items {
+interface Props {
+  track: TrackInfo;
   isActive: boolean;
   playTrack: (trackId: string) => void;
 }
 
-function PartyTrack({ isActive, addedAt, track, playTrack }: Props) {
+function PartyTrack({ isActive, track, playTrack }: Props) {
   const { changedTrackIds, markTrackSeen } = useChangedTracks();
   const newlyAddedRef = React.useRef(undefined);
   const { isIntersecting } = useVisibility(newlyAddedRef);
@@ -68,11 +69,7 @@ function PartyTrack({ isActive, addedAt, track, playTrack }: Props) {
   );
 
   return (
-    <Wrapper
-      key={`${addedAt}-${track.id}`}
-      isActive={isActive}
-      onClick={() => playTrack(track.id)}
-    >
+    <Wrapper isActive={isActive} onClick={() => playTrack(track.id)}>
       <Track {...track} />
       <PoseGroup animateOnMount={true}>
         {changedTrackIds.includes(track.id) && (

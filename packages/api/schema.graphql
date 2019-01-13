@@ -33,8 +33,8 @@ enum Permissions {
 # Regular type definitions for Bar, Foo, Baz types...
 
 type QueuedTrack {
-  uri: String!
-  voteCount: Int!
+  trackId: String!
+  userVotes: [String!]!
 }
 
 type Party {
@@ -118,6 +118,7 @@ type PlayStateChange {
 
 type Query {
   me: Me
+  queuedTracks(trackIds: [String!]!): [Track]!
   party(partyId: String!): Party!
   player: Player
   parties(ids: [String]!): [Party]!
@@ -133,7 +134,7 @@ type Mutation {
     contextUri: String
     offsetUri: String
   ): PlayStateChange
-  createParty(name: String!, trackUris: [String]!): Party
+  createParty(name: String!, trackUris: [String!], playlistId: String): Party
   addTracks(partyId: String, trackIds: [String]!): Party
   deleteParty(partyId: String): Boolean
   updatePartyName(partyId: String!, name: String!): Party

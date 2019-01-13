@@ -31,17 +31,15 @@ export function PlayerContainer({ children }: IProps) {
       }
 
       if (state.context.uri && state.position === 0) {
-        const nextExpectedTrack = party!.playlist.tracks.items[
-          (party!.activeTrackIndex || 0) + 1
-        ];
-
-        if (
-          state.track_window.current_track.id === nextExpectedTrack.track.id
-        ) {
-          // Correct track is playing
-          return;
-        }
-
+        // const nextExpectedTrack = party!.playlist.tracks.items[
+        //   (party!.activeTrackIndex || 0) + 1
+        // ];
+        // if (
+        //   state.track_window.current_track.id === nextExpectedTrack.track.id
+        // ) {
+        //   // Correct track is playing
+        //   return;
+        // }
         // togglePlayState({
         //   variables: {
         //     contextUri: `spotify:track:${nextExpectedTrack.track.id}`,

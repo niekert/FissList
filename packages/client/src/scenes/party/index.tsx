@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { usePartyQuery } from './usePartyQuery';
+import { usePartyQuery } from './queries';
 import Spinner from 'components/Spinner';
 import { SelectedTracksContainer } from 'context/SelectedTracks';
 import UnreadBadge from 'components/UnreadBadge';
@@ -24,7 +24,7 @@ import PartySettings from './settings';
 import { Permissions } from 'globalTypes';
 
 export { usePartyContext } from './context';
-export { GET_PARTY } from './usePartyQuery';
+export { GET_PARTY } from './queries';
 
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 156;
@@ -210,9 +210,6 @@ export default function Party({ match, location, history }: IProps) {
                         <PartyPlaylist
                           partyId={data.party.id}
                           {...data.party.playlist}
-                          activeTrackIndex={
-                            data.party.activeTrackIndex || undefined
-                          }
                         />
                       )}
                     />

@@ -9,8 +9,8 @@ import Party from 'components/Party';
 import useLogout from 'hooks/logout';
 import OptionCard from './OptionCard';
 import styled from 'styled-components';
-import CurrentUserContext, { CurrentUser } from 'context/CurrentUser';
 import { RouteComponentProps } from 'react-router';
+import { PartyInfo } from 'fragments/__generated__/PartyInfo';
 
 const PartyOptions = styled.div`
   max-width: 350px;
@@ -25,12 +25,11 @@ const IntroText = styled(Text)`
 interface IProps extends RouteComponentProps {
   // workaround for reach router
   default?: boolean;
+  parties: PartyInfo[];
 }
 
-function SelectType({ history }: IProps) {
+function SelectType({ history, parties }: IProps) {
   const logout = useLogout();
-  const userContext = React.useContext<CurrentUser>(CurrentUserContext);
-  const user = userContext && userContext.data && userContext.data.me;
 
   return (
     <>
@@ -55,10 +54,10 @@ function SelectType({ history }: IProps) {
               cta={'Join party'}
               onClick={() => history.push('/join')}
             />
-            {user && user.parties && user.parties.length > 0 && (
+            {parties.length > 0 && (
               <Card>
                 <CardTitle>Existing parties</CardTitle>
-                {user.parties.map(party => (
+                {parties.map(party => (
                   <Party
                     key={party!.id}
                     name={party!.name}
@@ -78,4 +77,4 @@ function SelectType({ history }: IProps) {
   );
 }
 
-export default withRouter(SelectType);
+export default withRouter<IProps>(SelectType);

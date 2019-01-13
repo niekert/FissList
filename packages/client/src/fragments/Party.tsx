@@ -9,8 +9,8 @@ export const PartyInfo = gql`
     ownerUserId
     partyUserIds
     queuedTracks {
-      uri
-      voteCount
+      trackId
+      userVotes
     }
   }
 `;

@@ -4,6 +4,7 @@ import { ForbiddenError } from 'apollo-server';
 import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
 import { GraphQLError } from 'graphql';
+import { Playlist } from '../spotify';
 
 interface PartyResult {
   id: string;
@@ -95,19 +96,28 @@ async function parties(
 
 async function createParty(
   _,
-  args: { name: string; trackUris: string[] },
+  args: { name: string; playlistId: string },
   context: Context,
 ) {
-  const { name, trackUris } = args;
-  await new Promise(resolve => setTimeout(resolve, 700));
+  const { name, playlistId } = args;
+  const playlist = await context.spotify.fetchResource<Playlist>(
+    `/playlists/${playlistId}`,
+  );
+
+  const trackIds = playlist.data.tracks.items.map(track => track.track.id);
   const user = await context.spotify.fetchCurrentUser();
 
   return context.prisma.createParty({
     name,
-    trackUris: {
-      set: trackUris,
-    },
     ownerUserId: user.id,
+    queuedTracks: {
+      create: trackIds.map(trackId => ({
+        userVotes: {
+          set: [], // TODO: should we vorte for the tracks?
+        },
+        trackId,
+      })),
+    },
   });
 }
 

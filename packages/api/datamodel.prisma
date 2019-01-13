@@ -4,8 +4,8 @@ type User {
 }
 
 type QueuedTrack {
-  uri: String!
-  voteCount: Int!
+  trackId: String!
+  userVotes: [String!]!
 }
 
 type Party {

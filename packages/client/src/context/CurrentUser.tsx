@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { GetMe } from 'queries/__generated__/GetMe';
+import { UserInfo } from 'fragments/__generated__/UserInfo';
 
-interface Context {
-  data: GetMe;
-  refetch: () => void;
+const CurrentuserContext = React.createContext<UserInfo | undefined>(undefined);
+
+export function useCurrentUser() {
+  return React.useContext(CurrentuserContext);
 }
 
-export type CurrentUser = Context | undefined;
-export default React.createContext<CurrentUser>(undefined);
+export default CurrentuserContext;

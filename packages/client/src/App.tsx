@@ -38,9 +38,7 @@ function App() {
   return (
     <Theme>
       <ErrorBoundary>
-        <CurrentUserContext.Provider
-          value={{ data: me.data, refetch: me.refetch }}
-        >
+        <CurrentUserContext.Provider value={me.data.me!.user}>
           <Router history={history}>
             <React.Suspense fallback={<PageLoader />}>
               <Route path="/auth" component={Auth} />
@@ -55,7 +53,12 @@ function App() {
                   <Route path="/new" component={NewParty} />
                   <Route path="/join" component={JoinParty} />
                   <Route path="/party/:partyId" component={Party} />
-                  <Route path="" component={SelectType} />
+                  <Route
+                    path=""
+                    render={props => (
+                      <SelectType {...props} parties={me.data.me!.parties} />
+                    )}
+                  />
                 </Switch>
               )}
             </React.Suspense>

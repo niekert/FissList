@@ -1,8 +1,8 @@
 import * as React from 'react';
-import CurrentUserContext from 'context/CurrentUser';
+import { useGetMe } from 'queries/useGetMe';
 
 function useUnlink(): () => void {
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUserQuery = useGetMe();
   const [isLinked, setIsLinked] = React.useState(true);
 
   React.useEffect(
@@ -12,9 +12,7 @@ function useUnlink(): () => void {
         localStorage.removeItem('accessToken');
 
         // Refetch all queries
-        if (currentUser) {
-          currentUser.refetch();
-        }
+        currentUserQuery.refetch();
       }
     },
     [isLinked],

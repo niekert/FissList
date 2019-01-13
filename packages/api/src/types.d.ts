@@ -38,3 +38,5 @@ interface SpotifyUser {
   href: string;
   images: [string];
 }
+
+export interface Track {}

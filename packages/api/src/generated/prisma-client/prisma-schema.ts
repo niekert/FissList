@@ -278,8 +278,8 @@ type Query {
 }
 
 type QueuedTrack {
-  uri: String!
-  voteCount: Int!
+  trackId: String!
+  userVotes: [String!]!
 }
 
 type QueuedTrackConnection {
@@ -289,12 +289,16 @@ type QueuedTrackConnection {
 }
 
 input QueuedTrackCreateInput {
-  uri: String!
-  voteCount: Int!
+  trackId: String!
+  userVotes: QueuedTrackCreateuserVotesInput
 }
 
 input QueuedTrackCreateManyInput {
   create: [QueuedTrackCreateInput!]
+}
+
+input QueuedTrackCreateuserVotesInput {
+  set: [String!]
 }
 
 type QueuedTrackEdge {
@@ -303,10 +307,8 @@ type QueuedTrackEdge {
 }
 
 enum QueuedTrackOrderByInput {
-  uri_ASC
-  uri_DESC
-  voteCount_ASC
-  voteCount_DESC
+  trackId_ASC
+  trackId_DESC
   id_ASC
   id_DESC
   createdAt_ASC
@@ -316,33 +318,25 @@ enum QueuedTrackOrderByInput {
 }
 
 type QueuedTrackPreviousValues {
-  uri: String!
-  voteCount: Int!
+  trackId: String!
+  userVotes: [String!]!
 }
 
 input QueuedTrackScalarWhereInput {
-  uri: String
-  uri_not: String
-  uri_in: [String!]
-  uri_not_in: [String!]
-  uri_lt: String
-  uri_lte: String
-  uri_gt: String
-  uri_gte: String
-  uri_contains: String
-  uri_not_contains: String
-  uri_starts_with: String
-  uri_not_starts_with: String
-  uri_ends_with: String
-  uri_not_ends_with: String
-  voteCount: Int
-  voteCount_not: Int
-  voteCount_in: [Int!]
-  voteCount_not_in: [Int!]
-  voteCount_lt: Int
-  voteCount_lte: Int
-  voteCount_gt: Int
-  voteCount_gte: Int
+  trackId: String
+  trackId_not: String
+  trackId_in: [String!]
+  trackId_not_in: [String!]
+  trackId_lt: String
+  trackId_lte: String
+  trackId_gt: String
+  trackId_gte: String
+  trackId_contains: String
+  trackId_not_contains: String
+  trackId_starts_with: String
+  trackId_not_starts_with: String
+  trackId_ends_with: String
+  trackId_not_ends_with: String
   AND: [QueuedTrackScalarWhereInput!]
   OR: [QueuedTrackScalarWhereInput!]
   NOT: [QueuedTrackScalarWhereInput!]
@@ -367,8 +361,8 @@ input QueuedTrackSubscriptionWhereInput {
 }
 
 input QueuedTrackUpdateManyDataInput {
-  uri: String
-  voteCount: Int
+  trackId: String
+  userVotes: QueuedTrackUpdateuserVotesInput
 }
 
 input QueuedTrackUpdateManyInput {
@@ -378,8 +372,8 @@ input QueuedTrackUpdateManyInput {
 }
 
 input QueuedTrackUpdateManyMutationInput {
-  uri: String
-  voteCount: Int
+  trackId: String
+  userVotes: QueuedTrackUpdateuserVotesInput
 }
 
 input QueuedTrackUpdateManyWithWhereNestedInput {
@@ -387,29 +381,25 @@ input QueuedTrackUpdateManyWithWhereNestedInput {
   data: QueuedTrackUpdateManyDataInput!
 }
 
+input QueuedTrackUpdateuserVotesInput {
+  set: [String!]
+}
+
 input QueuedTrackWhereInput {
-  uri: String
-  uri_not: String
-  uri_in: [String!]
-  uri_not_in: [String!]
-  uri_lt: String
-  uri_lte: String
-  uri_gt: String
-  uri_gte: String
-  uri_contains: String
-  uri_not_contains: String
-  uri_starts_with: String
-  uri_not_starts_with: String
-  uri_ends_with: String
-  uri_not_ends_with: String
-  voteCount: Int
-  voteCount_not: Int
-  voteCount_in: [Int!]
-  voteCount_not_in: [Int!]
-  voteCount_lt: Int
-  voteCount_lte: Int
-  voteCount_gt: Int
-  voteCount_gte: Int
+  trackId: String
+  trackId_not: String
+  trackId_in: [String!]
+  trackId_not_in: [String!]
+  trackId_lt: String
+  trackId_lte: String
+  trackId_gt: String
+  trackId_gte: String
+  trackId_contains: String
+  trackId_not_contains: String
+  trackId_starts_with: String
+  trackId_not_starts_with: String
+  trackId_ends_with: String
+  trackId_not_ends_with: String
   AND: [QueuedTrackWhereInput!]
   OR: [QueuedTrackWhereInput!]
   NOT: [QueuedTrackWhereInput!]

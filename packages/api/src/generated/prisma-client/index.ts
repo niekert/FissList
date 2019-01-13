@@ -179,10 +179,8 @@ export interface ClientConstructor<T> {
  */
 
 export type QueuedTrackOrderByInput =
-  | "uri_ASC"
-  | "uri_DESC"
-  | "voteCount_ASC"
-  | "voteCount_DESC"
+  | "trackId_ASC"
+  | "trackId_DESC"
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
@@ -219,28 +217,20 @@ export type PartyWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface QueuedTrackWhereInput {
-  uri?: String;
-  uri_not?: String;
-  uri_in?: String[] | String;
-  uri_not_in?: String[] | String;
-  uri_lt?: String;
-  uri_lte?: String;
-  uri_gt?: String;
-  uri_gte?: String;
-  uri_contains?: String;
-  uri_not_contains?: String;
-  uri_starts_with?: String;
-  uri_not_starts_with?: String;
-  uri_ends_with?: String;
-  uri_not_ends_with?: String;
-  voteCount?: Int;
-  voteCount_not?: Int;
-  voteCount_in?: Int[] | Int;
-  voteCount_not_in?: Int[] | Int;
-  voteCount_lt?: Int;
-  voteCount_lte?: Int;
-  voteCount_gt?: Int;
-  voteCount_gte?: Int;
+  trackId?: String;
+  trackId_not?: String;
+  trackId_in?: String[] | String;
+  trackId_not_in?: String[] | String;
+  trackId_lt?: String;
+  trackId_lte?: String;
+  trackId_gt?: String;
+  trackId_gte?: String;
+  trackId_contains?: String;
+  trackId_not_contains?: String;
+  trackId_starts_with?: String;
+  trackId_not_starts_with?: String;
+  trackId_ends_with?: String;
+  trackId_not_ends_with?: String;
   AND?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
   OR?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
   NOT?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
@@ -371,8 +361,12 @@ export interface QueuedTrackCreateManyInput {
 }
 
 export interface QueuedTrackCreateInput {
-  uri: String;
-  voteCount: Int;
+  trackId: String;
+  userVotes?: QueuedTrackCreateuserVotesInput;
+}
+
+export interface QueuedTrackCreateuserVotesInput {
+  set?: String[] | String;
 }
 
 export interface PartyCreatetrackUrisInput {
@@ -415,28 +409,20 @@ export interface QueuedTrackUpdateManyInput {
 }
 
 export interface QueuedTrackScalarWhereInput {
-  uri?: String;
-  uri_not?: String;
-  uri_in?: String[] | String;
-  uri_not_in?: String[] | String;
-  uri_lt?: String;
-  uri_lte?: String;
-  uri_gt?: String;
-  uri_gte?: String;
-  uri_contains?: String;
-  uri_not_contains?: String;
-  uri_starts_with?: String;
-  uri_not_starts_with?: String;
-  uri_ends_with?: String;
-  uri_not_ends_with?: String;
-  voteCount?: Int;
-  voteCount_not?: Int;
-  voteCount_in?: Int[] | Int;
-  voteCount_not_in?: Int[] | Int;
-  voteCount_lt?: Int;
-  voteCount_lte?: Int;
-  voteCount_gt?: Int;
-  voteCount_gte?: Int;
+  trackId?: String;
+  trackId_not?: String;
+  trackId_in?: String[] | String;
+  trackId_not_in?: String[] | String;
+  trackId_lt?: String;
+  trackId_lte?: String;
+  trackId_gt?: String;
+  trackId_gte?: String;
+  trackId_contains?: String;
+  trackId_not_contains?: String;
+  trackId_starts_with?: String;
+  trackId_not_starts_with?: String;
+  trackId_ends_with?: String;
+  trackId_not_ends_with?: String;
   AND?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
   OR?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
   NOT?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
@@ -448,8 +434,12 @@ export interface QueuedTrackUpdateManyWithWhereNestedInput {
 }
 
 export interface QueuedTrackUpdateManyDataInput {
-  uri?: String;
-  voteCount?: Int;
+  trackId?: String;
+  userVotes?: QueuedTrackUpdateuserVotesInput;
+}
+
+export interface QueuedTrackUpdateuserVotesInput {
+  set?: String[] | String;
 }
 
 export interface PartyUpdatetrackUrisInput {
@@ -479,8 +469,8 @@ export interface PartyUpdateManyMutationInput {
 }
 
 export interface QueuedTrackUpdateManyMutationInput {
-  uri?: String;
-  voteCount?: Int;
+  trackId?: String;
+  userVotes?: QueuedTrackUpdateuserVotesInput;
 }
 
 export interface UserCreateInput {
@@ -596,20 +586,20 @@ export interface PartySubscription
 }
 
 export interface QueuedTrack {
-  uri: String;
-  voteCount: Int;
+  trackId: String;
+  userVotes: String[];
 }
 
 export interface QueuedTrackPromise extends Promise<QueuedTrack>, Fragmentable {
-  uri: () => Promise<String>;
-  voteCount: () => Promise<Int>;
+  trackId: () => Promise<String>;
+  userVotes: () => Promise<String[]>;
 }
 
 export interface QueuedTrackSubscription
   extends Promise<AsyncIterator<QueuedTrack>>,
     Fragmentable {
-  uri: () => Promise<AsyncIterator<String>>;
-  voteCount: () => Promise<AsyncIterator<Int>>;
+  trackId: () => Promise<AsyncIterator<String>>;
+  userVotes: () => Promise<AsyncIterator<String[]>>;
 }
 
 export interface PartyConnection {}
@@ -910,22 +900,22 @@ export interface QueuedTrackSubscriptionPayloadSubscription
 }
 
 export interface QueuedTrackPreviousValues {
-  uri: String;
-  voteCount: Int;
+  trackId: String;
+  userVotes: String[];
 }
 
 export interface QueuedTrackPreviousValuesPromise
   extends Promise<QueuedTrackPreviousValues>,
     Fragmentable {
-  uri: () => Promise<String>;
-  voteCount: () => Promise<Int>;
+  trackId: () => Promise<String>;
+  userVotes: () => Promise<String[]>;
 }
 
 export interface QueuedTrackPreviousValuesSubscription
   extends Promise<AsyncIterator<QueuedTrackPreviousValues>>,
     Fragmentable {
-  uri: () => Promise<AsyncIterator<String>>;
-  voteCount: () => Promise<AsyncIterator<Int>>;
+  trackId: () => Promise<AsyncIterator<String>>;
+  userVotes: () => Promise<AsyncIterator<String[]>>;
 }
 
 export interface UserSubscriptionPayload {

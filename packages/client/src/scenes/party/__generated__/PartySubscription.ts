@@ -8,8 +8,8 @@ import { Permissions } from "./../../../../__generated__/globalTypes";
 // ====================================================
 
 export interface PartySubscription_party_queuedTracks {
-  uri: string;
-  voteCount: number;
+  trackId: string;
+  userVotes: string[];
 }
 
 export interface PartySubscription_party {

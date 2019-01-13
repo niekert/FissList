@@ -1,5 +1,4 @@
 import * as React from 'react';
-import CurrentUserContext from 'context/CurrentUser';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { parse, OutputParams } from 'query-string';
 import { useGetMe } from 'queries/useGetMe';
