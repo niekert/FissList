@@ -54,6 +54,7 @@ async function party(
   args: { partyId: string },
   context: Context,
 ): Promise<PartyResult> {
+  console.log('hi');
   const user = await context.spotify.fetchCurrentUser();
   const party = await context.prisma.party({ id: args.partyId });
   const permission = getPermissionForParty(party, user);
@@ -276,13 +277,6 @@ export default {
       const permission = getPermissionForParty(root, me);
 
       return permission;
-    },
-    queuedTracks: async (root: Party, _, context: Context) => {
-      const queuedTracks = await context.prisma
-        .party({ id: root.id })
-        .queuedTracks();
-
-      return queuedTracks;
     },
   },
   Subscription: {

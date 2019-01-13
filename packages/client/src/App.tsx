@@ -38,7 +38,9 @@ function App() {
   return (
     <Theme>
       <ErrorBoundary>
-        <CurrentUserContext.Provider value={me.data.me!.user}>
+        <CurrentUserContext.Provider
+          value={me.data.me ? me.data.me.user : undefined}
+        >
           <Router history={history}>
             <React.Suspense fallback={<PageLoader />}>
               <Route path="/auth" component={Auth} />

@@ -14,6 +14,7 @@ import partyResolvers from './resolvers/party';
 import * as fallback from 'express-history-api-fallback';
 import userResolvers from './resolvers/user';
 import playerResolvers from './resolvers/player';
+import tracksResolver from './resolvers/tracks';
 import { makeHttpService, scopes } from './spotify';
 
 config();
@@ -23,6 +24,7 @@ const resolvers = merge(
   partyResolvers,
   userResolvers,
   playerResolvers,
+  tracksResolver,
 );
 
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);

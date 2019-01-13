@@ -39,4 +39,7 @@ interface SpotifyUser {
   images: [string];
 }
 
-export interface Track {}
+export interface Track {
+  name: string;
+  id: string;
+}

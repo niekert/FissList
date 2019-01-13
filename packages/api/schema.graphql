@@ -34,6 +34,7 @@ enum Permissions {
 
 type QueuedTrack {
   trackId: String!
+  track: Track!
   userVotes: [String!]!
 }
 
@@ -118,7 +119,7 @@ type PlayStateChange {
 
 type Query {
   me: Me
-  queuedTracks(trackIds: [String!]!): [Track]!
+  queuedTracks(partyId: String!, offset: Int, limit: Int): [QueuedTrack]!
   party(partyId: String!): Party!
   player: Player
   parties(ids: [String]!): [Party]!
