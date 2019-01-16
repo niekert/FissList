@@ -44,6 +44,8 @@ const getPermissionForParty = (
   return Permissions.None;
 };
 
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
 interface TracksChangedPayload {
   partyId: string;
   changedTrackIds: string[];
@@ -122,29 +124,76 @@ async function createParty(
   });
 }
 
+interface UpdatedUserVotes {
+  [trackId: string]: string[];
+}
+
 async function addTracks(
   _,
   args: { partyId: string; trackIds: string[] },
   context: Context,
-) {
-  const [party, me] = await Promise.all([
+): Promise<Party> {
+  const [party, queuedTracks, me] = await Promise.all([
     context.prisma.party({ id: args.partyId }),
+    context.prisma
+      .party({ id: args.partyId })
+      .queuedTracks()
+      // IDK why this is needed
+      .then(x => x),
     context.spotify.fetchCurrentUser(),
   ]);
+
   const permission = getPermissionForParty(party, me);
 
   if (![Permissions.Admin, Permissions.Member].includes(permission)) {
     throw new GraphQLError('Unauthorized to change the party');
   }
 
-  // await context.prisma.updateParty({
-  //   where: { id: args.partyId },
-  //   data: {
-  //     trackUris: {
-  //       set: trackUris,
-  //     },
-  //   },
-  // });
+  const updatedUserVotes: UpdatedUserVotes = {};
+  const addedTracks: Omit<QueuedTrack, 'id' | 'createdAt' | 'updatedAt'>[] = [];
+
+  args.trackIds.forEach(trackId => {
+    const trackIndex = queuedTracks.findIndex(
+      track => track.trackId === trackId,
+    );
+
+    // Add or remove a vote if the track already exists in the party
+    if (trackIndex > -1) {
+      const track = queuedTracks[trackIndex];
+      updatedUserVotes[track.id] = track.userVotes.includes(me.id)
+        ? track.userVotes.filter(userId => userId !== me.id)
+        : [...track.userVotes, me.id];
+    } else {
+      // Create a new QueuedTrack entry
+      addedTracks.push({
+        trackId: trackId,
+        userVotes: [me.id],
+      });
+    }
+  });
+
+  await context.prisma.updateParty({
+    where: { id: args.partyId },
+    data: {
+      queuedTracks: {
+        update: Object.entries(updatedUserVotes).map(([id, userVotes]) => ({
+          where: { id },
+          data: {
+            userVotes: {
+              set: userVotes,
+            },
+          },
+        })),
+        create: addedTracks.map(track => ({
+          trackId: track.trackId,
+          userVotes: {
+            set: track.userVotes,
+          },
+        })),
+      },
+    },
+  });
+
   await context.prisma.party({ id: args.partyId });
 
   pubsub.publish(PubsubEvents.PartyTracksChanged, {
@@ -163,6 +212,7 @@ async function partySubscription(
   return await context.prisma.$subscribe
     .party({
       node: { id: args.partyId },
+      updatedFields_contains: 'queuedTracks',
       mutation_in: ['UPDATED'],
     })
     .node();

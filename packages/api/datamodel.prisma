@@ -4,8 +4,11 @@ type User {
 }
 
 type QueuedTrack {
+  id: ID! @unique
   trackId: String!
   userVotes: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Party {
@@ -14,9 +17,7 @@ type Party {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  previousTrackUris: [String!]
   queuedTracks: [QueuedTrack!]!
-  trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
   partyUserIds: [String!]!

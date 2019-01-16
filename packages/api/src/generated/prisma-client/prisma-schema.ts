@@ -26,7 +26,10 @@ type Mutation {
   deleteParty(where: PartyWhereUniqueInput!): Party
   deleteManyParties(where: PartyWhereInput): BatchPayload!
   createQueuedTrack(data: QueuedTrackCreateInput!): QueuedTrack!
+  updateQueuedTrack(data: QueuedTrackUpdateInput!, where: QueuedTrackWhereUniqueInput!): QueuedTrack
   updateManyQueuedTracks(data: QueuedTrackUpdateManyMutationInput!, where: QueuedTrackWhereInput): BatchPayload!
+  upsertQueuedTrack(where: QueuedTrackWhereUniqueInput!, create: QueuedTrackCreateInput!, update: QueuedTrackUpdateInput!): QueuedTrack!
+  deleteQueuedTrack(where: QueuedTrackWhereUniqueInput!): QueuedTrack
   deleteManyQueuedTracks(where: QueuedTrackWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -59,9 +62,7 @@ type Party {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  previousTrackUris: [String!]!
   queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack!]
-  trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
   partyUserIds: [String!]!
@@ -80,9 +81,7 @@ input PartyCreatebannedUserIdsInput {
 input PartyCreateInput {
   name: String!
   ownerUserId: String!
-  previousTrackUris: PartyCreatepreviousTrackUrisInput
   queuedTracks: QueuedTrackCreateManyInput
-  trackUris: PartyCreatetrackUrisInput
   requestedUserIds: PartyCreaterequestedUserIdsInput
   bannedUserIds: PartyCreatebannedUserIdsInput
   partyUserIds: PartyCreatepartyUserIdsInput
@@ -92,15 +91,7 @@ input PartyCreatepartyUserIdsInput {
   set: [String!]
 }
 
-input PartyCreatepreviousTrackUrisInput {
-  set: [String!]
-}
-
 input PartyCreaterequestedUserIdsInput {
-  set: [String!]
-}
-
-input PartyCreatetrackUrisInput {
   set: [String!]
 }
 
@@ -128,8 +119,6 @@ type PartyPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  previousTrackUris: [String!]!
-  trackUris: [String!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
   partyUserIds: [String!]!
@@ -160,9 +149,7 @@ input PartyUpdatebannedUserIdsInput {
 input PartyUpdateInput {
   name: String
   ownerUserId: String
-  previousTrackUris: PartyUpdatepreviousTrackUrisInput
   queuedTracks: QueuedTrackUpdateManyInput
-  trackUris: PartyUpdatetrackUrisInput
   requestedUserIds: PartyUpdaterequestedUserIdsInput
   bannedUserIds: PartyUpdatebannedUserIdsInput
   partyUserIds: PartyUpdatepartyUserIdsInput
@@ -171,8 +158,6 @@ input PartyUpdateInput {
 input PartyUpdateManyMutationInput {
   name: String
   ownerUserId: String
-  previousTrackUris: PartyUpdatepreviousTrackUrisInput
-  trackUris: PartyUpdatetrackUrisInput
   requestedUserIds: PartyUpdaterequestedUserIdsInput
   bannedUserIds: PartyUpdatebannedUserIdsInput
   partyUserIds: PartyUpdatepartyUserIdsInput
@@ -182,15 +167,7 @@ input PartyUpdatepartyUserIdsInput {
   set: [String!]
 }
 
-input PartyUpdatepreviousTrackUrisInput {
-  set: [String!]
-}
-
 input PartyUpdaterequestedUserIdsInput {
-  set: [String!]
-}
-
-input PartyUpdatetrackUrisInput {
   set: [String!]
 }
 
@@ -269,6 +246,7 @@ type Query {
   party(where: PartyWhereUniqueInput!): Party
   parties(where: PartyWhereInput, orderBy: PartyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Party]!
   partiesConnection(where: PartyWhereInput, orderBy: PartyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PartyConnection!
+  queuedTrack(where: QueuedTrackWhereUniqueInput!): QueuedTrack
   queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack]!
   queuedTracksConnection(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QueuedTrackConnection!
   user(where: UserWhereUniqueInput!): User
@@ -278,8 +256,11 @@ type Query {
 }
 
 type QueuedTrack {
+  id: ID!
   trackId: String!
   userVotes: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type QueuedTrackConnection {
@@ -295,6 +276,7 @@ input QueuedTrackCreateInput {
 
 input QueuedTrackCreateManyInput {
   create: [QueuedTrackCreateInput!]
+  connect: [QueuedTrackWhereUniqueInput!]
 }
 
 input QueuedTrackCreateuserVotesInput {
@@ -307,10 +289,10 @@ type QueuedTrackEdge {
 }
 
 enum QueuedTrackOrderByInput {
-  trackId_ASC
-  trackId_DESC
   id_ASC
   id_DESC
+  trackId_ASC
+  trackId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -318,11 +300,28 @@ enum QueuedTrackOrderByInput {
 }
 
 type QueuedTrackPreviousValues {
+  id: ID!
   trackId: String!
   userVotes: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input QueuedTrackScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   trackId: String
   trackId_not: String
   trackId_in: [String!]
@@ -337,6 +336,22 @@ input QueuedTrackScalarWhereInput {
   trackId_not_starts_with: String
   trackId_ends_with: String
   trackId_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [QueuedTrackScalarWhereInput!]
   OR: [QueuedTrackScalarWhereInput!]
   NOT: [QueuedTrackScalarWhereInput!]
@@ -360,6 +375,16 @@ input QueuedTrackSubscriptionWhereInput {
   NOT: [QueuedTrackSubscriptionWhereInput!]
 }
 
+input QueuedTrackUpdateDataInput {
+  trackId: String
+  userVotes: QueuedTrackUpdateuserVotesInput
+}
+
+input QueuedTrackUpdateInput {
+  trackId: String
+  userVotes: QueuedTrackUpdateuserVotesInput
+}
+
 input QueuedTrackUpdateManyDataInput {
   trackId: String
   userVotes: QueuedTrackUpdateuserVotesInput
@@ -367,6 +392,11 @@ input QueuedTrackUpdateManyDataInput {
 
 input QueuedTrackUpdateManyInput {
   create: [QueuedTrackCreateInput!]
+  update: [QueuedTrackUpdateWithWhereUniqueNestedInput!]
+  upsert: [QueuedTrackUpsertWithWhereUniqueNestedInput!]
+  delete: [QueuedTrackWhereUniqueInput!]
+  connect: [QueuedTrackWhereUniqueInput!]
+  disconnect: [QueuedTrackWhereUniqueInput!]
   deleteMany: [QueuedTrackScalarWhereInput!]
   updateMany: [QueuedTrackUpdateManyWithWhereNestedInput!]
 }
@@ -385,7 +415,32 @@ input QueuedTrackUpdateuserVotesInput {
   set: [String!]
 }
 
+input QueuedTrackUpdateWithWhereUniqueNestedInput {
+  where: QueuedTrackWhereUniqueInput!
+  data: QueuedTrackUpdateDataInput!
+}
+
+input QueuedTrackUpsertWithWhereUniqueNestedInput {
+  where: QueuedTrackWhereUniqueInput!
+  update: QueuedTrackUpdateDataInput!
+  create: QueuedTrackCreateInput!
+}
+
 input QueuedTrackWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   trackId: String
   trackId_not: String
   trackId_in: [String!]
@@ -400,9 +455,29 @@ input QueuedTrackWhereInput {
   trackId_not_starts_with: String
   trackId_ends_with: String
   trackId_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [QueuedTrackWhereInput!]
   OR: [QueuedTrackWhereInput!]
   NOT: [QueuedTrackWhereInput!]
+}
+
+input QueuedTrackWhereUniqueInput {
+  id: ID
 }
 
 type Subscription {

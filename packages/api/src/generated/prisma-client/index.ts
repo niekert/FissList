@@ -57,6 +57,7 @@ export interface Prisma {
       last?: Int;
     }
   ) => PartyConnectionPromise;
+  queuedTrack: (where: QueuedTrackWhereUniqueInput) => QueuedTrackPromise;
   queuedTracks: (
     args?: {
       where?: QueuedTrackWhereInput;
@@ -125,12 +126,23 @@ export interface Prisma {
   deleteParty: (where: PartyWhereUniqueInput) => PartyPromise;
   deleteManyParties: (where?: PartyWhereInput) => BatchPayloadPromise;
   createQueuedTrack: (data: QueuedTrackCreateInput) => QueuedTrackPromise;
+  updateQueuedTrack: (
+    args: { data: QueuedTrackUpdateInput; where: QueuedTrackWhereUniqueInput }
+  ) => QueuedTrackPromise;
   updateManyQueuedTracks: (
     args: {
       data: QueuedTrackUpdateManyMutationInput;
       where?: QueuedTrackWhereInput;
     }
   ) => BatchPayloadPromise;
+  upsertQueuedTrack: (
+    args: {
+      where: QueuedTrackWhereUniqueInput;
+      create: QueuedTrackCreateInput;
+      update: QueuedTrackUpdateInput;
+    }
+  ) => QueuedTrackPromise;
+  deleteQueuedTrack: (where: QueuedTrackWhereUniqueInput) => QueuedTrackPromise;
   deleteManyQueuedTracks: (
     where?: QueuedTrackWhereInput
   ) => BatchPayloadPromise;
@@ -179,10 +191,10 @@ export interface ClientConstructor<T> {
  */
 
 export type QueuedTrackOrderByInput =
-  | "trackId_ASC"
-  | "trackId_DESC"
   | "id_ASC"
   | "id_DESC"
+  | "trackId_ASC"
+  | "trackId_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -217,6 +229,20 @@ export type PartyWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface QueuedTrackWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
   trackId?: String;
   trackId_not?: String;
   trackId_in?: String[] | String;
@@ -231,6 +257,22 @@ export interface QueuedTrackWhereInput {
   trackId_not_starts_with?: String;
   trackId_ends_with?: String;
   trackId_not_ends_with?: String;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   AND?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
   OR?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
   NOT?: QueuedTrackWhereInput[] | QueuedTrackWhereInput;
@@ -303,6 +345,10 @@ export interface PartyWhereInput {
   NOT?: PartyWhereInput[] | PartyWhereInput;
 }
 
+export type QueuedTrackWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
@@ -344,20 +390,15 @@ export interface UserWhereInput {
 export interface PartyCreateInput {
   name: String;
   ownerUserId: String;
-  previousTrackUris?: PartyCreatepreviousTrackUrisInput;
   queuedTracks?: QueuedTrackCreateManyInput;
-  trackUris?: PartyCreatetrackUrisInput;
   requestedUserIds?: PartyCreaterequestedUserIdsInput;
   bannedUserIds?: PartyCreatebannedUserIdsInput;
   partyUserIds?: PartyCreatepartyUserIdsInput;
 }
 
-export interface PartyCreatepreviousTrackUrisInput {
-  set?: String[] | String;
-}
-
 export interface QueuedTrackCreateManyInput {
   create?: QueuedTrackCreateInput[] | QueuedTrackCreateInput;
+  connect?: QueuedTrackWhereUniqueInput[] | QueuedTrackWhereUniqueInput;
 }
 
 export interface QueuedTrackCreateInput {
@@ -366,10 +407,6 @@ export interface QueuedTrackCreateInput {
 }
 
 export interface QueuedTrackCreateuserVotesInput {
-  set?: String[] | String;
-}
-
-export interface PartyCreatetrackUrisInput {
   set?: String[] | String;
 }
 
@@ -388,27 +425,64 @@ export interface PartyCreatepartyUserIdsInput {
 export interface PartyUpdateInput {
   name?: String;
   ownerUserId?: String;
-  previousTrackUris?: PartyUpdatepreviousTrackUrisInput;
   queuedTracks?: QueuedTrackUpdateManyInput;
-  trackUris?: PartyUpdatetrackUrisInput;
   requestedUserIds?: PartyUpdaterequestedUserIdsInput;
   bannedUserIds?: PartyUpdatebannedUserIdsInput;
   partyUserIds?: PartyUpdatepartyUserIdsInput;
 }
 
-export interface PartyUpdatepreviousTrackUrisInput {
-  set?: String[] | String;
-}
-
 export interface QueuedTrackUpdateManyInput {
   create?: QueuedTrackCreateInput[] | QueuedTrackCreateInput;
+  update?:
+    | QueuedTrackUpdateWithWhereUniqueNestedInput[]
+    | QueuedTrackUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | QueuedTrackUpsertWithWhereUniqueNestedInput[]
+    | QueuedTrackUpsertWithWhereUniqueNestedInput;
+  delete?: QueuedTrackWhereUniqueInput[] | QueuedTrackWhereUniqueInput;
+  connect?: QueuedTrackWhereUniqueInput[] | QueuedTrackWhereUniqueInput;
+  disconnect?: QueuedTrackWhereUniqueInput[] | QueuedTrackWhereUniqueInput;
   deleteMany?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
   updateMany?:
     | QueuedTrackUpdateManyWithWhereNestedInput[]
     | QueuedTrackUpdateManyWithWhereNestedInput;
 }
 
+export interface QueuedTrackUpdateWithWhereUniqueNestedInput {
+  where: QueuedTrackWhereUniqueInput;
+  data: QueuedTrackUpdateDataInput;
+}
+
+export interface QueuedTrackUpdateDataInput {
+  trackId?: String;
+  userVotes?: QueuedTrackUpdateuserVotesInput;
+}
+
+export interface QueuedTrackUpdateuserVotesInput {
+  set?: String[] | String;
+}
+
+export interface QueuedTrackUpsertWithWhereUniqueNestedInput {
+  where: QueuedTrackWhereUniqueInput;
+  update: QueuedTrackUpdateDataInput;
+  create: QueuedTrackCreateInput;
+}
+
 export interface QueuedTrackScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
   trackId?: String;
   trackId_not?: String;
   trackId_in?: String[] | String;
@@ -423,6 +497,22 @@ export interface QueuedTrackScalarWhereInput {
   trackId_not_starts_with?: String;
   trackId_ends_with?: String;
   trackId_not_ends_with?: String;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   AND?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
   OR?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
   NOT?: QueuedTrackScalarWhereInput[] | QueuedTrackScalarWhereInput;
@@ -436,14 +526,6 @@ export interface QueuedTrackUpdateManyWithWhereNestedInput {
 export interface QueuedTrackUpdateManyDataInput {
   trackId?: String;
   userVotes?: QueuedTrackUpdateuserVotesInput;
-}
-
-export interface QueuedTrackUpdateuserVotesInput {
-  set?: String[] | String;
-}
-
-export interface PartyUpdatetrackUrisInput {
-  set?: String[] | String;
 }
 
 export interface PartyUpdaterequestedUserIdsInput {
@@ -461,11 +543,14 @@ export interface PartyUpdatepartyUserIdsInput {
 export interface PartyUpdateManyMutationInput {
   name?: String;
   ownerUserId?: String;
-  previousTrackUris?: PartyUpdatepreviousTrackUrisInput;
-  trackUris?: PartyUpdatetrackUrisInput;
   requestedUserIds?: PartyUpdaterequestedUserIdsInput;
   bannedUserIds?: PartyUpdatebannedUserIdsInput;
   partyUserIds?: PartyUpdatepartyUserIdsInput;
+}
+
+export interface QueuedTrackUpdateInput {
+  trackId?: String;
+  userVotes?: QueuedTrackUpdateuserVotesInput;
 }
 
 export interface QueuedTrackUpdateManyMutationInput {
@@ -528,8 +613,6 @@ export interface Party {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   ownerUserId: String;
-  previousTrackUris: String[];
-  trackUris: String[];
   requestedUserIds: String[];
   bannedUserIds: String[];
   partyUserIds: String[];
@@ -541,7 +624,6 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
-  previousTrackUris: () => Promise<String[]>;
   queuedTracks: <T = FragmentableArray<QueuedTrack>>(
     args?: {
       where?: QueuedTrackWhereInput;
@@ -553,7 +635,6 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       last?: Int;
     }
   ) => T;
-  trackUris: () => Promise<String[]>;
   requestedUserIds: () => Promise<String[]>;
   bannedUserIds: () => Promise<String[]>;
   partyUserIds: () => Promise<String[]>;
@@ -567,7 +648,6 @@ export interface PartySubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
-  previousTrackUris: () => Promise<AsyncIterator<String[]>>;
   queuedTracks: <T = Promise<AsyncIterator<QueuedTrackSubscription>>>(
     args?: {
       where?: QueuedTrackWhereInput;
@@ -579,27 +659,35 @@ export interface PartySubscription
       last?: Int;
     }
   ) => T;
-  trackUris: () => Promise<AsyncIterator<String[]>>;
   requestedUserIds: () => Promise<AsyncIterator<String[]>>;
   bannedUserIds: () => Promise<AsyncIterator<String[]>>;
   partyUserIds: () => Promise<AsyncIterator<String[]>>;
 }
 
 export interface QueuedTrack {
+  id: ID_Output;
   trackId: String;
   userVotes: String[];
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface QueuedTrackPromise extends Promise<QueuedTrack>, Fragmentable {
+  id: () => Promise<ID_Output>;
   trackId: () => Promise<String>;
   userVotes: () => Promise<String[]>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface QueuedTrackSubscription
   extends Promise<AsyncIterator<QueuedTrack>>,
     Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
   trackId: () => Promise<AsyncIterator<String>>;
   userVotes: () => Promise<AsyncIterator<String[]>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface PartyConnection {}
@@ -839,8 +927,6 @@ export interface PartyPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   ownerUserId: String;
-  previousTrackUris: String[];
-  trackUris: String[];
   requestedUserIds: String[];
   bannedUserIds: String[];
   partyUserIds: String[];
@@ -854,8 +940,6 @@ export interface PartyPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
-  previousTrackUris: () => Promise<String[]>;
-  trackUris: () => Promise<String[]>;
   requestedUserIds: () => Promise<String[]>;
   bannedUserIds: () => Promise<String[]>;
   partyUserIds: () => Promise<String[]>;
@@ -869,8 +953,6 @@ export interface PartyPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
-  previousTrackUris: () => Promise<AsyncIterator<String[]>>;
-  trackUris: () => Promise<AsyncIterator<String[]>>;
   requestedUserIds: () => Promise<AsyncIterator<String[]>>;
   bannedUserIds: () => Promise<AsyncIterator<String[]>>;
   partyUserIds: () => Promise<AsyncIterator<String[]>>;
@@ -900,22 +982,31 @@ export interface QueuedTrackSubscriptionPayloadSubscription
 }
 
 export interface QueuedTrackPreviousValues {
+  id: ID_Output;
   trackId: String;
   userVotes: String[];
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface QueuedTrackPreviousValuesPromise
   extends Promise<QueuedTrackPreviousValues>,
     Fragmentable {
+  id: () => Promise<ID_Output>;
   trackId: () => Promise<String>;
   userVotes: () => Promise<String[]>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface QueuedTrackPreviousValuesSubscription
   extends Promise<AsyncIterator<QueuedTrackPreviousValues>>,
     Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
   trackId: () => Promise<AsyncIterator<String>>;
   userVotes: () => Promise<AsyncIterator<String[]>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
