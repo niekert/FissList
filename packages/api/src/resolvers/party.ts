@@ -198,7 +198,7 @@ async function addTracks(
 
   pubsub.publish(PubsubEvents.PartyTracksChanged, {
     partyId: args.partyId,
-    changedTrackIds: [], // TODO: add changed tracks
+    changedTrackIds: addedTracks.map(track => track.trackId),
   });
 
   return party;

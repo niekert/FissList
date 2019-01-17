@@ -7,6 +7,10 @@ interface QueuedTrack {
   userVotes: string[];
 }
 
+interface TrackMap {
+  [trackId: string]: Track;
+}
+
 async function fetchQueuedTracks(
   {
     partyId,
@@ -29,15 +33,31 @@ async function fetchQueuedTracks(
 
   const queuedTrackIds = queuedPartyTracks.map(track => track.trackId);
 
-  const { data, status } = await context.spotify.fetchResource<{
+  const { data } = await context.spotify.fetchResource<{
     tracks: Track[];
   }>(`/tracks?ids=${queuedTrackIds.join(',')}`);
 
-  return queuedPartyTracks.map((queuedTrack, i) => ({
-    trackId: queuedTrack.trackId,
-    track: data.tracks[i],
-    userVotes: queuedTrack.userVotes,
-  }));
+  const trackMap = data.tracks.reduce<TrackMap>(
+    (result, track) =>
+      track
+        ? {
+            ...result,
+            [track.id]: track,
+          }
+        : result,
+    {},
+  );
+
+  return (
+    queuedPartyTracks
+      .map(queuedTrack => ({
+        trackId: queuedTrack.trackId,
+        track: trackMap[queuedTrack.trackId],
+        userVotes: queuedTrack.userVotes,
+      }))
+      // Filter out any tracks that were not included in spotify resp
+      .filter(queuedTrack => !!queuedTrack.track)
+  );
 }
 
 export default {

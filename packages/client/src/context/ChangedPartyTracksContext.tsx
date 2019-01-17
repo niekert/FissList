@@ -36,6 +36,7 @@ enum Actions {
 function changedTracksReducer(state: string[], action): string[] {
   switch (action.type) {
     case Actions.ADD_CHANGED_TRACKS: {
+      console.log('tracks have changerd');
       return [...state, ...action.payload];
     }
     case Actions.MARK_SEEN: {
