@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "proxy": "http://localhost:4000",
   "engines": {
-    "node": "9.x.x"
+    "node": "11.x.x"
   },
   "scripts": {
     "schema:download": "apollo schema:download --endpoint=http://localhost:4000/graphql",
@@ -98,7 +98,8 @@
     "@types/react-router": "^4.4.1",
     "apollo": "^1.9.2",
     "pnp-webpack-plugin": "^1.2.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "webpack-dev-server": "^3.1.14"
   },
   "jest": {
     "collectCoverageFrom": [

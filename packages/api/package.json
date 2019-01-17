@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "engines": {
-    "node": "9.x.x"
+    "node": "11.x.x"
   },
   "license": "MIT",
   "dependencies": {
