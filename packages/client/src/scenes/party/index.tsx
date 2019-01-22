@@ -27,7 +27,7 @@ export { usePartyContext } from './context';
 export { GET_PARTY } from './queries';
 
 // FIXME: Remove this ugly hardcode
-const PLAYER_HEIGHT_PX = 156;
+const PLAYER_HEIGHT_PX = 0;
 
 const StickyTop = styled.div`
   position: sticky;

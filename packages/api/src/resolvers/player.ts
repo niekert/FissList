@@ -32,11 +32,7 @@ interface DeviceResp {
   devices: Device[];
 }
 
-export async function player(
-  root,
-  args: { partyid?: string },
-  context: Context,
-): Promise<Player> {
+export async function player(root, args, context: Context): Promise<Player> {
   let { data } = await context.spotify.fetchResource<Player>('/me/player');
   if (!data) {
     return null;
@@ -85,26 +81,18 @@ export async function togglePlayState(
   },
   context: Context,
 ) {
-  const party = await context.prisma.party({ id: args.partyId });
-  const [player, playlist] = await Promise.all([
-    context.spotify.fetchResource<Player>('/me/player'),
-  ]);
-
   if (args.type === PlayState.Play) {
     let contextUri = args.contextUri;
 
-    const { data, status } = await context.spotify.fetchResource(
-      '/me/player/play',
-      {
-        method: 'PUT',
-        body: JSON.stringify({
-          context_uri: contextUri,
-          offset: args.offsetUri && {
-            uri: args.offsetUri,
-          },
-        }),
-      },
-    );
+    await context.spotify.fetchResource('/me/player/play', {
+      method: 'PUT',
+      body: JSON.stringify({
+        context_uri: contextUri,
+        offset: args.offsetUri && {
+          uri: args.offsetUri,
+        },
+      }),
+    });
 
     return {
       isPlaying: true,
@@ -112,12 +100,12 @@ export async function togglePlayState(
   } else {
     const [path, method, isPlayingAfter] = requestMap[args.type];
 
-    const { status } = await context.spotify.fetchResource(path, {
+    await context.spotify.fetchResource(path, {
       method,
     });
 
     return {
-      isPlaying: true,
+      isPlaying: isPlayingAfter,
     };
   }
 }
