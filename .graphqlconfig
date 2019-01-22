@@ -1,11 +1,16 @@
 {
   "projects": {
     "app": {
-      "schemaPath": "packages/api/schema.graphql",
+      "schemaPath": "./packages/api/schema.graphql",
       "includes": ["packages/api/**/*.graphql"],
       "extensions": {
         "endpoints": {
-          "default": "http://localhost:4000/graphql"
+          "default": {
+            "url": "http://localhost:4000/graphql",
+            "headers": {
+              "authorization": "Bearer BQBkIvoMXHlXihyc6mPMbzftUe8rwwMpVBlq1gyKu7lt7uMGDxl9xn1mNf9YVdlkYgcmef6mjIKL9zgE0o1FQM-m7yVUKNzTkoLerzC_pdBiUj6B-0ilW4GJVL0O3g7EDUoL7440FzuLNseAe7fBQQIKridrl00hyhC8V0hRYG8P3wHIC-YNdpad6boAQi29WJlZ8F8KtHJjtvNWvLUeYEVN7eWxeUJ4hh-00dg"
+            }
+          }
         }
       }
     }

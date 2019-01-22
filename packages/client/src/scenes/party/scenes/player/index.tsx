@@ -1,12 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { usePartyContext } from '../../context';
-import { usePlayer } from 'context/player';
-import { NetworkStatus } from 'apollo-client';
+import { usePlayer } from './context';
 import ActiveTrack from './ActiveTrack';
-import Devices from './Devices';
 import TrackNavigation from './TrackNavigation';
-import NoPlayerFound from './NoPlayerFound';
 
 const PlayerWrapper = styled.div`
   display: flex;

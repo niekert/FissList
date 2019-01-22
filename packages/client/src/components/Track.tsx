@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { usePlayer } from 'context/player';
-import { getCurrentTrackId } from 'selectors/player';
 import styled from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 
@@ -36,8 +34,6 @@ type IProps = TrackInfo & {
 };
 
 function Track({ name, id, artists, onClick, ...props }: IProps) {
-  const player = usePlayer();
-
   const artistNames = artists!.map(artist => artist!.name).join(', ');
 
   const onTrackClick = () => {
@@ -46,8 +42,8 @@ function Track({ name, id, artists, onClick, ...props }: IProps) {
     }
   };
 
-  const activeTrackID = getCurrentTrackId(player!);
-  const isNowPlaying = activeTrackID === id;
+  // FIXME
+  const isNowPlaying = false;
 
   return (
     <Wrapper isNowPlaying={isNowPlaying} onClick={onTrackClick} {...props}>

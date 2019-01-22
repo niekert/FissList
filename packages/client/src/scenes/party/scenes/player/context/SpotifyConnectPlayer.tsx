@@ -7,7 +7,6 @@ import {
 import { GET_PARTY, usePartyContext } from 'scenes/party';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import PlayerContext, { TogglePlayStateOptions } from './PlayerContext';
-import { Context } from 'context/ChangedPartyTracksContext';
 
 interface IProps {
   children: React.ReactNode;

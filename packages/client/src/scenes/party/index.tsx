@@ -13,7 +13,7 @@ import { ChangedPartyTracksProvider } from 'context/ChangedPartyTracksContext';
 import { Tabs, Tab } from 'components/Tabs';
 import PartySubscription from './PartyChangesSubscription';
 import AddSelectedTracks from './AddSelectedTracks';
-import { PlayerContainer } from 'context/player';
+import { PlayerContainer } from './scenes/player/context';
 import { PartyContext } from './context';
 import Player from './scenes/player';
 import PlayLists from 'scenes/playlists';
