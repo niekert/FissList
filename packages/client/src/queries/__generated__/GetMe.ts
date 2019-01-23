@@ -17,14 +17,9 @@ export interface GetMe_me_user {
   images: (GetMe_me_user_images | null)[] | null;
 }
 
-export interface GetMe_me_parties_playlist {
-  name: string;
-}
-
 export interface GetMe_me_parties {
   id: string;
   name: string;
-  playlist: GetMe_me_parties_playlist;
 }
 
 export interface GetMe_me {

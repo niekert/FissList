@@ -1,13 +1,10 @@
 import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo-hooks';
 import {
-  TogglePlayState,
-  TogglePlayStateVariables,
-} from './__generated__/TogglePlayState';
-import {
   SetActiveDevice,
   SetActiveDeviceVariables,
 } from './__generated__/SetActiveDevice';
+import { Playback, PlaybackVariables } from './__generated__/Playback';
 
 export const SET_ACTIVE_DEVICE_MUTATION = gql`
   mutation SetActiveDevice($deviceId: String!) {
@@ -15,22 +12,9 @@ export const SET_ACTIVE_DEVICE_MUTATION = gql`
   }
 `;
 
-export const TOGGLE_PLAY_STATE_MUTATION = gql`
-  mutation TogglePlayState(
-    $type: String!
-    $partyId: String
-    $contextUri: String
-    $offsetUri: String
-  ) {
-    togglePlayState(
-      type: $type
-      partyId: $partyId
-      contextUri: $contextUri
-      offsetUri: $offsetUri
-    ) {
-      __typename
-      isPlaying
-    }
+export const PLAYBACK_MUTATION = gql`
+  mutation Playback($partyId: String!, $playback: Playback!) {
+    playback(partyId: $partyId, playback: $playback)
   }
 `;
 
@@ -40,8 +24,6 @@ export function useSetActiveDeviceMutation() {
   );
 }
 
-export function useSetTogglePlayStateMutation() {
-  return useMutation<TogglePlayState, TogglePlayStateVariables>(
-    TOGGLE_PLAY_STATE_MUTATION,
-  );
+export function usePlaybackMutation() {
+  return useMutation<Playback, PlaybackVariables>(PLAYBACK_MUTATION);
 }

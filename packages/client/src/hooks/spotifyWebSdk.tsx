@@ -79,6 +79,7 @@ export function useSpotifyWebSdk({
   );
 
   return {
+    player: playerRef.current,
     deviceId,
     script: <Script src="https://sdk.scdn.co/spotify-player.js">{''}</Script>,
   };

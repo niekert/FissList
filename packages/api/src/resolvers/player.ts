@@ -1,10 +1,18 @@
 import { Context } from '../types';
-import { Track, Playlist } from '../spotify';
+import { Track } from '../spotify';
 import { GraphQLError } from 'graphql';
+import { getPermissionForParty, Permissions } from '../permissions';
+import { AuthenticationError } from 'apollo-server';
 
 interface PlayerContext {
   uri: string;
   href: string;
+}
+
+enum Playback {
+  Play = 'PLAY',
+  Pause = 'PAUSE',
+  Skip = 'SKIP',
 }
 
 interface Player {
@@ -61,55 +69,6 @@ enum PlayState {
   Prev = 'prev',
 }
 
-interface Map {
-  [k: string]: [string, string, boolean];
-}
-
-const requestMap: Map = {
-  [PlayState.Pause]: ['/me/player/pause', 'PUT', false],
-  [PlayState.Prev]: ['/me/player/previous', 'POST', true],
-  [PlayState.Next]: ['/me/player/next', 'POST', true],
-};
-
-export async function togglePlayState(
-  _,
-  args: {
-    type: PlayState;
-    contextUri: string;
-    offsetUri?: string;
-    partyId: string;
-  },
-  context: Context,
-) {
-  if (args.type === PlayState.Play) {
-    let contextUri = args.contextUri;
-
-    await context.spotify.fetchResource('/me/player/play', {
-      method: 'PUT',
-      body: JSON.stringify({
-        context_uri: contextUri,
-        offset: args.offsetUri && {
-          uri: args.offsetUri,
-        },
-      }),
-    });
-
-    return {
-      isPlaying: true,
-    };
-  } else {
-    const [path, method, isPlayingAfter] = requestMap[args.type];
-
-    await context.spotify.fetchResource(path, {
-      method,
-    });
-
-    return {
-      isPlaying: isPlayingAfter,
-    };
-  }
-}
-
 export async function setActiveDevice(
   root,
   args: { deviceId: string },
@@ -134,9 +93,65 @@ export async function setActiveDevice(
   return true;
 }
 
+async function playback(
+  _,
+  args: { partyId: string; playback: Playback },
+  context: Context,
+): Promise<boolean> {
+  const [me, party, player, queuedTracks] = await Promise.all([
+    context.spotify.fetchCurrentUser(),
+    context.prisma.party({ id: args.partyId }),
+    context.spotify.fetchResource<Player>('/me/player'),
+    await context.prisma.party({ id: args.partyId }).queuedTracks(),
+  ]);
+
+  const permissions = getPermissionForParty(party, me);
+  if (permissions !== Permissions.Admin) {
+    throw new AuthenticationError('You are not authorized to do this.');
+  }
+
+  if (player.status !== 200) {
+    throw new Error('Failed getting player state');
+  }
+
+  const [nextInQueue] = queuedTracks;
+  if (!nextInQueue) {
+    throw new Error('No tracks in the queue fam');
+  }
+
+  if (args.playback === Playback.Play) {
+    if (player.data.isPlaying && player.data.item.id !== nextInQueue.trackId) {
+      await context.spotify.fetchResource('/me/player/play', {
+        method: 'PUT',
+        body: JSON.stringify({
+          uris: [`spotify:track:${nextInQueue.trackId}`],
+        }),
+      });
+    } else {
+      await context.spotify.fetchResource('/me/player/play', {
+        method: 'PUT',
+      });
+    }
+
+    return true;
+  }
+
+  if (args.playback === Playback.Pause) {
+    await context.spotify.fetchResource('/me/player/pause', { method: 'PUT' });
+    return true;
+  }
+
+  if (args.playback === Playback.Skip) {
+    console.log('continuing with playbacl');
+    return true;
+  }
+
+  return true;
+}
+
 export default {
   Mutation: {
-    togglePlayState,
+    playback,
     setActiveDevice,
   },
   Player: {

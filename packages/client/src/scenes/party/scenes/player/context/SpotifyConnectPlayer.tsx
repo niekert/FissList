@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { usePlayerQuery, PLAYER_QUERY } from './usePlayerQuery';
-import {
-  useSetActiveDeviceMutation,
-  useSetTogglePlayStateMutation,
-} from './mutations';
+import { useSetActiveDeviceMutation, usePlaybackMutation } from './mutations';
 import { GET_PARTY, usePartyContext } from 'scenes/party';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import PlayerContext, { TogglePlayStateOptions } from './PlayerContext';
+import { useQueuedTracks } from 'scenes/party/queries';
 
 interface IProps {
   children: React.ReactNode;
@@ -16,18 +14,17 @@ export function PlayerContainer({ children }: IProps) {
   // need HOOKS for graphql smh
   const player = usePlayerQuery();
   const party = usePartyContext();
+  const queuedTracks = useQueuedTracks(party.id);
   const setActiveDevice = useSetActiveDeviceMutation();
-  const togglePlayState = useSetTogglePlayStateMutation();
-
-  if (player.data.player && player.data.player.item) {
-    console.log('active item', player.data.player.item);
-  }
+  const mutatePlayback = usePlaybackMutation();
 
   const onPlayerStateChanged = React.useCallback(
     async (state: Spotify.PlaybackState) => {
       if (!state) {
         return;
       }
+
+      console.log('state is', state);
 
       if (state.context.uri && state.position === 0) {
         // const nextExpectedTrack = party!.playlist.tracks.items[
@@ -59,24 +56,6 @@ export function PlayerContainer({ children }: IProps) {
     onPlayerStateChanged,
   });
 
-  const handlePlayState = React.useCallback(
-    ({ type, offsetUri, contextUri }: TogglePlayStateOptions) => {
-      togglePlayState({
-        variables: {
-          type,
-          partyId: party.id,
-          contextUri,
-          offsetUri,
-        },
-        refetchQueries: [
-          { query: PLAYER_QUERY },
-          { query: GET_PARTY, variables: { partyId: party.id } },
-        ],
-      });
-    },
-    [],
-  );
-
   const handleActiveDevice = async (deviceId: string) => {
     await setActiveDevice({
       variables: {
@@ -85,6 +64,18 @@ export function PlayerContainer({ children }: IProps) {
     });
     player.refetch();
   };
+
+  const startPlayback = React.useCallback(() => {
+    console.log('staring');
+  }, []);
+
+  const pausePlayback = React.useCallback(() => {
+    console.log('pausing');
+  }, []);
+
+  const skipTrack = React.useCallback(() => {
+    console.log('skipping track');
+  }, []);
 
   React.useEffect(
     () => {
@@ -101,7 +92,9 @@ export function PlayerContainer({ children }: IProps) {
       value={{
         ...player,
         setActiveDevice: handleActiveDevice,
-        togglePlayState: handlePlayState,
+        startPlayback,
+        pausePlayback,
+        skipTrack,
         webSdkDeviceId,
       }}
     >

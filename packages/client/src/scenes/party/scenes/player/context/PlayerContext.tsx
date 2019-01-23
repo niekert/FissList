@@ -11,7 +11,9 @@ export interface TogglePlayStateOptions {
 }
 
 export type PlayerContextValue = PlayerQueryResult & {
-  togglePlayState: (options: TogglePlayStateOptions) => void;
+  startPlayback: () => void;
+  skipTrack: () => void;
+  pausePlayback: () => void;
   webSdkDeviceId: string | null;
   setActiveDevice: (deviceId: string) => void;
 };

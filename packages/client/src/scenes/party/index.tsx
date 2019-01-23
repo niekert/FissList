@@ -33,6 +33,7 @@ const StickyTop = styled.div`
   position: sticky;
   top: 0;
   width: 100%;
+  z-index: 10;
   background: ${props => props.theme.colors.primary};
 `;
 

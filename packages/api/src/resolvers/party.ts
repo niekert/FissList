@@ -5,6 +5,7 @@ import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
 import { GraphQLError } from 'graphql';
 import { Playlist } from '../spotify';
+import { Permissions, getPermissionForParty } from '../permissions';
 
 interface PartyResult {
   id: string;
@@ -18,32 +19,6 @@ interface PartyResult {
   queuedTracks?: QueuedTrack[];
 }
 
-enum Permissions {
-  Admin = 'ADMIN',
-  Member = 'MEMBER',
-  Pending = 'PENDING',
-  None = 'NONE',
-}
-
-const getPermissionForParty = (
-  party: Party,
-  user: SpotifyUser,
-): Permissions => {
-  if (party.ownerUserId === user.id) {
-    return Permissions.Admin;
-  }
-
-  if (party.partyUserIds && party.partyUserIds.includes(user.id)) {
-    return Permissions.Member;
-  }
-
-  if (party.requestedUserIds && party.requestedUserIds.includes(user.id)) {
-    return Permissions.Pending;
-  }
-
-  return Permissions.None;
-};
-
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 interface TracksChangedPayload {
@@ -56,7 +31,6 @@ async function party(
   args: { partyId: string },
   context: Context,
 ): Promise<PartyResult> {
-  console.log('hi');
   const user = await context.spotify.fetchCurrentUser();
   const party = await context.prisma.party({ id: args.partyId });
   const permission = getPermissionForParty(party, user);
