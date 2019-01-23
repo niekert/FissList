@@ -12,6 +12,12 @@ export enum Permissions {
   PENDING = 'PENDING',
 }
 
+export enum Playback {
+  PAUSE = 'PAUSE',
+  PLAY = 'PLAY',
+  SKIP = 'SKIP',
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
