@@ -5,8 +5,14 @@
 // GraphQL subscription operation: PartyTracksChangedSubscription
 // ====================================================
 
+export interface PartyTracksChangedSubscription_partyTracksChanged {
+  partyId: string;
+  addedTrackIds: string[] | null;
+  deletedTrackIds: string[] | null;
+}
+
 export interface PartyTracksChangedSubscription {
-  partyTracksChanged: string[];
+  partyTracksChanged: PartyTracksChangedSubscription_partyTracksChanged | null;
 }
 
 export interface PartyTracksChangedSubscriptionVariables {

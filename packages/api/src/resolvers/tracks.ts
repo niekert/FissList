@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server';
-import { QueuedTrack } from '../generated/prisma-client/index';
 import { Context, Track } from '../types';
+import { sortQueuedTracks } from '../helpers';
 
 interface QueuedTrackDetails {
   trackId: String;
@@ -11,17 +11,6 @@ interface QueuedTrackDetails {
 interface TrackMap {
   [trackId: string]: Track;
 }
-
-const sortQueuedTracks = (
-  queuedTracks: QueuedTrack[],
-  { offset = 0, limit = 50 }: { offset?: number; limit?: number } = {},
-): QueuedTrack[] => {
-  const sorted = queuedTracks.sort((a, b) => {
-    return b.userVotes.length - a.userVotes.length;
-  });
-
-  return sorted.slice(offset, offset + limit);
-};
 
 async function fetchQueuedTracks(
   {
@@ -76,7 +65,7 @@ export default {
       _,
       args: { partyId: string; offset?: number; limit: number },
       context: Context,
-    ): Promise<QueuedTrack[]> {
+    ): Promise<QueuedTrackDetails[]> {
       return fetchQueuedTracks(args, context);
     },
   },
@@ -85,7 +74,7 @@ export default {
       partyQuery: { id: string },
       _: unknown,
       context: Context,
-    ): Promise<QueuedTrack[]> => {
+    ): Promise<QueuedTrackDetails[]> => {
       return fetchQueuedTracks({ partyId: partyQuery.id }, context);
     },
   },

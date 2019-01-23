@@ -8,7 +8,7 @@ import { Playback } from "./../../../../../../../__generated__/globalTypes";
 // ====================================================
 
 export interface Playback {
-  playback: boolean | null;
+  playback: string;
 }
 
 export interface PlaybackVariables {

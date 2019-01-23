@@ -1,3 +1,4 @@
+import * as React from 'react';
 import gql from 'graphql-tag';
 import { PartyInfo, TrackInfo } from 'fragments';
 import { useQuery } from 'react-apollo-hooks';
@@ -9,6 +10,7 @@ import {
   QueuedTrackDetails,
   QueuedTrackDetailsVariables,
 } from './__generated__/QueuedTrackDetails';
+import { useChangedTracks } from 'context/ChangedPartyTracksContext';
 
 export const GET_PARTY = gql`
   query GetPartyById($partyId: String!) {
@@ -35,7 +37,9 @@ const QUEUED_TRACK_DETAILS = gql`
 `;
 
 export function useQueuedTracks(partyId: string) {
-  return useQuery<QueuedTrackDetails, QueuedTrackDetailsVariables>(
+  const { deletedTrackIds, markTrackSeen } = useChangedTracks();
+
+  const query = useQuery<QueuedTrackDetails, QueuedTrackDetailsVariables>(
     QUEUED_TRACK_DETAILS,
     {
       variables: {
@@ -43,6 +47,23 @@ export function useQueuedTracks(partyId: string) {
       },
     },
   );
+
+  React.useEffect(
+    () => {
+      if (deletedTrackIds.length > 0) {
+        query.updateQuery(previousQueryResult => ({
+          queuedTracks: previousQueryResult.queuedTracks.filter(
+            queuedTrack => !deletedTrackIds.includes(queuedTrack.trackId),
+          ),
+        }));
+      }
+
+      markTrackSeen(deletedTrackIds);
+    },
+    [deletedTrackIds],
+  );
+
+  return query;
 }
 
 export function usePartyQuery(partyId: string) {

@@ -28,13 +28,12 @@ const NavigateButton = styled(IconButton)`
 `;
 
 interface IProps {
-  onPrev: () => void;
   onNext: () => void;
   onPlayPause: () => void;
   isPlaying: boolean;
 }
 
-function TrackNavigation({ isPlaying, onPrev, onNext, onPlayPause }: IProps) {
+function TrackNavigation({ isPlaying, onNext, onPlayPause }: IProps) {
   return (
     <PlayerNavigation>
       <NavigateButton

@@ -2,7 +2,9 @@ import { Context } from '../types';
 import { Track } from '../spotify';
 import { GraphQLError } from 'graphql';
 import { getPermissionForParty, Permissions } from '../permissions';
-import { AuthenticationError } from 'apollo-server';
+import { AuthenticationError, PubSub } from 'apollo-server';
+import pubsub, { PubsubEvents } from '../pubsub';
+import { sortQueuedTracks } from '../helpers';
 
 interface PlayerContext {
   uri: string;
@@ -97,12 +99,15 @@ async function playback(
   _,
   args: { partyId: string; playback: Playback },
   context: Context,
-): Promise<boolean> {
+): Promise<string> {
   const [me, party, player, queuedTracks] = await Promise.all([
     context.spotify.fetchCurrentUser(),
     context.prisma.party({ id: args.partyId }),
     context.spotify.fetchResource<Player>('/me/player'),
-    await context.prisma.party({ id: args.partyId }).queuedTracks(),
+    await context.prisma
+      .party({ id: args.partyId })
+      .queuedTracks()
+      .then(sortQueuedTracks),
   ]);
 
   const permissions = getPermissionForParty(party, me);
@@ -119,34 +124,54 @@ async function playback(
     throw new Error('No tracks in the queue fam');
   }
 
-  if (args.playback === Playback.Play) {
-    if (player.data.isPlaying && player.data.item.id !== nextInQueue.trackId) {
-      await context.spotify.fetchResource('/me/player/play', {
-        method: 'PUT',
-        body: JSON.stringify({
-          uris: [`spotify:track:${nextInQueue.trackId}`],
-        }),
-      });
-    } else {
-      await context.spotify.fetchResource('/me/player/play', {
-        method: 'PUT',
-      });
-    }
+  const isReadyToStartNextQueuedTrack =
+    player.data.item.id !== nextInQueue.trackId;
 
-    return true;
+  if (
+    (args.playback === Playback.Play && isReadyToStartNextQueuedTrack) ||
+    args.playback === Playback.Skip
+  ) {
+    // Remove the track from the play queue
+    await context.prisma.updateParty({
+      where: { id: party.id },
+      data: {
+        queuedTracks: {
+          delete: {
+            id: nextInQueue.id,
+          },
+        },
+      },
+    });
+
+    pubsub.publish(PubsubEvents.PartyTracksChanged, {
+      partyId: party.id,
+      deletedTrackIds: [nextInQueue.trackId],
+      addedTrackIds: [],
+    });
+
+    // Start playing the new track
+    await context.spotify.fetchResource('/me/player/play', {
+      method: 'PUT',
+      body: JSON.stringify({
+        uris: [`spotify:track:${nextInQueue.trackId}`],
+      }),
+    });
+
+    return nextInQueue.trackId;
+  }
+
+  if (args.playback === Playback.Play) {
+    await context.spotify.fetchResource('/me/player/play', {
+      method: 'PUT',
+    });
   }
 
   if (args.playback === Playback.Pause) {
     await context.spotify.fetchResource('/me/player/pause', { method: 'PUT' });
-    return true;
+    return '';
   }
 
-  if (args.playback === Playback.Skip) {
-    console.log('continuing with playbacl');
-    return true;
-  }
-
-  return true;
+  return '';
 }
 
 export default {

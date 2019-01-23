@@ -4,3 +4,9 @@ export enum Permissions {
   NONE = 'NONE',
   PENDING = 'PENDING',
 }
+
+export enum Playback {
+  PAUSE = 'PAUSE',
+  PLAY = 'PLAY',
+  SKIP = 'SKIP',
+}

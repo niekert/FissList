@@ -17,43 +17,6 @@ interface Props {
 
 export default function Player({ partyId }: Props) {
   const playerContext = usePlayer();
-
-  const handlePlayState = React.useCallback(
-    (type: string, uris?: string[], playlistUri?: string) => {
-      if (!playerContext) {
-        return;
-      }
-
-      playerContext.togglePlayState({
-        type,
-        uris,
-        playlistUri,
-        partyId,
-      });
-    },
-    [],
-  );
-
-  const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value) {
-      playerContext!.setActiveDevice(e.target.value);
-    }
-  };
-
-  // if (
-  //   ((playerContext!.networkStatus === NetworkStatus.ready &&
-  //     !playerContext!.data!.player) ||
-  //     playerContext!.networkStatus === NetworkStatus.refetch) &&
-  //   !playerContext!.webSdkDeviceId
-  // ) {
-  //   return (
-  //     <NoPlayerFound
-  //       isLoading={playerContext!.networkStatus === NetworkStatus.refetch}
-  //       onRetry={() => playerContext!.refetch()}
-  //     />
-  //   );
-  // }
-
   const { player } = playerContext!.data;
 
   const isPlaying = player ? player.isPlaying : false;
@@ -66,9 +29,12 @@ export default function Player({ partyId }: Props) {
           <TrackNavigation
             // TODO: handle with reducer
             isPlaying={isPlaying}
-            onPrev={() => handlePlayState('prev')}
-            onNext={() => handlePlayState('next')}
-            onPlayPause={() => handlePlayState(isPlaying ? 'pause' : 'play')}
+            onNext={playerContext!.skipTrack}
+            onPlayPause={
+              isPlaying
+                ? playerContext!.pausePlayback
+                : playerContext!.startPlayback
+            }
           />
         </>
       )}

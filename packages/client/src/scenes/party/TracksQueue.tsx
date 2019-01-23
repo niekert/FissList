@@ -11,17 +11,17 @@ interface Props {
 
 function TracksQueue({ partyId }: Props) {
   const currentUser = useCurrentUser();
-  const changedTracks = useChangedTracks();
+  const { addedTrackIds, deletedTrackIds } = useChangedTracks();
   const queuedTracks = useQueuedTracks(partyId);
 
   React.useEffect(
     () => {
       // Refetch the queued tracks if the changed tracks changes
-      if (queuedTracks.data && changedTracks.changedTrackIds.length > 0) {
+      if (queuedTracks.data && addedTrackIds.length > 0) {
         queuedTracks.refetch();
       }
     },
-    [changedTracks.changedTrackIds],
+    [addedTrackIds],
   );
 
   return (
@@ -31,7 +31,6 @@ function TracksQueue({ partyId }: Props) {
           track={queuedTrack.track}
           key={`${queuedTrack.trackId}-${index}`}
           isActive={false}
-          playTrack={() => {}}
           isRequested={
             !!currentUser && queuedTrack.userVotes.includes(currentUser.id)
           }

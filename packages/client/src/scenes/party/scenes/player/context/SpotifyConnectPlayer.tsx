@@ -1,53 +1,56 @@
 import * as React from 'react';
 import { usePlayerQuery, PLAYER_QUERY } from './usePlayerQuery';
 import { useSetActiveDeviceMutation, usePlaybackMutation } from './mutations';
-import { GET_PARTY, usePartyContext } from 'scenes/party';
+import { usePartyContext } from 'scenes/party';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
-import PlayerContext, { TogglePlayStateOptions } from './PlayerContext';
-import { useQueuedTracks } from 'scenes/party/queries';
+import PlayerContext from './PlayerContext';
+import { Playback } from 'globalTypes';
+import { useQueuedTracks } from '../../../queries';
+import { usePrevState } from 'hooks';
 
 interface IProps {
   children: React.ReactNode;
 }
 
+const REFETCH_INTERVAL_MS = 800;
+
 export function PlayerContainer({ children }: IProps) {
+  const [
+    startedTrackPlayback,
+    prevTrackPlayback,
+    setStartedTrackPlayback,
+  ] = usePrevState(false);
+
   // need HOOKS for graphql smh
   const player = usePlayerQuery();
   const party = usePartyContext();
-  const queuedTracks = useQueuedTracks(party.id);
+  const didConnectRef = React.useRef<boolean>(false);
+  const [refetchTimeout, setRefetchTimeout] = React.useState<
+    NodeJS.Timeout | undefined
+  >(undefined);
   const setActiveDevice = useSetActiveDeviceMutation();
   const mutatePlayback = usePlaybackMutation();
 
-  const onPlayerStateChanged = React.useCallback(
-    async (state: Spotify.PlaybackState) => {
-      if (!state) {
-        return;
-      }
+  const onPlayerStateChanged = (state: Spotify.PlaybackState) => {
+    if (didConnectRef.current === false) {
+      console.log('fetching on mount');
+      // REfetch the player when we just connected
+      player.refetch();
+      didConnectRef.current = true;
+    }
 
-      console.log('state is', state);
+    if (!state) {
+      return;
+    }
 
-      if (state.context.uri && state.position === 0) {
-        // const nextExpectedTrack = party!.playlist.tracks.items[
-        //   (party!.activeTrackIndex || 0) + 1
-        // ];
-        // if (
-        //   state.track_window.current_track.id === nextExpectedTrack.track.id
-        // ) {
-        //   // Correct track is playing
-        //   return;
-        // }
-        // togglePlayState({
-        //   variables: {
-        //     contextUri: `spotify:track:${nextExpectedTrack.track.id}`,
-        //     partyId: party!.id,
-        //     type: 'play',
-        //   },
-        // });
-      }
-    },
-    [],
-  );
+    if (state.paused === false) {
+      setStartedTrackPlayback(true);
+    }
 
+    if (state.paused && state.position === 0) {
+      setStartedTrackPlayback(false);
+    }
+  };
   const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
     name: 'PampaPlay',
 
@@ -62,21 +65,73 @@ export function PlayerContainer({ children }: IProps) {
         deviceId,
       },
     });
-    player.refetch();
   };
 
-  const startPlayback = React.useCallback(() => {
-    console.log('staring');
-  }, []);
+  const startPlayback = React.useCallback(
+    async () => {
+      await mutatePlayback({
+        variables: {
+          partyId: party.id,
+          playback: Playback.PLAY,
+        },
+      });
 
-  const pausePlayback = React.useCallback(() => {
-    console.log('pausing');
-  }, []);
+      setRefetchTimeout(
+        setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS),
+      );
+    },
+    [setRefetchTimeout],
+  );
 
-  const skipTrack = React.useCallback(() => {
-    console.log('skipping track');
-  }, []);
+  const pausePlayback = React.useCallback(
+    () => {
+      mutatePlayback({
+        variables: {
+          partyId: party.id,
+          playback: Playback.PAUSE,
+        },
+      });
 
+      setRefetchTimeout(
+        setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS),
+      );
+    },
+    [setRefetchTimeout],
+  );
+
+  React.useEffect(
+    () => {
+      if (refetchTimeout) {
+        return clearTimeout(refetchTimeout);
+      }
+    },
+    [refetchTimeout],
+  );
+  const skipTrack = React.useCallback(
+    async () => {
+      await mutatePlayback({
+        variables: {
+          partyId: party.id,
+          playback: Playback.SKIP,
+        },
+      });
+
+      setRefetchTimeout(
+        setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS),
+      );
+    },
+    [setRefetchTimeout],
+  );
+
+  React.useEffect(
+    () => {
+      if (!startedTrackPlayback && prevTrackPlayback) {
+        // Skip to the next one
+        skipTrack();
+      }
+    },
+    [startedTrackPlayback, prevTrackPlayback],
+  );
   React.useEffect(
     () => {
       // Always make the web sdk device leading

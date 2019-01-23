@@ -55,6 +55,15 @@ export function useSpotifyWebSdk({
 
   React.useEffect(
     () => {
+      if (isReady) {
+        playerRef.current!.connect();
+      }
+    },
+    [isReady],
+  );
+
+  React.useEffect(
+    () => {
       const player = playerRef.current!;
       if (isReady) {
         player.addListener('account_error', accountError);
@@ -63,8 +72,6 @@ export function useSpotifyWebSdk({
         player.addListener('authentication_error', accountError);
         player.addListener('not_ready', accountError);
         player.addListener('player_state_changed', onPlayerStateChanged);
-
-        player.connect();
 
         return () => {
           player.removeListener('account_error', accountError);
@@ -75,7 +82,7 @@ export function useSpotifyWebSdk({
 
       return;
     },
-    [isReady],
+    [isReady, onPlayerStateChanged],
   );
 
   return {

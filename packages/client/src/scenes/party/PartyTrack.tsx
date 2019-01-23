@@ -48,11 +48,10 @@ interface Props {
   track: TrackInfo;
   isActive: boolean;
   isRequested: boolean;
-  playTrack: (trackId: string) => void;
 }
 
-function PartyTrack({ isActive, track, playTrack }: Props) {
-  const { changedTrackIds, markTrackSeen } = useChangedTracks();
+function PartyTrack({ isActive, track }: Props) {
+  const { addedTrackIds, markTrackSeen } = useChangedTracks();
   const newlyAddedRef = React.useRef(undefined);
   const { isIntersecting } = useVisibility(newlyAddedRef);
 
@@ -70,10 +69,10 @@ function PartyTrack({ isActive, track, playTrack }: Props) {
   );
 
   return (
-    <Wrapper isActive={isActive} onClick={() => playTrack(track.id)}>
+    <Wrapper isActive={isActive}>
       <Track {...track} />
       <PoseGroup animateOnMount={true}>
-        {changedTrackIds.includes(track.id) && (
+        {addedTrackIds.includes(track.id) && (
           <NewlyAdded ref={newlyAddedRef} key="newlyAdded">
             New!
           </NewlyAdded>

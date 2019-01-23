@@ -4,11 +4,16 @@ import { Subscription } from 'react-apollo';
 import {
   PartyTracksChangedSubscription,
   PartyTracksChangedSubscriptionVariables,
+  PartyTracksChangedSubscription_partyTracksChanged,
 } from './__generated__/PartyTracksChangedSubscription';
 
 const PARTY_CHANGES_SUBSCRIPTION = gql`
   subscription PartyTracksChangedSubscription($partyId: String!) {
-    partyTracksChanged(partyId: $partyId)
+    partyTracksChanged(partyId: $partyId) {
+      partyId
+      addedTrackIds
+      deletedTrackIds
+    }
   }
 `;
 
@@ -17,15 +22,19 @@ class PartyTracksChangeSubscription extends Subscription<
   PartyTracksChangedSubscriptionVariables
 > {}
 
-interface ContextValue {
-  markTrackSeen: (trackId: string) => void;
-  changedTrackIds: string[];
+interface State {
+  addedTrackIds: string[];
+  deletedTrackIds: string[];
+}
+interface ContextValue extends State {
+  markTrackSeen: (trackIds: string | string[]) => void;
 }
 
 export const Context = React.createContext<ContextValue>({
   // tslint:disable-next-line
   markTrackSeen: () => {},
-  changedTrackIds: [],
+  addedTrackIds: [],
+  deletedTrackIds: [],
 });
 
 enum Actions {
@@ -33,14 +42,29 @@ enum Actions {
   MARK_SEEN,
 }
 
-function changedTracksReducer(state: string[], action): string[] {
+function changedTracksReducer(state: State, action): State {
   switch (action.type) {
     case Actions.ADD_CHANGED_TRACKS: {
-      console.log('tracks have changerd');
-      return [...state, ...action.payload];
+      const payload = action.payload as PartyTracksChangedSubscription_partyTracksChanged;
+
+      return {
+        addedTrackIds: [
+          ...state.addedTrackIds,
+          ...(payload.addedTrackIds || []),
+        ],
+        deletedTrackIds: [
+          ...state.deletedTrackIds,
+          ...(payload.deletedTrackIds || []),
+        ],
+      };
     }
     case Actions.MARK_SEEN: {
-      return state.filter(trackId => trackId !== action.payload.trackId);
+      return {
+        ...state,
+        addedTrackIds: state.addedTrackIds.filter(
+          trackId => !action.payload.trackIds.has(trackId),
+        ),
+      };
     }
     default: {
       return state;
@@ -55,25 +79,25 @@ export function ChangedPartyTracksProvider({
   partyId: string;
   children: React.ReactNode;
 }) {
-  const [changedTrackIds, dispatch] = React.useReducer<string[], any>(
-    changedTracksReducer,
-    [],
-  );
-  const markTrackSeen = React.useCallback(trackId => {
+  const [state, dispatch] = React.useReducer<State, any>(changedTracksReducer, {
+    addedTrackIds: [],
+    deletedTrackIds: [],
+  });
+  const markTrackSeen = React.useCallback((trackIds: string | string[]) => {
     dispatch({
       type: Actions.MARK_SEEN,
       payload: {
-        trackId,
+        trackIds: new Set(Array.isArray(trackIds) ? trackIds : [trackIds]),
       },
     });
   }, []);
 
   const context = React.useMemo(
     () => ({
-      changedTrackIds,
+      ...state,
       markTrackSeen,
     }),
-    [changedTrackIds],
+    [state],
   );
 
   return (

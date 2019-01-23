@@ -23,7 +23,8 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 interface TracksChangedPayload {
   partyId: string;
-  changedTrackIds: string[];
+  addedTrackIds: string[];
+  removedTrackIds: string[];
 }
 
 async function party(
@@ -172,7 +173,8 @@ async function addTracks(
 
   pubsub.publish(PubsubEvents.PartyTracksChanged, {
     partyId: args.partyId,
-    changedTrackIds: addedTracks.map(track => track.trackId),
+    addedTrackIds: addedTracks.map(track => track.trackId),
+    deletedTrackIds: [],
   });
 
   return party;
@@ -309,8 +311,9 @@ export default {
       resolve: payload => payload,
     },
     partyTracksChanged: {
-      resolve: (payload: TracksChangedPayload) => {
-        return payload.changedTrackIds;
+      resolve: (payload: TracksChangedPayload): TracksChangedPayload => {
+        console.log('payload is', payload);
+        return payload;
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator(PubsubEvents.PartyTracksChanged),

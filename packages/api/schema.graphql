@@ -119,6 +119,12 @@ type Player {
   devices: [Device!]
 }
 
+type TracksChangedPayload {
+  partyId: String!
+  addedTrackIds: [String!]
+  deletedTrackIds: [String!]
+}
+
 type PlayStateChange {
   isPlaying: Boolean
 }
@@ -142,10 +148,10 @@ type Mutation {
   setActiveDevice(deviceId: String): Boolean
   requestPartyAccess(partyId: String!, userId: String): Party
   setPartyAccess(partyId: String!, userId: String!, grant: Boolean!): Party
-  playback(partyId: String!, playback: Playback!): Boolean
+  playback(partyId: String!, playback: Playback!): String!
 }
 
 type Subscription {
   party(partyId: String!): Party
-  partyTracksChanged(partyId: String!): [String!]!
+  partyTracksChanged(partyId: String!): TracksChangedPayload
 }
