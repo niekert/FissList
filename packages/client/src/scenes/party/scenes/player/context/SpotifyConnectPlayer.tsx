@@ -5,14 +5,13 @@ import { usePartyContext } from 'scenes/party';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import PlayerContext from './PlayerContext';
 import { Playback } from 'globalTypes';
-import { useQueuedTracks } from '../../../queries';
 import { usePrevState } from 'hooks';
 
 interface IProps {
   children: React.ReactNode;
 }
 
-const REFETCH_INTERVAL_MS = 800;
+const REFETCH_INTERVAL_MS = 200;
 
 export function PlayerContainer({ children }: IProps) {
   const [
