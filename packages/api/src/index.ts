@@ -148,7 +148,7 @@ app.get('/auth-callback', async (req, res) => {
   res.end();
 });
 
-// app.use(fallback('index.html', { root: path.resolve(__dirname, 'www') }));
+app.use(fallback('index.html', { root: path.resolve(__dirname, 'www') }));
 
 const httpServer = createServer(app);
 apolloServer.applyMiddleware({ app });
