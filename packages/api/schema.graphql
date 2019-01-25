@@ -23,6 +23,20 @@ type PagedPlaylists {
   next: String!
 }
 
+type SavedTrack {
+  addedAt: String!
+  track: Track!
+}
+
+type PagedSavedTracks {
+  offset: Int!
+  href: String!
+  total: Int!
+  limit: Int!
+  next: String!
+  items: [SavedTrack!]!
+}
+
 enum Permissions {
   NONE
   MEMBER
@@ -136,6 +150,7 @@ type Query {
   player: Player
   parties(ids: [String]!): [Party]!
   playlist(id: String!): Playlist!
+  savedTracks: PagedSavedTracks!
   userPlaylists(offset: Int): PagedPlaylists
 }
 

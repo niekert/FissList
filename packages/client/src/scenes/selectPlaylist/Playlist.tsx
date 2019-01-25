@@ -40,10 +40,11 @@ const Title = styled.span`
   margin-bottom: 8xp;
 `;
 
-const TrackCount = styled.span``;
+const SubLabel = styled.span``;
 
 interface Props {
-  trackCount: number;
+  trackCount?: number;
+  description?: string;
   name: string;
   id: string;
   isSelected: boolean;
@@ -58,13 +59,15 @@ function Playlist({
   onClick,
   thumbnail,
   isSelected,
+  description,
 }: Props) {
   return (
     <Wrapper isSelected={isSelected} key={id} onClick={() => onClick(id)}>
       {thumbnail && <Thumbnail src={thumbnail} />}
       <Content>
         <Title>{name}</Title>
-        <TrackCount>{trackCount} tracks</TrackCount>
+        {description !== undefined && <SubLabel>{description}</SubLabel>}
+        {trackCount !== undefined && <SubLabel>{trackCount} tracks</SubLabel>}
       </Content>
     </Wrapper>
   );

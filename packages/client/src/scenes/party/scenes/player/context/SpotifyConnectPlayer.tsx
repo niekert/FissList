@@ -19,8 +19,6 @@ export function PlayerContainer({ children }: IProps) {
     prevTrackPlayback,
     setStartedTrackPlayback,
   ] = usePrevState(false);
-
-  // need HOOKS for graphql smh
   const player = usePlayerQuery();
   const party = usePartyContext();
   const didConnectRef = React.useRef<boolean>(false);
@@ -30,31 +28,29 @@ export function PlayerContainer({ children }: IProps) {
   const setActiveDevice = useSetActiveDeviceMutation();
   const mutatePlayback = usePlaybackMutation();
 
-  const onPlayerStateChanged = (state: Spotify.PlaybackState) => {
-    if (!state) {
-      return;
-    }
-
-    if (didConnectRef.current === false) {
-      // REfetch the player when we just connected
-      player.refetch();
-      didConnectRef.current = true;
-    }
-
-    if (state.paused === false) {
-      setStartedTrackPlayback(true);
-    }
-
-    if (state.paused && state.position === 0) {
-      setStartedTrackPlayback(false);
-    }
-  };
-
   const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
     name: 'PampaPlay',
     getOAuthToken: () =>
       Promise.resolve(localStorage.getItem('accessToken') as string),
-    onPlayerStateChanged,
+    onPlayerStateChanged(state: Spotify.PlaybackState) {
+      if (!state) {
+        return;
+      }
+
+      if (didConnectRef.current === false) {
+        // REfetch the player when we just connected
+        player.refetch();
+        didConnectRef.current = true;
+      }
+
+      if (state.paused === false) {
+        setStartedTrackPlayback(true);
+      }
+
+      if (state.paused && state.position === 0) {
+        setStartedTrackPlayback(false);
+      }
+    },
   });
 
   const handleActiveDevice = async (deviceId: string) => {

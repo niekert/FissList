@@ -19,7 +19,7 @@ interface HttpService {
 
 interface Paging<T> {
   href: string;
-  items: [T];
+  items: T[];
   limit: number;
   next: string;
   total: number;
@@ -42,4 +42,9 @@ interface SpotifyUser {
 export interface Track {
   name: string;
   id: string;
+}
+
+export interface Savedtrack {
+  addedAt: string;
+  track: Track;
 }

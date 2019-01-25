@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { NetworkStatus } from 'apollo-client';
+import { SAVED_MUSIC } from 'app-constants';
 import { PoseGroup } from 'react-pose';
 import Button from 'components/Button';
 import Spinner from 'components/Spinner';
@@ -38,6 +39,14 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
     <>
       {data && data.userPlaylists && (
         <PlaylistsWrapper key="wrapper">
+          <Playlist
+            key="myMusic"
+            id={SAVED_MUSIC}
+            isSelected={selectedPlaylistId === SAVED_MUSIC}
+            onClick={onClick}
+            name="My Music"
+            description="All songs from your library"
+          />
           <PoseGroup animateOnMount={true}>
             {data.userPlaylists.items.map((playlist, i) => (
               <Playlist

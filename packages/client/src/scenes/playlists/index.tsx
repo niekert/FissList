@@ -1,12 +1,12 @@
 import * as React from 'react';
 import PlaylistQuery from './PlaylistQuery';
-import { Switch, Route } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router-dom';;
-import { Link } from 'react-router-dom';
+import { Link, Switch, Route, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';
 import SelectPlaylist from 'scenes/selectPlaylist';
 import { TrackSelectList } from './TrackSelectList';
+import { SAVED_MUSIC } from 'app-constants';
+import SongLibrary from './SongLibrary';
 import { BackIcon } from 'icons';
 
 const StyledSpinner = styled(Spinner)`
@@ -42,6 +42,20 @@ const StyledBackIcon = styled(BackIcon)`
 export default function Playlists({ match, history }: RouteComponentProps) {
   return (
     <Switch>
+      <Route
+        path={`${match.path}/playlist/${SAVED_MUSIC}`}
+        render={() => (
+          <>
+            <SelectedPlaylistName>
+              <IconLink replace={true} to={match.url}>
+                <StyledBackIcon />
+              </IconLink>
+              Saved tracks
+            </SelectedPlaylistName>
+            <SongLibrary />
+          </>
+        )}
+      />
       <Route
         path={`${match.path}/playlist/:playlistId`}
         render={({

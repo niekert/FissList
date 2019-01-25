@@ -1,4 +1,4 @@
-import { Context, Paging } from '../types';
+import { Context, Paging, Savedtrack } from '../types';
 
 interface Image {
   url: string;
@@ -58,9 +58,22 @@ async function playlist(
   return data;
 }
 
+async function savedTracks(
+  root,
+  args,
+  context: Context,
+): Promise<Paging<Savedtrack>> {
+  const { data } = await context.spotify.fetchResource<Paging<Savedtrack>>(
+    '/me/tracks',
+  );
+
+  return data;
+}
+
 export default {
   Query: {
     playlist,
     userPlaylists,
+    savedTracks,
   },
 };
