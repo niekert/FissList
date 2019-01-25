@@ -31,15 +31,14 @@ export function PlayerContainer({ children }: IProps) {
   const mutatePlayback = usePlaybackMutation();
 
   const onPlayerStateChanged = (state: Spotify.PlaybackState) => {
+    if (!state) {
+      return;
+    }
+
     if (didConnectRef.current === false) {
-      console.log('fetching on mount');
       // REfetch the player when we just connected
       player.refetch();
       didConnectRef.current = true;
-    }
-
-    if (!state) {
-      return;
     }
 
     if (state.paused === false) {
@@ -50,9 +49,9 @@ export function PlayerContainer({ children }: IProps) {
       setStartedTrackPlayback(false);
     }
   };
+
   const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
     name: 'PampaPlay',
-
     getOAuthToken: () =>
       Promise.resolve(localStorage.getItem('accessToken') as string),
     onPlayerStateChanged,
@@ -100,12 +99,15 @@ export function PlayerContainer({ children }: IProps) {
 
   React.useEffect(
     () => {
-      if (refetchTimeout) {
-        return clearTimeout(refetchTimeout);
-      }
+      return () => {
+        if (refetchTimeout) {
+          return clearTimeout(refetchTimeout);
+        }
+      };
     },
     [refetchTimeout],
   );
+
   const skipTrack = React.useCallback(
     async () => {
       await mutatePlayback({
@@ -131,6 +133,7 @@ export function PlayerContainer({ children }: IProps) {
     },
     [startedTrackPlayback, prevTrackPlayback],
   );
+
   React.useEffect(
     () => {
       // Always make the web sdk device leading
