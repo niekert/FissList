@@ -188,8 +188,8 @@ async function partySubscription(
   return await context.prisma.$subscribe
     .party({
       node: { id: args.partyId },
-      updatedFields_contains: 'queuedTracks',
-      mutation_in: ['UPDATED'],
+      updatedFields_contains_some: ['requestedUserIds', 'partyUserIds'],
+      mutation_in: ['CREATED', 'UPDATED'],
     })
     .node();
 }
@@ -308,11 +308,12 @@ export default {
   Subscription: {
     party: {
       subscribe: partySubscription,
-      resolve: payload => payload,
+      resolve: payload => {
+        return payload;
+      },
     },
     partyTracksChanged: {
       resolve: (payload: TracksChangedPayload): TracksChangedPayload => {
-        console.log('payload is', payload);
         return payload;
       },
       subscribe: withFilter(

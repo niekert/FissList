@@ -1,4 +1,4 @@
-import { QueuedTrack } from '../generated/prisma-client/index';
+import { QueuedTrack } from './generated/prisma-client/index';
 
 export const sortQueuedTracks = (
   queuedTracks: QueuedTrack[],
