@@ -11,6 +11,7 @@ const ActiveLineWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 5px;
+  overflow: hidden;
   background: ${props => transparentize(0.9, props.theme.colors.cta)};
 `;
 
