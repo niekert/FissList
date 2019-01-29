@@ -6,6 +6,7 @@ const INCREMENT_PROGRESS_TIMEOUT_MS = 1000;
 
 const ActiveLineWrapper = styled.div`
   display: flex;
+  overflow: hidden;
   top: 0;
   left: 0;
   width: 100%;
@@ -16,7 +17,7 @@ const ActiveLineWrapper = styled.div`
 const ActiveLine = styled.div`
   width: 100%;
   height: 100%;
-  background: ${props => transparentize(0.5, props.theme.colors.cta)};
+  background: ${props => transparentize(0.35, props.theme.colors.cta)};
 `;
 
 interface Props {
