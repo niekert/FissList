@@ -25,6 +25,7 @@ export interface QueuedTrackDetails_queuedTracks_track {
 }
 
 export interface QueuedTrackDetails_queuedTracks {
+  id: string;
   trackId: string;
   track: QueuedTrackDetails_queuedTracks_track;
   userVotes: string[];

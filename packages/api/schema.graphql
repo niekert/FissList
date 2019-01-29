@@ -53,6 +53,7 @@ enum Playback {
 # Regular type definitions for Bar, Foo, Baz types...
 
 type QueuedTrack {
+  id: ID!
   trackId: String!
   track: Track!
   userVotes: [String!]!

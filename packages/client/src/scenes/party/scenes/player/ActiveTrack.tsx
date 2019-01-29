@@ -1,10 +1,26 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
+import posed, { PoseGroup } from 'react-pose';
 
-const Wrapper = styled.div`
+const PosedWrapper = posed.div({
+  exit: {
+    transform: 'translateX(50%)',
+    opacity: 0,
+  },
+  preEnter: {
+    transform: 'translateX(-100%)',
+    opacity: 0,
+  },
+  enter: {
+    transform: 'translateX(0%)',
+    opacity: 1,
+  },
+});
+const Wrapper = styled(PosedWrapper)`
   display: flex;
   flex: 1;
+  will-change: transform;
   overflow: hidden;
 `;
 
@@ -37,16 +53,22 @@ const Artists = styled.span`
   text-overflow: ellipsis;
 `;
 
-function ActiveTrack({ name, artists, images }: TrackInfo) {
+function ActiveTrack({ name, artists, images, id }: TrackInfo) {
   return (
-    <Wrapper>
-      {/* todo get nicer image */}
-      {images && <Image src={images[0].url} />}
-      <ContentWrapper>
-        <Title>{name}</Title>
-        <Artists>{artists.map(artist => artist.name).join(', ')}</Artists>
-      </ContentWrapper>
-    </Wrapper>
+    <PoseGroup
+      preEnterPose="preEnter"
+      animateOnMount={false}
+      withParent={false}
+    >
+      <Wrapper key={id}>
+        {/* todo get nicer image */}
+        {images && <Image src={images[0].url} />}
+        <ContentWrapper>
+          <Title>{name}</Title>
+          <Artists>{artists.map(artist => artist.name).join(', ')}</Artists>
+        </ContentWrapper>
+      </Wrapper>
+    </PoseGroup>
   );
 }
 

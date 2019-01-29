@@ -3,7 +3,8 @@ import { Context, Track } from '../types';
 import { sortQueuedTracks } from '../helpers';
 
 interface QueuedTrackDetails {
-  trackId: String;
+  id: string;
+  trackId: string;
   track: Track;
   userVotes: string[];
 }
@@ -50,6 +51,7 @@ async function fetchQueuedTracks(
   return (
     sortedTracks
       .map(queuedTrack => ({
+        id: queuedTrack.id,
         trackId: queuedTrack.trackId,
         track: trackMap[queuedTrack.trackId],
         userVotes: queuedTrack.userVotes,

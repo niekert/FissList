@@ -25,6 +25,7 @@ export const GET_PARTY = gql`
 const QUEUED_TRACK_DETAILS = gql`
   query QueuedTrackDetails($partyId: String!) {
     queuedTracks(partyId: $partyId) {
+      id
       trackId
       track {
         ...TrackInfo
