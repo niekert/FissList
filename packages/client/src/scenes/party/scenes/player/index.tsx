@@ -1,19 +1,33 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { usePrevState } from 'hooks';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import { usePlayer } from './context';
 import ActiveTrack from './ActiveTrack';
 import TrackNavigation from './TrackNavigation';
+import TrackProgressLine from './TrackProgressLine';
+import posed, { PoseGroup } from 'react-pose';
 
-const PlayerWrapper = styled.div`
+const PosedWrapper = posed.div({
+  enter: {
+    height: 'auto',
+  },
+  exit: {
+    height: '0px',
+  },
+});
+
+const PlayerWrapper = styled(PosedWrapper)`
   display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
   align-self: center;
 `;
 
 export default function Player() {
+  const [playbackState, setPlaybackState] = React.useState<
+    Spotify.PlaybackState | undefined
+  >(undefined);
   const [
     startedTrackPlayback,
     prevTrackPlayback,
@@ -43,6 +57,8 @@ export default function Player() {
       if (state.paused && state.position === 0) {
         setStartedTrackPlayback(false);
       }
+
+      setPlaybackState(state);
     },
   });
   React.useEffect(
@@ -70,23 +86,39 @@ export default function Player() {
   const isPlaying = player ? player.isPlaying : false;
 
   return (
-    <PlayerWrapper>
+    <>
       {script}
       {player && player.item && (
-        <>
-          <ActiveTrack {...player.item} />
-          <TrackNavigation
-            // TODO: handle with reducer
-            isPlaying={isPlaying}
-            onNext={playerContext!.skipTrack}
-            onPlayPause={
-              isPlaying
-                ? playerContext!.pausePlayback
-                : playerContext!.startPlayback
-            }
-          />
-        </>
+        <PoseGroup animateOnMount={true}>
+          <PlayerWrapper key="playerwrapper">
+            {playbackState && (
+              <TrackProgressLine
+                duration={playbackState.duration}
+                position={playbackState.position}
+                paused={playbackState.paused}
+              />
+            )}
+            <div
+              css={css`
+                display: flex;
+                padding: ${props => props.theme.spacing[1]}
+                  ${props => props.theme.spacing[2]};
+              `}
+            >
+              <ActiveTrack {...player.item} />
+              <TrackNavigation
+                isPlaying={isPlaying}
+                onNext={playerContext!.skipTrack}
+                onPlayPause={
+                  isPlaying
+                    ? playerContext!.pausePlayback
+                    : playerContext!.startPlayback
+                }
+              />
+            </div>
+          </PlayerWrapper>
+        </PoseGroup>
       )}
-    </PlayerWrapper>
+    </>
   );
 }

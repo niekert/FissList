@@ -124,13 +124,7 @@ async function playback(
     throw new Error('No tracks in the queue fam');
   }
 
-  const isReadyToStartNextQueuedTrack =
-    player.data.item.id !== nextInQueue.trackId;
-
-  if (
-    (args.playback === Playback.Play && isReadyToStartNextQueuedTrack) ||
-    args.playback === Playback.Skip
-  ) {
+  if (args.playback === Playback.Skip) {
     // Remove the track from the play queue
     await context.prisma.updateParty({
       where: { id: party.id },

@@ -150,7 +150,7 @@ export default function Party({ match, location, history }: IProps) {
             {data && data.party && (
               <SelectedTracksContainer>
                 <StickyTop>
-                  <Player partyId={data.party.id} />
+                  <Player />
                   <TabsCard>
                     <Tabs activeTab={activeTab} onChange={onTabChange}>
                       <Tab name={PlayerTabs.Queue}>Queue</Tab>
