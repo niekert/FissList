@@ -26,7 +26,7 @@ interface Props {
 }
 
 interface SetDurationAction {
-  type: 'SET_DURATION';
+  type: 'SET_PROGRESS';
   payload: number;
 }
 
@@ -38,7 +38,7 @@ type Actions = SetDurationAction | IncrementDurationAction;
 
 function reducer(state: number, action: Actions) {
   switch (action.type) {
-    case 'SET_DURATION': {
+    case 'SET_PROGRESS': {
       return action.payload;
     }
     case 'INCREMENT_PROGRESS': {
@@ -57,7 +57,7 @@ function TrackProgressLine({ paused, duration, position }: Props) {
 
   React.useEffect(
     () => {
-      dispatch({ type: 'SET_DURATION', payload: position });
+      dispatch({ type: 'SET_PROGRESS', payload: position });
     },
     [position],
   );
