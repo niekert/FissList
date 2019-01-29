@@ -7,10 +7,11 @@ const PlayerNavigation = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding-right: ${props => props.theme.spacing[2]};
+  z-index: 1;
+  position: relative;
   margin-left: auto;
   background: white;
-  padding-top: ${props => props.theme.spacing[1]};
-  padding-bottom: 4px;
 `;
 
 const NavigateButton = styled(IconButton)`

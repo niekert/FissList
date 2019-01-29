@@ -106,10 +106,12 @@ export function ChangedPartyTracksProvider({
         shouldResubscribe={true}
         subscription={PARTY_CHANGES_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
-          dispatch({
-            type: Actions.ADD_CHANGED_TRACKS,
-            payload: subscriptionData.data!.partyTracksChanged,
-          });
+          setTimeout(() =>
+            dispatch({
+              type: Actions.ADD_CHANGED_TRACKS,
+              payload: subscriptionData.data!.partyTracksChanged,
+            }),
+          );
         }}
         variables={{ partyId }}
       />

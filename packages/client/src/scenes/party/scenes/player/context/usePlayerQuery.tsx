@@ -6,6 +6,8 @@ import { DeviceInfo } from 'fragments/Device';
 import { ApolloQueryResult } from 'apollo-client';
 import { Player } from './__generated__/Player';
 
+export { Player };
+
 export const PLAYER_QUERY = gql`
   query Player {
     player {

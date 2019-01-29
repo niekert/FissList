@@ -101,7 +101,9 @@ export default function Player() {
             <div
               css={css`
                 display: flex;
-                padding: ${props => props.theme.spacing[1]}
+                overflow: hidden;
+                padding: ${props => props.theme.spacing[1]} 0
+                  ${props => props.theme.spacing[1]}
                   ${props => props.theme.spacing[2]};
               `}
             >

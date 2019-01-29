@@ -84,8 +84,7 @@ export async function setActiveDevice(
   });
 
   if (status !== 204) {
-    // TODO
-    throw new GraphQLError('Failed setting active device');
+    throw new GraphQLError(`Failed setting active device (status ${status})`);
   }
 
   // LOL wait for sync for spotify API.
@@ -139,7 +138,7 @@ async function playback(
 
     pubsub.publish(PubsubEvents.PartyTracksChanged, {
       partyId: party.id,
-      deletedTrackIds: [nextInQueue.trackId],
+      deletedTrackIds: [],
       addedTrackIds: [],
     });
 

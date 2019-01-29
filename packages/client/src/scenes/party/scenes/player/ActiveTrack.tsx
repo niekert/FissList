@@ -15,6 +15,7 @@ const PosedWrapper = posed.div({
   enter: {
     transform: 'translateX(0%)',
     opacity: 1,
+    delay: 300,
   },
 });
 const Wrapper = styled(PosedWrapper)`
@@ -59,6 +60,7 @@ function ActiveTrack({ name, artists, images, id }: TrackInfo) {
       preEnterPose="preEnter"
       animateOnMount={false}
       withParent={false}
+      flipMove={false}
     >
       <Wrapper key={id}>
         {/* todo get nicer image */}

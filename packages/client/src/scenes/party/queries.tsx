@@ -12,6 +12,8 @@ import {
 } from './__generated__/QueuedTrackDetails';
 import { useChangedTracks } from 'context/ChangedPartyTracksContext';
 
+export { QueuedTrackDetails };
+
 export const GET_PARTY = gql`
   query GetPartyById($partyId: String!) {
     party(partyId: $partyId) {
@@ -22,7 +24,7 @@ export const GET_PARTY = gql`
   ${PartyInfo}
 `;
 
-const QUEUED_TRACK_DETAILS = gql`
+export const QUEUED_TRACK_DETAILS = gql`
   query QueuedTrackDetails($partyId: String!) {
     queuedTracks(partyId: $partyId) {
       id
