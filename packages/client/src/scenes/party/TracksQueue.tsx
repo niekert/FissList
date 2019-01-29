@@ -12,12 +12,12 @@ interface Props {
 
 const PosedWrapper = posed.div({
   enter: {
-    transform: 'translate3d(0, 0%);',
+    transform: 'translateY(0%);',
     opacity: 1,
   },
   exit: {
     opacity: 0,
-    transform: 'translate3d(0, -100%);',
+    transform: 'translateY(-100%);',
   },
 });
 
@@ -39,7 +39,7 @@ function TracksQueue({ partyId }: Props) {
   return (
     <>
       <PoseGroup>
-        {queuedTracks.data!.queuedTracks.map((queuedTrack, index) => (
+        {queuedTracks.data!.queuedTracks.map(queuedTrack => (
           <PosedWrapper key={queuedTrack.id}>
             <PartyTrack
               track={queuedTrack.track}
