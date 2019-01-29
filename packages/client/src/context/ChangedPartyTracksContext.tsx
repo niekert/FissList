@@ -64,6 +64,9 @@ function changedTracksReducer(state: State, action): State {
         addedTrackIds: state.addedTrackIds.filter(
           trackId => !action.payload.trackIds.has(trackId),
         ),
+        deletedTrackIds: state.deletedTrackIds.filter(
+          trackId => !action.payload.trackIds.has(trackId),
+        ),
       };
     }
     default: {

@@ -71,7 +71,7 @@ function PartyTrack({ isActive, track }: Props) {
   return (
     <Wrapper isActive={isActive}>
       <Track {...track} />
-      <PoseGroup animateOnMount={true}>
+      <PoseGroup animateOnMount={true} withParent={false}>
         {addedTrackIds.includes(track.id) && (
           <NewlyAdded ref={newlyAddedRef} key="newlyAdded">
             New!
