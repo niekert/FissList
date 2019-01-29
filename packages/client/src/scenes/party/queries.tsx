@@ -45,6 +45,7 @@ export function useQueuedTracks(partyId: string) {
   const query = useQuery<QueuedTrackDetails, QueuedTrackDetailsVariables>(
     QUEUED_TRACK_DETAILS,
     {
+      pollInterval: 10000,
       variables: {
         partyId,
       },
