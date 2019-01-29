@@ -12,10 +12,7 @@ async function me(root, args, context: Context, info): Promise<Me> {
     const user = await context.spotify.fetchCurrentUser();
     const parties = await context.prisma.parties({
       where: { ownerUserId: user.id },
-    });
-
-    await context.prisma.$subscribe.party({
-      mutation_in: ['UPDATED'],
+      orderBy: 'createdAt_DESC',
     });
 
     return {

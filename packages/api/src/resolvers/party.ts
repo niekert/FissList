@@ -1,4 +1,4 @@
-import { Context, SpotifyUser } from '../types';
+import { Context, Paging, Savedtrack } from '../types';
 import { Party, QueuedTrack } from '../generated/prisma-client';
 import { ForbiddenError } from 'apollo-server';
 import { withFilter } from 'graphql-subscriptions';
@@ -6,6 +6,8 @@ import pubsub, { PubsubEvents } from '../pubsub';
 import { GraphQLError } from 'graphql';
 import { Playlist } from '../spotify';
 import { Permissions, getPermissionForParty } from '../permissions';
+
+const SAVED_MUSIC = 'saved';
 
 interface PartyResult {
   id: string;
@@ -57,6 +59,7 @@ async function parties(
   const user = await context.spotify.fetchCurrentUser();
   const parties = await context.prisma.parties({
     where: { id_in: root.parties.ids },
+    orderBy: 'createdAt_DESC',
   });
 
   return parties.map(party => ({
@@ -77,12 +80,23 @@ async function createParty(
   args: { name: string; playlistId: string },
   context: Context,
 ) {
-  const { name, playlistId } = args;
-  const playlist = await context.spotify.fetchResource<Playlist>(
-    `/playlists/${playlistId}`,
-  );
+  let trackIds = [];
 
-  const trackIds = playlist.data.tracks.items.map(track => track.track.id);
+  const { name, playlistId } = args;
+
+  if (playlistId === SAVED_MUSIC) {
+    const savedTracks = await context.spotify.fetchResource<Paging<Savedtrack>>(
+      '/me/tracks?limit=50',
+    );
+
+    trackIds = savedTracks.data.items.map(item => item.track.id);
+  } else {
+    const playlist = await context.spotify.fetchResource<Playlist>(
+      `/playlists/${playlistId}`,
+    );
+
+    trackIds = playlist.data.tracks.items.map(track => track.track.id);
+  }
   const user = await context.spotify.fetchCurrentUser();
 
   return context.prisma.createParty({

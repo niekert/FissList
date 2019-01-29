@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { usePlayerQuery, PLAYER_QUERY } from './usePlayerQuery';
+import { usePlayerQuery } from './usePlayerQuery';
 import { useSetActiveDeviceMutation, usePlaybackMutation } from './mutations';
 import { usePartyContext } from 'scenes/party';
-import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import PlayerContext from './PlayerContext';
 import { Playback } from 'globalTypes';
-import { usePrevState } from 'hooks';
 
 interface IProps {
   children: React.ReactNode;
@@ -14,44 +12,13 @@ interface IProps {
 const REFETCH_INTERVAL_MS = 200;
 
 export function PlayerContainer({ children }: IProps) {
-  const [
-    startedTrackPlayback,
-    prevTrackPlayback,
-    setStartedTrackPlayback,
-  ] = usePrevState(false);
   const player = usePlayerQuery();
   const party = usePartyContext();
-  const didConnectRef = React.useRef<boolean>(false);
   const [refetchTimeout, setRefetchTimeout] = React.useState<
     NodeJS.Timeout | undefined
   >(undefined);
   const setActiveDevice = useSetActiveDeviceMutation();
   const mutatePlayback = usePlaybackMutation();
-
-  const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
-    name: 'PampaPlay',
-    getOAuthToken: () =>
-      Promise.resolve(localStorage.getItem('accessToken') as string),
-    onPlayerStateChanged(state: Spotify.PlaybackState) {
-      if (!state) {
-        return;
-      }
-
-      if (didConnectRef.current === false) {
-        // REfetch the player when we just connected
-        player.refetch();
-        didConnectRef.current = true;
-      }
-
-      if (state.paused === false) {
-        setStartedTrackPlayback(true);
-      }
-
-      if (state.paused && state.position === 0) {
-        setStartedTrackPlayback(false);
-      }
-    },
-  });
 
   const handleActiveDevice = async (deviceId: string) => {
     await setActiveDevice({
@@ -120,26 +87,6 @@ export function PlayerContainer({ children }: IProps) {
     [setRefetchTimeout],
   );
 
-  React.useEffect(
-    () => {
-      if (!startedTrackPlayback && prevTrackPlayback) {
-        // Skip to the next one
-        skipTrack();
-      }
-    },
-    [startedTrackPlayback, prevTrackPlayback],
-  );
-
-  React.useEffect(
-    () => {
-      // Always make the web sdk device leading
-      if (webSdkDeviceId) {
-        handleActiveDevice(webSdkDeviceId);
-      }
-    },
-    [webSdkDeviceId],
-  );
-
   return (
     <PlayerContext.Provider
       value={{
@@ -148,10 +95,8 @@ export function PlayerContainer({ children }: IProps) {
         startPlayback,
         pausePlayback,
         skipTrack,
-        webSdkDeviceId,
       }}
     >
-      {script}
       {children}
     </PlayerContext.Provider>
   );

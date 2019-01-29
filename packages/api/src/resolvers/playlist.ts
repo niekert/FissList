@@ -63,8 +63,9 @@ async function savedTracks(
   args,
   context: Context,
 ): Promise<Paging<Savedtrack>> {
+  // TODO: support pagination
   const { data } = await context.spotify.fetchResource<Paging<Savedtrack>>(
-    '/me/tracks',
+    '/me/tracks?limit=50',
   );
 
   return data;

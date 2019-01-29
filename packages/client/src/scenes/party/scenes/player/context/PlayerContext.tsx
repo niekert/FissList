@@ -14,7 +14,6 @@ export type PlayerContextValue = PlayerQueryResult & {
   startPlayback: () => void;
   skipTrack: () => void;
   pausePlayback: () => void;
-  webSdkDeviceId: string | null;
   setActiveDevice: (deviceId: string) => void;
 };
 
