@@ -44,7 +44,7 @@ function SelectType({ history, parties }: IProps) {
           <PosedListItem key="main-group">
             <OptionCard
               title="🔊 Start a new party"
-              body="Click this button to start a new party and get a shareable party link"
+              body="Create a new party playlist that your friends can request songs for"
               cta={'Start party'}
               onClick={() => history.push('/new')}
             />
@@ -70,7 +70,6 @@ function SelectType({ history, parties }: IProps) {
         </PoseGroup>
       </PartyOptions>
       <Text textAlign="center">
-        Or, if you are done using PampaPlay,{' '}
         <Link onClick={() => logout()}>Log out</Link>
       </Text>
     </>
