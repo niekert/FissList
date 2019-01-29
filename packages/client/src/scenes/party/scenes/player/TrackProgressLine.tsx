@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 
+const INCREMENT_PROGRESS_TIMEOUT_MS = 1000;
+
 const ActiveLineWrapper = styled.div`
   display: flex;
   top: 0;
@@ -23,17 +25,24 @@ interface Props {
   position: number;
 }
 
-type Actions = SetDurationAction;
-
 interface SetDurationAction {
   type: 'SET_DURATION';
   payload: number;
 }
 
+interface IncrementDurationAction {
+  type: 'INCREMENT_PROGRESS';
+}
+
+type Actions = SetDurationAction | IncrementDurationAction;
+
 function reducer(state: number, action: Actions) {
   switch (action.type) {
     case 'SET_DURATION': {
       return action.payload;
+    }
+    case 'INCREMENT_PROGRESS': {
+      return state + INCREMENT_PROGRESS_TIMEOUT_MS;
     }
   }
 
@@ -59,10 +68,9 @@ function TrackProgressLine({ paused, duration, position }: Props) {
         return;
       }
 
-      // Everytime either of these changes, we recalculate the timer
       const timeout = setTimeout(() => {
-        dispatch({ type: 'SET_DURATION', payload: progressMs + 1000 });
-      }, 1000);
+        dispatch({ type: 'INCREMENT_PROGRESS' });
+      }, INCREMENT_PROGRESS_TIMEOUT_MS);
 
       return () => clearTimeout(timeout);
     },
