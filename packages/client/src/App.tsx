@@ -9,7 +9,7 @@ import Spinner from 'components/Spinner';
 import NewParty from 'scenes/newParty';
 import SelectType from 'scenes/selectType';
 import JoinParty from 'scenes/joinParty';
-import Auth from './scenes/auth';
+import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
 import Theme from './theme';
 import Party from 'scenes/party';
@@ -43,7 +43,7 @@ function App() {
         >
           <Router history={history}>
             <React.Suspense fallback={<PageLoader />}>
-              <Route path="/auth" component={Auth} />
+              <Route path="/auth" component={AuthCallback} />
 
               <GlobalStyle />
               {me.loading && <PageLoader />}

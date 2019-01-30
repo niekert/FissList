@@ -60,9 +60,9 @@ export function useQueuedTracks(partyId: string) {
             queuedTrack => !deletedTrackIds.includes(queuedTrack.trackId),
           ),
         }));
-      }
 
-      markTrackSeen(deletedTrackIds);
+        markTrackSeen(deletedTrackIds);
+      }
     },
     [deletedTrackIds],
   );

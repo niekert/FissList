@@ -38,8 +38,8 @@ export const Context = React.createContext<ContextValue>({
 });
 
 enum Actions {
-  ADD_CHANGED_TRACKS,
-  MARK_SEEN,
+  ADD_CHANGED_TRACKS = 'add_changed',
+  MARK_SEEN = 'mark_seen',
 }
 
 function changedTracksReducer(state: State, action): State {
@@ -109,11 +109,13 @@ export function ChangedPartyTracksProvider({
         shouldResubscribe={true}
         subscription={PARTY_CHANGES_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
-          setTimeout(() =>
-            dispatch({
-              type: Actions.ADD_CHANGED_TRACKS,
-              payload: subscriptionData.data!.partyTracksChanged,
-            }),
+          setTimeout(
+            () =>
+              console.log('calling') ||
+              dispatch({
+                type: Actions.ADD_CHANGED_TRACKS,
+                payload: subscriptionData.data!.partyTracksChanged,
+              }),
           );
         }}
         variables={{ partyId }}

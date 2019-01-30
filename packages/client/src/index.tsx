@@ -10,6 +10,7 @@ import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
+import { onError } from 'apollo-link-error';
 import App from './App';
 import Spinner from 'components/Spinner';
 import styled from 'styled-components';
@@ -55,21 +56,15 @@ const link = split(
   }),
   from([
     authLink,
-    // onError(({ graphQLErrors, networkError }) => {
-    //   if (graphQLErrors) {
-    //     // TODO: figure out error handling
-    //     graphQLErrors.map(({ message, locations, path }) =>
-    //       // tslint:disable-next-line
-    //       console.log(
-    //         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-    //       ),
-    //     );
-    //   }
-    //   if (networkError) {
-    //     // tslint:disable-next-line
-    //     console.log(`[Network error]: ${networkError}`);
-    //   }
-    // }),
+    onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        const hasAuthError = graphQLErrors.some(
+          err => !!err.extensions && err.extensions.code === 'UNAUTHENTICATED',
+        );
+
+        console.log('auth error', hasAuthError);
+      }
+    }),
     new HttpLink({
       uri: `${API_HOST}/graphql`,
       credentials: 'same-origin',

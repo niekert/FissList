@@ -3,6 +3,7 @@ import { SpotifyUser } from './types';
 import { GraphQLError, graphql } from 'graphql';
 import { HttpService } from './types';
 import * as camelcase from 'camelcase-keys';
+import { AuthenticationError } from 'apollo-server';
 
 export interface Playlist {
   name: string;
@@ -91,6 +92,10 @@ export function makeHttpService(accessKey: string): HttpService {
         ...options.headers,
       },
     }).then(async resp => {
+      if (resp.status === 401) {
+        throw new AuthenticationError('Unauthenticated.');
+      }
+
       if (resp.status === 204) {
         return {
           data: null,
