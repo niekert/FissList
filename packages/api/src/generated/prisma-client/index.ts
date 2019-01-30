@@ -210,7 +210,9 @@ export type PartyOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "ownerUserId_ASC"
-  | "ownerUserId_DESC";
+  | "ownerUserId_DESC"
+  | "activeTrackId_ASC"
+  | "activeTrackId_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -337,6 +339,20 @@ export interface PartyWhereInput {
   ownerUserId_not_starts_with?: String;
   ownerUserId_ends_with?: String;
   ownerUserId_not_ends_with?: String;
+  activeTrackId?: String;
+  activeTrackId_not?: String;
+  activeTrackId_in?: String[] | String;
+  activeTrackId_not_in?: String[] | String;
+  activeTrackId_lt?: String;
+  activeTrackId_lte?: String;
+  activeTrackId_gt?: String;
+  activeTrackId_gte?: String;
+  activeTrackId_contains?: String;
+  activeTrackId_not_contains?: String;
+  activeTrackId_starts_with?: String;
+  activeTrackId_not_starts_with?: String;
+  activeTrackId_ends_with?: String;
+  activeTrackId_not_ends_with?: String;
   queuedTracks_every?: QueuedTrackWhereInput;
   queuedTracks_some?: QueuedTrackWhereInput;
   queuedTracks_none?: QueuedTrackWhereInput;
@@ -390,6 +406,7 @@ export interface UserWhereInput {
 export interface PartyCreateInput {
   name: String;
   ownerUserId: String;
+  activeTrackId?: String;
   queuedTracks?: QueuedTrackCreateManyInput;
   requestedUserIds?: PartyCreaterequestedUserIdsInput;
   bannedUserIds?: PartyCreatebannedUserIdsInput;
@@ -425,6 +442,7 @@ export interface PartyCreatepartyUserIdsInput {
 export interface PartyUpdateInput {
   name?: String;
   ownerUserId?: String;
+  activeTrackId?: String;
   queuedTracks?: QueuedTrackUpdateManyInput;
   requestedUserIds?: PartyUpdaterequestedUserIdsInput;
   bannedUserIds?: PartyUpdatebannedUserIdsInput;
@@ -543,6 +561,7 @@ export interface PartyUpdatepartyUserIdsInput {
 export interface PartyUpdateManyMutationInput {
   name?: String;
   ownerUserId?: String;
+  activeTrackId?: String;
   requestedUserIds?: PartyUpdaterequestedUserIdsInput;
   bannedUserIds?: PartyUpdatebannedUserIdsInput;
   partyUserIds?: PartyUpdatepartyUserIdsInput;
@@ -613,6 +632,7 @@ export interface Party {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   ownerUserId: String;
+  activeTrackId?: String;
   requestedUserIds: String[];
   bannedUserIds: String[];
   partyUserIds: String[];
@@ -624,6 +644,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
+  activeTrackId: () => Promise<String>;
   queuedTracks: <T = FragmentableArray<QueuedTrack>>(
     args?: {
       where?: QueuedTrackWhereInput;
@@ -648,6 +669,7 @@ export interface PartySubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
+  activeTrackId: () => Promise<AsyncIterator<String>>;
   queuedTracks: <T = Promise<AsyncIterator<QueuedTrackSubscription>>>(
     args?: {
       where?: QueuedTrackWhereInput;
@@ -927,6 +949,7 @@ export interface PartyPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   ownerUserId: String;
+  activeTrackId?: String;
   requestedUserIds: String[];
   bannedUserIds: String[];
   partyUserIds: String[];
@@ -940,6 +963,7 @@ export interface PartyPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
+  activeTrackId: () => Promise<String>;
   requestedUserIds: () => Promise<String[]>;
   bannedUserIds: () => Promise<String[]>;
   partyUserIds: () => Promise<String[]>;
@@ -953,6 +977,7 @@ export interface PartyPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
+  activeTrackId: () => Promise<AsyncIterator<String>>;
   requestedUserIds: () => Promise<AsyncIterator<String[]>>;
   bannedUserIds: () => Promise<AsyncIterator<String[]>>;
   partyUserIds: () => Promise<AsyncIterator<String[]>>;

@@ -5,6 +5,7 @@ export const PartyInfo = gql`
     id
     name
     permission
+    activeTrackId
     requestedUserIds
     ownerUserId
     partyUserIds

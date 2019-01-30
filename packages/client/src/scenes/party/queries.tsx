@@ -47,6 +47,7 @@ export function useQueuedTracks(partyId: string) {
     nextActiveTrackId,
     markTrackSeen,
   } = useChangedTracks();
+  const partyQuery = usePartyQuery(partyId);
   const apolloClient = useApolloClient();
 
   const query = useQuery<QueuedTrackDetails, QueuedTrackDetailsVariables>(
@@ -93,6 +94,14 @@ export function useQueuedTracks(partyId: string) {
 
         query.updateQuery(() => ({
           queuedTracks: nextQueue,
+        }));
+
+        // Update the party to have the new track
+        partyQuery.updateQuery(() => ({
+          party: {
+            ...partyQuery.data.party,
+            activeTrackId: nextActiveTrackId,
+          },
         }));
 
         const playerQuery = apolloClient!.readQuery<Player>({

@@ -62,6 +62,7 @@ type Party {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
+  activeTrackId: String
   queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack!]
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
@@ -81,6 +82,7 @@ input PartyCreatebannedUserIdsInput {
 input PartyCreateInput {
   name: String!
   ownerUserId: String!
+  activeTrackId: String
   queuedTracks: QueuedTrackCreateManyInput
   requestedUserIds: PartyCreaterequestedUserIdsInput
   bannedUserIds: PartyCreatebannedUserIdsInput
@@ -111,6 +113,8 @@ enum PartyOrderByInput {
   updatedAt_DESC
   ownerUserId_ASC
   ownerUserId_DESC
+  activeTrackId_ASC
+  activeTrackId_DESC
 }
 
 type PartyPreviousValues {
@@ -119,6 +123,7 @@ type PartyPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
+  activeTrackId: String
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
   partyUserIds: [String!]!
@@ -149,6 +154,7 @@ input PartyUpdatebannedUserIdsInput {
 input PartyUpdateInput {
   name: String
   ownerUserId: String
+  activeTrackId: String
   queuedTracks: QueuedTrackUpdateManyInput
   requestedUserIds: PartyUpdaterequestedUserIdsInput
   bannedUserIds: PartyUpdatebannedUserIdsInput
@@ -158,6 +164,7 @@ input PartyUpdateInput {
 input PartyUpdateManyMutationInput {
   name: String
   ownerUserId: String
+  activeTrackId: String
   requestedUserIds: PartyUpdaterequestedUserIdsInput
   bannedUserIds: PartyUpdatebannedUserIdsInput
   partyUserIds: PartyUpdatepartyUserIdsInput
@@ -230,6 +237,20 @@ input PartyWhereInput {
   ownerUserId_not_starts_with: String
   ownerUserId_ends_with: String
   ownerUserId_not_ends_with: String
+  activeTrackId: String
+  activeTrackId_not: String
+  activeTrackId_in: [String!]
+  activeTrackId_not_in: [String!]
+  activeTrackId_lt: String
+  activeTrackId_lte: String
+  activeTrackId_gt: String
+  activeTrackId_gte: String
+  activeTrackId_contains: String
+  activeTrackId_not_contains: String
+  activeTrackId_starts_with: String
+  activeTrackId_not_starts_with: String
+  activeTrackId_ends_with: String
+  activeTrackId_not_ends_with: String
   queuedTracks_every: QueuedTrackWhereInput
   queuedTracks_some: QueuedTrackWhereInput
   queuedTracks_none: QueuedTrackWhereInput

@@ -128,6 +128,7 @@ async function playback(
     await context.prisma.updateParty({
       where: { id: party.id },
       data: {
+        activeTrackId: nextInQueue.trackId,
         queuedTracks: {
           delete: {
             id: nextInQueue.id,

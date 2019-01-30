@@ -61,6 +61,18 @@ async function fetchQueuedTracks(
   );
 }
 
+async function track(
+  _,
+  args: { trackId: string },
+  context: Context,
+): Promise<Track> {
+  const { data } = await context.spotify.fetchResource<Track>(
+    `/tracks/${args.trackId}`,
+  );
+
+  return data;
+}
+
 export default {
   Query: {
     queuedTracks(
@@ -70,6 +82,7 @@ export default {
     ): Promise<QueuedTrackDetails[]> {
       return fetchQueuedTracks(args, context);
     },
+    track,
   },
   Party: {
     queuedTracks: (

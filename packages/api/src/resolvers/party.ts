@@ -13,6 +13,7 @@ interface PartyResult {
   id: string;
   partyUserIds: string[];
   requestedUserIds?: string[];
+  activeTrackId: string;
   ownerUserId: string;
   name: string;
   createdAt: string;
@@ -42,6 +43,7 @@ async function party(
     id: party.id,
     name: party.name,
     permission: permission,
+    activeTrackId: party.activeTrackId,
     requestedUserIds:
       permission === Permissions.Admin ? party.requestedUserIds : undefined,
     partyUserIds: permission !== Permissions.None ? party.partyUserIds : [],
@@ -66,6 +68,7 @@ async function parties(
     id: party.id!,
     name: party.name!,
     activeTrackIndex: 0,
+    activeTrackId: party.activeTrackId,
     permission: getPermissionForParty(party, user),
     ownerUserId: party.ownerUserId,
     partyUserIds: [],

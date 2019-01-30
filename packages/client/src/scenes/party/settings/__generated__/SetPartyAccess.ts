@@ -11,6 +11,7 @@ export interface SetPartyAccess_setPartyAccess {
   id: string;
   name: string;
   permission: Permissions;
+  activeTrackId: string | null;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;

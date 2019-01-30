@@ -63,8 +63,8 @@ type Party {
   id: ID!
   name: String!
   permission: Permissions!
-  activeTrackIndex: Int
   ownerUserId: String!
+  activeTrackId: String
   requestedUserIds: [String!]
   partyUserIds: [String!]
   queuedTracks: [QueuedTrack!]!
@@ -154,6 +154,7 @@ type Query {
   playlist(id: String!): Playlist!
   savedTracks: PagedSavedTracks!
   userPlaylists(offset: Int): PagedPlaylists
+  track(trackId: String!): Track!
 }
 
 type Mutation {

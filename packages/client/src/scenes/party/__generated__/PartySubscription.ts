@@ -11,6 +11,7 @@ export interface PartySubscription_party {
   id: string;
   name: string;
   permission: Permissions;
+  activeTrackId: string | null;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;

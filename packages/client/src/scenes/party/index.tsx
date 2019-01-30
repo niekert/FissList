@@ -21,6 +21,7 @@ import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
 import TracksQueue from './TracksQueue';
+import MemberActiveTrack from './MemberActiveTrack';
 import { Permissions } from 'globalTypes';
 
 export { usePartyContext } from './context';
@@ -149,10 +150,14 @@ export default function Party({ match, location, history }: IProps) {
           {data && data.party && (
             <SelectedTracksContainer>
               <StickyTop>
-                {data.party.permission === Permissions.ADMIN && (
+                {data.party.permission === Permissions.ADMIN ? (
                   <PlayerContainer>
                     <Player />
                   </PlayerContainer>
+                ) : (
+                  data.party.activeTrackId && (
+                    <MemberActiveTrack trackId={data.party.activeTrackId} />
+                  )
                 )}
                 <TabsCard>
                   <Tabs activeTab={activeTab} onChange={onTabChange}>

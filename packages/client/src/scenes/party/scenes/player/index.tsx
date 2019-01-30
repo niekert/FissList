@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { usePrevState } from 'hooks';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import { usePlayer } from './context';
-import ActiveTrack from './ActiveTrack';
+import ActiveTrack from '../../ActiveTrack';
 import TrackNavigation from './TrackNavigation';
 import TrackProgressLine from './TrackProgressLine';
 import posed, { PoseGroup } from 'react-pose';
