@@ -12,6 +12,7 @@ const PARTY_CHANGES_SUBSCRIPTION = gql`
     partyTracksChanged(partyId: $partyId) {
       partyId
       addedTrackIds
+      nextActiveTrackId
       deletedTrackIds
     }
   }
@@ -25,6 +26,7 @@ class PartyTracksChangeSubscription extends Subscription<
 interface State {
   addedTrackIds: string[];
   deletedTrackIds: string[];
+  nextActiveTrackId: string | null;
 }
 interface ContextValue extends State {
   markTrackSeen: (trackIds: string | string[]) => void;
@@ -35,6 +37,7 @@ export const Context = React.createContext<ContextValue>({
   markTrackSeen: () => {},
   addedTrackIds: [],
   deletedTrackIds: [],
+  nextActiveTrackId: '',
 });
 
 enum Actions {
@@ -56,6 +59,7 @@ function changedTracksReducer(state: State, action): State {
           ...state.deletedTrackIds,
           ...(payload.deletedTrackIds || []),
         ],
+        nextActiveTrackId: payload.nextActiveTrackId,
       };
     }
     case Actions.MARK_SEEN: {
@@ -85,6 +89,7 @@ export function ChangedPartyTracksProvider({
   const [state, dispatch] = React.useReducer<State, any>(changedTracksReducer, {
     addedTrackIds: [],
     deletedTrackIds: [],
+    nextActiveTrackId: null,
   });
   const markTrackSeen = React.useCallback((trackIds: string | string[]) => {
     dispatch({
@@ -109,14 +114,10 @@ export function ChangedPartyTracksProvider({
         shouldResubscribe={true}
         subscription={PARTY_CHANGES_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
-          setTimeout(
-            () =>
-              console.log('calling') ||
-              dispatch({
-                type: Actions.ADD_CHANGED_TRACKS,
-                payload: subscriptionData.data!.partyTracksChanged,
-              }),
-          );
+          dispatch({
+            type: Actions.ADD_CHANGED_TRACKS,
+            payload: subscriptionData.data!.partyTracksChanged,
+          });
         }}
         variables={{ partyId }}
       />

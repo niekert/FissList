@@ -1,7 +1,9 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { PartyInfo, TrackInfo } from 'fragments';
-import { useQuery } from 'react-apollo-hooks';
+import { PLAYER_QUERY } from './scenes/player/context/usePlayerQuery';
+import { useQuery, useApolloClient } from 'react-apollo-hooks';
+import { Player } from './scenes/player/context/__generated__/Player';
 import {
   GetPartyById,
   GetPartyByIdVariables,
@@ -40,7 +42,12 @@ export const QUEUED_TRACK_DETAILS = gql`
 `;
 
 export function useQueuedTracks(partyId: string) {
-  const { deletedTrackIds, markTrackSeen } = useChangedTracks();
+  const {
+    deletedTrackIds,
+    nextActiveTrackId,
+    markTrackSeen,
+  } = useChangedTracks();
+  const apolloClient = useApolloClient();
 
   const query = useQuery<QueuedTrackDetails, QueuedTrackDetailsVariables>(
     QUEUED_TRACK_DETAILS,
@@ -65,6 +72,49 @@ export function useQueuedTracks(partyId: string) {
       }
     },
     [deletedTrackIds],
+  );
+
+  React.useEffect(
+    () => {
+      console.log('next active track will be', nextActiveTrackId);
+      if (nextActiveTrackId && query.data.queuedTracks) {
+        const nextActiveTrackIndex = query.data.queuedTracks.findIndex(
+          queuedTrack => queuedTrack.trackId === nextActiveTrackId,
+        );
+
+        if (nextActiveTrackIndex === -1) {
+          console.error('Next track was not found in the play queue');
+          return;
+        }
+
+        const nextQueue = query.data.queuedTracks.slice(
+          nextActiveTrackIndex + 1,
+        );
+        const nextTrack = query.data.queuedTracks[nextActiveTrackIndex];
+
+        query.updateQuery(() => ({
+          queuedTracks: nextQueue,
+        }));
+
+        const playerQuery = apolloClient!.readQuery<Player>({
+          query: PLAYER_QUERY,
+        });
+        if (playerQuery && playerQuery.player) {
+          apolloClient!.writeQuery<Player>({
+            query: PLAYER_QUERY,
+            data: {
+              player: {
+                ...playerQuery.player,
+                item: nextTrack.track,
+              },
+            },
+          });
+        }
+
+        markTrackSeen(nextActiveTrackId);
+      }
+    },
+    [nextActiveTrackId],
   );
 
   return query;

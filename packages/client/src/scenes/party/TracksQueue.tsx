@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useCurrentUser } from 'context/CurrentUser';
 import { useChangedTracks } from 'context/ChangedPartyTracksContext';
 import { useQueuedTracks } from './queries';
+import { usePlayerQuery } from './scenes/player/context/usePlayerQuery';
 import PartyTrack from './PartyTrack';
 import Spinner from 'components/Spinner';
 import posed, { PoseGroup } from 'react-pose';
@@ -23,7 +24,12 @@ const PosedWrapper = posed.div({
 
 function TracksQueue({ partyId }: Props) {
   const currentUser = useCurrentUser();
-  const { addedTrackIds, deletedTrackIds } = useChangedTracks();
+  const {
+    addedTrackIds,
+    nextActiveTrackId,
+    markTrackSeen,
+  } = useChangedTracks();
+  const player = usePlayerQuery();
   const queuedTracks = useQueuedTracks(partyId);
 
   React.useEffect(

@@ -8,6 +8,7 @@
 export interface PartyTracksChangedSubscription_partyTracksChanged {
   partyId: string;
   addedTrackIds: string[] | null;
+  nextActiveTrackId: string | null;
   deletedTrackIds: string[] | null;
 }
 

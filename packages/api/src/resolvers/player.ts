@@ -138,7 +138,7 @@ async function playback(
 
     pubsub.publish(PubsubEvents.PartyTracksChanged, {
       partyId: party.id,
-      deletedTrackIds: [nextInQueue.trackId],
+      nextActiveTrackId: nextInQueue.trackId,
       addedTrackIds: [],
     });
 

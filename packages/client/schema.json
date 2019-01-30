@@ -2103,6 +2103,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nextActiveTrackId",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "addedTrackIds",
             "description": "",
             "args": [],

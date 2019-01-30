@@ -18,7 +18,7 @@ export function PlayerContainer({ children }: IProps) {
     NodeJS.Timeout | undefined
   >(undefined);
   const setActiveDevice = useSetActiveDeviceMutation();
-  const mutatePlayback = usePlaybackMutation(party.id);
+  const mutatePlayback = usePlaybackMutation();
 
   const handleActiveDevice = async (deviceId: string) => {
     await setActiveDevice({

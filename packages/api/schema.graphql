@@ -136,6 +136,7 @@ type Player {
 
 type TracksChangedPayload {
   partyId: String!
+  nextActiveTrackId: String
   addedTrackIds: [String!]
   deletedTrackIds: [String!]
 }
