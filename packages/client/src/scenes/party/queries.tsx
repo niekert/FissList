@@ -76,7 +76,6 @@ export function useQueuedTracks(partyId: string) {
 
   React.useEffect(
     () => {
-      console.log('next active track will be', nextActiveTrackId);
       if (nextActiveTrackId && query.data.queuedTracks) {
         const nextActiveTrackIndex = query.data.queuedTracks.findIndex(
           queuedTrack => queuedTrack.trackId === nextActiveTrackId,
