@@ -1,21 +1,28 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import posed, { PoseGroup } from 'react-pose';
 
+const transition = {
+  duration: 300,
+};
 const PosedWrapper = posed.div({
   exit: {
-    transform: 'translateX(50%)',
+    transform: 'translateY(-100%)',
     opacity: 0,
+    delay: 25,
+    position: 'absolute',
+    transition,
   },
   preEnter: {
-    transform: 'translateX(-100%)',
+    transform: 'translateY(100%)',
     opacity: 0,
   },
   enter: {
-    transform: 'translateX(0%)',
+    transform: 'translateY(0%)',
     opacity: 1,
-    delay: 300,
+    delay: 100,
+    transition,
   },
 });
 const Wrapper = styled(PosedWrapper)`
@@ -23,6 +30,12 @@ const Wrapper = styled(PosedWrapper)`
   flex: 1;
   will-change: transform;
   overflow: hidden;
+  flex: 1 0;
+  position: absolute;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
 `;
 
 const Image = styled.img`
@@ -56,21 +69,33 @@ const Artists = styled.span`
 
 function ActiveTrack({ name, artists, images, id }: TrackInfo) {
   return (
-    <PoseGroup
-      preEnterPose="preEnter"
-      animateOnMount={false}
-      withParent={false}
-      flipMove={false}
+    <div
+      css={css`
+        height: 70px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 ${props => props.theme.spacing[2]}px;
+        position: relative;
+      `}
     >
-      <Wrapper key={id}>
-        {/* todo get nicer image */}
-        {images && <Image src={images[0].url} />}
-        <ContentWrapper>
-          <Title>{name}</Title>
-          <Artists>{artists.map(artist => artist.name).join(', ')}</Artists>
-        </ContentWrapper>
-      </Wrapper>
-    </PoseGroup>
+      <PoseGroup
+        preEnterPose="preEnter"
+        animateOnMount={false}
+        withParent={false}
+        flipMove={false}
+      >
+        <Wrapper key={id}>
+          {/* todo get nicer image */}
+          {images && <Image src={images[0].url} />}
+          <ContentWrapper>
+            <Title>{name}</Title>
+            <Artists>{artists.map(artist => artist.name).join(', ')}</Artists>
+          </ContentWrapper>
+        </Wrapper>
+      </PoseGroup>
+    </div>
   );
 }
 

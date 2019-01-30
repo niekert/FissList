@@ -108,6 +108,7 @@ export default function Player() {
               `}
             >
               <ActiveTrack {...player.item} />
+
               <TrackNavigation
                 isPlaying={isPlaying}
                 onNext={playerContext!.skipTrack}

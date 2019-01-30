@@ -16,5 +16,6 @@ const TRACK_QUERY = gql`
 export function useTrackQuery(trackId) {
   return useQuery<Track, TrackVariables>(TRACK_QUERY, {
     variables: { trackId },
+    suspend: false,
   });
 }
