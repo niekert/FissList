@@ -6,6 +6,7 @@ import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import Track from 'components/Track';
 import { transparentize } from 'polished';
 import posed, { PoseGroup } from 'react-pose';
+import TrackVote from './TrackVote';
 
 const Wrapper = styled.div<{ isActive: boolean }>`
   display: flex;
@@ -37,6 +38,12 @@ const PosedNewLabel = posed.div({
 });
 
 const NewlyAdded = styled(PosedNewLabel)`
+  position: absolute;
+  top: 0;
+  height: 100%;
+  right: 0;
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
   font-weight: 600;
   white-space: nowrap;
@@ -48,30 +55,29 @@ interface Props {
   track: TrackInfo;
   isActive: boolean;
   isRequested: boolean;
+  voteCount: number;
 }
 
-function PartyTrack({ isActive, track }: Props) {
+function PartyTrack({ isActive, track, isRequested, voteCount }: Props) {
   const { addedTrackIds, markTrackSeen } = useChangedTracks();
   const newlyAddedRef = React.useRef(undefined);
   const { isIntersecting } = useVisibility(newlyAddedRef);
 
-  React.useEffect(
-    () => {
-      if (isIntersecting) {
-        setTimeout(() => {
-          markTrackSeen(track.id);
-        }, 3000);
-      }
+  React.useEffect(() => {
+    if (isIntersecting) {
+      setTimeout(() => {
+        markTrackSeen(track.id);
+      }, 3000);
+    }
 
-      return;
-    },
-    [isIntersecting],
-  );
+    return;
+  }, [isIntersecting]);
 
   return (
     <Wrapper isActive={isActive}>
       <Track {...track} />
-      <PoseGroup animateOnMount={true} withParent={false}>
+      <TrackVote isRequested={isRequested} voteCount={voteCount} />
+      <PoseGroup animateOnMount={true} withParent={false} flipMove={false}>
         {addedTrackIds.includes(track.id) && (
           <NewlyAdded ref={newlyAddedRef} key="newlyAdded">
             New!

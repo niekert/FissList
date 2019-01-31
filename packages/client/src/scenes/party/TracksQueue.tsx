@@ -42,6 +42,7 @@ function TracksQueue({ partyId }: Props) {
     [addedTrackIds],
   );
 
+  console.log('tracks', queuedTracks.data!.queuedTracks.length);
   return (
     <>
       <PoseGroup>
@@ -53,6 +54,7 @@ function TracksQueue({ partyId }: Props) {
               isRequested={
                 !!currentUser && queuedTrack.userVotes.includes(currentUser.id)
               }
+              voteCount={queuedTrack.userVotes.length}
             />
           </PosedWrapper>
         ))}

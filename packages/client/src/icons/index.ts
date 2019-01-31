@@ -11,3 +11,5 @@ export { default as SettingsIcon } from './SettingsIcon';
 export { default as AddIcon } from './AddIcon';
 export { default as CheckmarkIcon } from './CheckMarkIcon';
 export { default as CloseIcon } from './CloseIcon';
+export { default as ThumbUpIcon } from './ThumbUp';
+export { default as ThumbDownIcon } from './ThumbDown';

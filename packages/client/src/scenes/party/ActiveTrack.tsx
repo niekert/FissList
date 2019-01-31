@@ -4,15 +4,18 @@ import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import posed, { PoseGroup } from 'react-pose';
 
 const transition = {
-  duration: 300,
+  type: 'spring',
+  stiffness: 150,
+  damping: 20,
 };
+
 const PosedWrapper = posed.div({
   exit: {
     transform: 'translateY(-100%)',
     opacity: 0,
     delay: 25,
     position: 'absolute',
-    transition,
+    // transition,
   },
   preEnter: {
     transform: 'translateY(100%)',
@@ -22,7 +25,7 @@ const PosedWrapper = posed.div({
     transform: 'translateY(0%)',
     opacity: 1,
     delay: 100,
-    transition,
+    // transition,
   },
 });
 const Wrapper = styled(PosedWrapper)`

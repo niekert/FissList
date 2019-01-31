@@ -78,19 +78,11 @@ export function useQueuedTracks(partyId: string) {
   React.useEffect(
     () => {
       if (nextActiveTrackId && query.data.queuedTracks) {
-        const nextActiveTrackIndex = query.data.queuedTracks.findIndex(
-          queuedTrack => queuedTrack.trackId === nextActiveTrackId,
-        );
+        const [nextTrack, ...nextQueue] = query.data.queuedTracks;
 
-        if (nextActiveTrackIndex === -1) {
-          console.error('Next track was not found in the play queue');
-          return;
+        if (nextTrack.trackId !== nextActiveTrackId) {
+          console.error('wtf is not correct');
         }
-
-        const nextQueue = query.data.queuedTracks.slice(
-          nextActiveTrackIndex + 1,
-        );
-        const nextTrack = query.data.queuedTracks[nextActiveTrackIndex];
 
         query.updateQuery(() => ({
           queuedTracks: nextQueue,
