@@ -28,7 +28,7 @@ export const GET_OWN_PLAYLISTS = gql`
 export function useGetPlaylists() {
   const result = useQuery<GetPlaylists, GetPlaylistsVariables>(
     GET_OWN_PLAYLISTS,
-    { notifyOnNetworkStatusChange: true },
+    { notifyOnNetworkStatusChange: true, suspend: false },
   );
 
   return {

@@ -32,6 +32,7 @@ const Wrapper = styled(PosedWrapper)`
   overflow: hidden;
   flex: 1 0;
   position: absolute;
+  max-width: 100%;
   align-items: center;
   top: 0;
   bottom: 0;
