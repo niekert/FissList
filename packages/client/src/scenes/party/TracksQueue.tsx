@@ -7,6 +7,7 @@ import PartyTrack from './PartyTrack';
 import Spinner from 'components/Spinner';
 import posed, { PoseGroup } from 'react-pose';
 import styled, { css } from 'styled-components';
+import DraggableTrackVote from './DraggableTrackVote';
 
 interface Props {
   partyId: string;
@@ -33,7 +34,7 @@ const PosedWrapper = posed.div({
 
 const Draggable = posed.div({
   draggable: 'x',
-  dragBounds: { left: '-50%', right: '50%' },
+  dragBounds: { left: -120, right: 120 },
   dragEnd: { transition: 'spring' },
 });
 
@@ -68,15 +69,12 @@ function TracksQueue({ partyId }: Props) {
   const player = usePlayerQuery();
   const queuedTracks = useQueuedTracks(partyId);
 
-  React.useEffect(
-    () => {
-      // Refetch the queued tracks if the changed tracks changes
-      if (queuedTracks.data && addedTrackIds.length > 0) {
-        queuedTracks.refetch();
-      }
-    },
-    [addedTrackIds],
-  );
+  React.useEffect(() => {
+    // Refetch the queued tracks if the changed tracks changes
+    if (queuedTracks.data && addedTrackIds.length > 0) {
+      queuedTracks.refetch();
+    }
+  }, [addedTrackIds]);
 
   console.log('tracks', queuedTracks.data!.queuedTracks.length);
   return (
@@ -89,16 +87,7 @@ function TracksQueue({ partyId }: Props) {
               position: relative;
             `}
           >
-            <LikeArea />
-            <DislikeArea />
-            <Draggable
-              css={css`
-                margin: 0 4px;
-                background: white;
-                position: relative;
-                z-index: 1;
-              `}
-            >
+            <DraggableTrackVote>
               <PartyTrack
                 track={queuedTrack.track}
                 isActive={false}
@@ -108,7 +97,7 @@ function TracksQueue({ partyId }: Props) {
                 }
                 voteCount={queuedTrack.userVotes.length}
               />
-            </Draggable>
+            </DraggableTrackVote>
           </PosedWrapper>
         ))}
       </PoseGroup>
