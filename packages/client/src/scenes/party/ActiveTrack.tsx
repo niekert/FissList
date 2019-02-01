@@ -5,8 +5,8 @@ import posed, { PoseGroup } from 'react-pose';
 
 const transition = {
   type: 'spring',
-  stiffness: 150,
-  damping: 20,
+  stiffness: 160,
+  damping: 17,
 };
 
 const PosedWrapper = posed.div({
@@ -15,7 +15,7 @@ const PosedWrapper = posed.div({
     opacity: 0,
     delay: 25,
     position: 'absolute',
-    // transition,
+    transition,
   },
   preEnter: {
     transform: 'translateY(100%)',
@@ -25,7 +25,7 @@ const PosedWrapper = posed.div({
     transform: 'translateY(0%)',
     opacity: 1,
     delay: 100,
-    // transition,
+    transition,
   },
 });
 const Wrapper = styled(PosedWrapper)`

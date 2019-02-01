@@ -13,12 +13,15 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding-right: ${props => props.theme.spacing[2]};
-  opacity: 0.7;
+  position: relative;
+  top: 5px;
+  opacity: 0.8;
 `;
 
 const VoteCount = styled.span`
   font-size: 12px;
   font-weight: 300;
+  line-height: 1.5;
 `;
 
 const Icon = styled.svg`

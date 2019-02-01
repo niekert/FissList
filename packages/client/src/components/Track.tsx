@@ -19,6 +19,9 @@ const LeftColumn = styled.div`
 
 const Title = styled.span`
   font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const Artist = styled.span`

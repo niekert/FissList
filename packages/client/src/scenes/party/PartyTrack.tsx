@@ -59,31 +59,10 @@ interface Props {
 }
 
 function PartyTrack({ isActive, track, isRequested, voteCount }: Props) {
-  const { addedTrackIds, markTrackSeen } = useChangedTracks();
-  const newlyAddedRef = React.useRef(undefined);
-  const { isIntersecting } = useVisibility(newlyAddedRef);
-
-  React.useEffect(() => {
-    if (isIntersecting) {
-      setTimeout(() => {
-        markTrackSeen(track.id);
-      }, 3000);
-    }
-
-    return;
-  }, [isIntersecting]);
-
   return (
     <Wrapper isActive={isActive}>
       <Track {...track} />
       <TrackVote isRequested={isRequested} voteCount={voteCount} />
-      <PoseGroup animateOnMount={true} withParent={false} flipMove={false}>
-        {addedTrackIds.includes(track.id) && (
-          <NewlyAdded ref={newlyAddedRef} key="newlyAdded">
-            New!
-          </NewlyAdded>
-        )}
-      </PoseGroup>
     </Wrapper>
   );
 }
