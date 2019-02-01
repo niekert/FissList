@@ -60,70 +60,62 @@ export function useQueuedTracks(partyId: string) {
     },
   );
 
-  React.useEffect(
-    () => {
-      if (deletedTrackIds.length > 0) {
-        query.updateQuery(previousQueryResult => ({
-          queuedTracks: previousQueryResult.queuedTracks.filter(
-            queuedTrack => !deletedTrackIds.includes(queuedTrack.trackId),
-          ),
-        }));
+  React.useEffect(() => {
+    if (deletedTrackIds.length > 0) {
+      query.updateQuery(previousQueryResult => ({
+        queuedTracks: previousQueryResult.queuedTracks.filter(
+          queuedTrack => !deletedTrackIds.includes(queuedTrack.trackId),
+        ),
+      }));
 
-        markTrackSeen(deletedTrackIds);
+      markTrackSeen(deletedTrackIds);
+    }
+  }, [deletedTrackIds]);
+
+  React.useEffect(() => {
+    if (nextActiveTrackId && query.data.queuedTracks) {
+      const nextActiveTrackIndex = query.data.queuedTracks.findIndex(
+        queuedTrack => queuedTrack.trackId === nextActiveTrackId,
+      );
+
+      if (nextActiveTrackIndex === -1) {
+        console.error('Next track was not found in the play queue');
+        return;
       }
-    },
-    [deletedTrackIds],
-  );
 
-  React.useEffect(
-    () => {
-      if (nextActiveTrackId && query.data.queuedTracks) {
-        const nextActiveTrackIndex = query.data.queuedTracks.findIndex(
-          queuedTrack => queuedTrack.trackId === nextActiveTrackId,
-        );
+      const nextQueue = query.data.queuedTracks.slice(nextActiveTrackIndex + 1);
+      const nextTrack = query.data.queuedTracks[nextActiveTrackIndex];
 
-        if (nextActiveTrackIndex === -1) {
-          console.error('Next track was not found in the play queue');
-          return;
-        }
+      query.updateQuery(() => ({
+        queuedTracks: nextQueue,
+      }));
 
-        const nextQueue = query.data.queuedTracks.slice(
-          nextActiveTrackIndex + 1,
-        );
-        const nextTrack = query.data.queuedTracks[nextActiveTrackIndex];
+      // Update the party to have the new track
+      partyQuery.updateQuery(() => ({
+        party: {
+          ...partyQuery.data.party,
+          activeTrackId: nextActiveTrackId,
+        },
+      }));
 
-        query.updateQuery(() => ({
-          queuedTracks: nextQueue,
-        }));
-
-        // Update the party to have the new track
-        partyQuery.updateQuery(() => ({
-          party: {
-            ...partyQuery.data.party,
-            activeTrackId: nextActiveTrackId,
-          },
-        }));
-
-        const playerQuery = apolloClient!.readQuery<Player>({
+      const playerQuery = apolloClient!.readQuery<Player>({
+        query: PLAYER_QUERY,
+      });
+      if (playerQuery && playerQuery.player) {
+        apolloClient!.writeQuery<Player>({
           query: PLAYER_QUERY,
-        });
-        if (playerQuery && playerQuery.player) {
-          apolloClient!.writeQuery<Player>({
-            query: PLAYER_QUERY,
-            data: {
-              player: {
-                ...playerQuery.player,
-                item: nextTrack.track,
-              },
+          data: {
+            player: {
+              ...playerQuery.player,
+              item: nextTrack.track,
             },
-          });
-        }
-
-        markTrackSeen(nextActiveTrackId);
+          },
+        });
       }
-    },
-    [nextActiveTrackId],
-  );
+
+      markTrackSeen(nextActiveTrackId);
+    }
+  }, [nextActiveTrackId]);
 
   return query;
 }
@@ -132,7 +124,6 @@ export function usePartyQuery(partyId: string) {
   return useQuery<GetPartyById, GetPartyByIdVariables>(GET_PARTY, {
     errorPolicy: 'all',
     // TODO: Enable suspense here
-    suspend: false,
     variables: {
       partyId,
     },

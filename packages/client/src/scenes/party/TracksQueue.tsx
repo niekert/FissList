@@ -2,11 +2,10 @@ import * as React from 'react';
 import { useCurrentUser } from 'context/CurrentUser';
 import { useChangedTracks } from 'context/ChangedPartyTracksContext';
 import { useQueuedTracks } from './queries';
-import { usePlayerQuery } from './scenes/player/context/usePlayerQuery';
 import PartyTrack from './PartyTrack';
 import Spinner from 'components/Spinner';
 import posed, { PoseGroup } from 'react-pose';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import DraggableTrackVote from './DraggableTrackVote';
 
 interface Props {
@@ -32,41 +31,13 @@ const PosedWrapper = posed.div({
   },
 });
 
-const Draggable = posed.div({
-  draggable: 'x',
-  dragBounds: { left: -120, right: 120 },
-  dragEnd: { transition: 'spring' },
-});
-
-const LikeArea = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 50%;
-  pointer-events: none;
-  background: rgb(11, 181, 11);
-  opacity: 0.5;
-`;
-const DislikeArea = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  pointer-events: none;
-  width: 50%;
-  background: rgb(214, 33, 33);
-  opacity: 0.5;
+const StyledWrapper = styled.div`
+  position: relative;
 `;
 
 function TracksQueue({ partyId }: Props) {
   const currentUser = useCurrentUser();
-  const {
-    addedTrackIds,
-    nextActiveTrackId,
-    markTrackSeen,
-  } = useChangedTracks();
-  const player = usePlayerQuery();
+  const { addedTrackIds } = useChangedTracks();
   const queuedTracks = useQueuedTracks(partyId);
 
   React.useEffect(() => {
@@ -76,17 +47,11 @@ function TracksQueue({ partyId }: Props) {
     }
   }, [addedTrackIds]);
 
-  console.log('tracks', queuedTracks.data!.queuedTracks.length);
   return (
     <>
       <PoseGroup>
         {queuedTracks.data!.queuedTracks.map(queuedTrack => (
-          <PosedWrapper
-            key={queuedTrack.id}
-            css={css`
-              position: relative;
-            `}
-          >
+          <PosedWrapper key={queuedTrack.id}>
             <DraggableTrackVote>
               <PartyTrack
                 track={queuedTrack.track}

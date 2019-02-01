@@ -19,6 +19,7 @@ const Wrapper = styled(PosedWrapper)`
   height: 60px;
   display: flex;
   align-items: center;
+  background: white;
   padding: 0 ${props => props.theme.spacing[2]};
 `;
 
@@ -30,14 +31,11 @@ function MemberActiveTrack({ trackId }: Props) {
   const [track, setTrack] = React.useState<TrackInfo | undefined>(undefined);
   const trackQuery = useTrackQuery(trackId);
 
-  React.useEffect(
-    () => {
-      if (trackQuery.data.track) {
-        setTrack(trackQuery.data.track);
-      }
-    },
-    [trackQuery.data.track],
-  );
+  React.useEffect(() => {
+    if (trackQuery.data.track) {
+      setTrack(trackQuery.data.track);
+    }
+  }, [trackQuery.data.track]);
 
   return (
     <Wrapper pose={track ? 'active' : 'loading'}>

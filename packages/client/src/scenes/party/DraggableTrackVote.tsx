@@ -69,6 +69,32 @@ const PosedDislikeArea = posed.div({
   },
 });
 
+const PosedThumbsUpIcon = posed.div({
+  passive: {
+    scale: [
+      'x',
+      pipe(
+        interpolate([0, TRIGGER_DISTANCE], [1, 1.4]),
+        clamp(1, 1.4),
+      ),
+      true,
+    ],
+  },
+});
+
+const PosedThumbsDownIcon = posed.div({
+  passive: {
+    scale: [
+      'x',
+      pipe(
+        interpolate([1, 2, -TRIGGER_DISTANCE], [1, 1.4]),
+        clamp(1, 1.4),
+      ),
+      true,
+    ],
+  },
+});
+
 const DislikeArea = styled(PosedDislikeArea)`
   ${areaStyle}
   right: 0;
@@ -95,10 +121,14 @@ function DraggableTrackVote({ children }: Props) {
       `}
     >
       <LikeArea parentValues={valuesMap}>
-        <ThumbUpIcon css={thumbStyles} />
+        <PosedThumbsUpIcon parentValues={valuesMap}>
+          <ThumbUpIcon css={thumbStyles} />
+        </PosedThumbsUpIcon>
       </LikeArea>
       <DislikeArea parentValues={valuesMap}>
-        <ThumbDownIcon css={thumbStyles} />
+        <PosedThumbsDownIcon parentValues={valuesMap}>
+          <ThumbDownIcon css={thumbStyles} />
+        </PosedThumbsDownIcon>
       </DislikeArea>
       <Slidable
         values={valuesMap}
