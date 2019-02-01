@@ -52,17 +52,14 @@ function TracksQueue({ partyId }: Props) {
       <PoseGroup>
         {queuedTracks.data!.queuedTracks.map(queuedTrack => (
           <PosedWrapper key={queuedTrack.id}>
-            <DraggableTrackVote>
-              <PartyTrack
-                track={queuedTrack.track}
-                isActive={false}
-                isRequested={
-                  !!currentUser &&
-                  queuedTrack.userVotes.includes(currentUser.id)
-                }
-                voteCount={queuedTrack.userVotes.length}
-              />
-            </DraggableTrackVote>
+            <PartyTrack
+              track={queuedTrack.track}
+              isActive={false}
+              isRequested={
+                !!currentUser && queuedTrack.userVotes.includes(currentUser.id)
+              }
+              voteCount={queuedTrack.userVotes.length}
+            />
           </PosedWrapper>
         ))}
       </PoseGroup>
