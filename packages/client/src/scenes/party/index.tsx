@@ -113,13 +113,10 @@ export default function Party({ match, location, history }: IProps) {
   };
 
   const activeTab = getActivetab(match, location);
-  React.useLayoutEffect(
-    () => {
-      // TODO: This 140 is hacky af, need to get player height or something?
-      window.scrollTo(0, Math.min(window.scrollY, PLAYER_HEIGHT_PX));
-    },
-    [activeTab],
-  );
+  React.useLayoutEffect(() => {
+    // TODO: This 140 is hacky af, need to get player height or something?
+    window.scrollTo(0, Math.min(window.scrollY, PLAYER_HEIGHT_PX));
+  }, [activeTab]);
 
   if (!data || !data.party) {
     return (

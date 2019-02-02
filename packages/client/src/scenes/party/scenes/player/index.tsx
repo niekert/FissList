@@ -61,25 +61,19 @@ export default function Player() {
       setPlaybackState(state);
     },
   });
-  React.useEffect(
-    () => {
-      if (!startedTrackPlayback && prevTrackPlayback) {
-        // Skip to the next one
-        playerContext!.skipTrack();
-      }
-    },
-    [startedTrackPlayback, prevTrackPlayback],
-  );
+  React.useEffect(() => {
+    if (!startedTrackPlayback && prevTrackPlayback) {
+      // Skip to the next one
+      playerContext!.skipTrack();
+    }
+  }, [startedTrackPlayback, prevTrackPlayback]);
 
-  React.useEffect(
-    () => {
-      // Always make the web sdk device leading
-      if (webSdkDeviceId) {
-        playerContext!.setActiveDevice(webSdkDeviceId);
-      }
-    },
-    [webSdkDeviceId],
-  );
+  React.useEffect(() => {
+    // Always make the web sdk device leading
+    if (webSdkDeviceId) {
+      playerContext!.setActiveDevice(webSdkDeviceId);
+    }
+  }, [webSdkDeviceId]);
 
   const { player } = playerContext!.data;
 
@@ -87,7 +81,6 @@ export default function Player() {
 
   return (
     <>
-      {script}
       {player && player.item && (
         <PoseGroup animateOnMount={true}>
           <PlayerWrapper key="playerwrapper">

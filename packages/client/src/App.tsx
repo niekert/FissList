@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { hot } from 'react-hot-loader/root';
 import styled, { createGlobalStyle } from 'styled-components';
 import CurrentUserContext from './context/CurrentUser';
 import { useGetMe } from 'queries/useGetMe';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { Route, Router, Switch } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
 import Spinner from 'components/Spinner';
 import NewParty from 'scenes/newParty';
 import SelectType from 'scenes/selectType';
@@ -13,6 +13,7 @@ import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
 import Theme from './theme';
 import Party from 'scenes/party';
+import history from './history';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -29,8 +30,6 @@ const GlobalStyle = createGlobalStyle`
 const PageLoader = styled(Spinner)`
   min-height: 100vh;
 `;
-
-const history = createHistory();
 
 function App() {
   const me = useGetMe();
@@ -71,4 +70,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(App);
