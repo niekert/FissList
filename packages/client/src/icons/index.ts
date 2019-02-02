@@ -13,3 +13,4 @@ export { default as CheckmarkIcon } from './CheckMarkIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as ThumbUpIcon } from './ThumbUp';
 export { default as ThumbDownIcon } from './ThumbDown';
+export { default as FavoriteIcon } from './FavoriteIcon';

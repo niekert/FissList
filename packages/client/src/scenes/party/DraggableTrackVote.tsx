@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { decay, spring, transform, value } from 'popmotion';
+import { allowDraggableTrackVote } from 'featureFlags';
 import styled, { css } from 'styled-components';
 import posed from 'react-pose';
 import { ThumbUpIcon, ThumbDownIcon } from 'icons';
@@ -22,10 +23,6 @@ const Slidable = posed.div({
 const Container = styled.div`
   position: relative;
 `;
-
-interface Props {
-  children: React.ReactNode;
-}
 
 const PosedLikeArea = posed.div({
   passive: {
@@ -74,8 +71,8 @@ const PosedThumbsUpIcon = posed.div({
     scale: [
       'x',
       pipe(
-        interpolate([0, TRIGGER_DISTANCE], [1, 1.4]),
-        clamp(1, 1.4),
+        interpolate([0, TRIGGER_DISTANCE], [0.6, 1]),
+        clamp(0.6, 1),
       ),
       true,
     ],
@@ -87,8 +84,8 @@ const PosedThumbsDownIcon = posed.div({
     scale: [
       'x',
       pipe(
-        interpolate([1, 2, -TRIGGER_DISTANCE], [1, 1.4]),
-        clamp(1, 1.4),
+        interpolate([1, 2, -TRIGGER_DISTANCE], [0.6, 1]),
+        clamp(0.6, 1),
       ),
       true,
     ],
@@ -103,13 +100,22 @@ const DislikeArea = styled(PosedDislikeArea)`
 `;
 
 const thumbStyles = css`
-  with: 20px;
-  height: 20px;
+  with: 28px;
+  height: 28px;
   color: white;
   margin: 0 ${props => props.theme.spacing[3]};
 `;
 
+interface Props {
+  children: React.ReactNode;
+}
+
 function DraggableTrackVote({ children }: Props) {
+  if (!allowDraggableTrackVote) {
+    // For some reason have to wrap this in a fragment or TS cries..🤷
+    return <>{children}</>;
+  }
+
   const x = React.useRef(value(0));
 
   const valuesMap = { x: x.current };

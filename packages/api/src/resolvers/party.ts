@@ -298,6 +298,32 @@ async function updatePartyName(
   return party;
 }
 
+async function trackVote(
+  _,
+  args: { queuedTrackId: string },
+  context: Context,
+): Promise<string[]> {
+  const [me, queuedTrack] = await Promise.all([
+    context.spotify.fetchCurrentUser(),
+    context.prisma.queuedTrack({ id: args.queuedTrackId }),
+  ]);
+
+  const nextUserVotes = queuedTrack.userVotes.includes(me.id)
+    ? queuedTrack.userVotes.filter(userId => userId !== me.id)
+    : [...queuedTrack.userVotes, me.id];
+
+  await context.prisma.updateQueuedTrack({
+    where: { id: args.queuedTrackId },
+    data: {
+      userVotes: {
+        set: nextUserVotes,
+      },
+    },
+  });
+
+  return nextUserVotes;
+}
+
 export default {
   Query: {
     parties,
@@ -310,6 +336,7 @@ export default {
     deleteParty,
     requestPartyAccess,
     setPartyAccess,
+    trackVote,
   },
   Me: {
     parties,

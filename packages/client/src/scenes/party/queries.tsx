@@ -13,6 +13,7 @@ import {
   QueuedTrackDetailsVariables,
 } from './__generated__/QueuedTrackDetails';
 import { useChangedTracks } from 'context/ChangedPartyTracksContext';
+import { Permissions } from '../../globalTypes';
 
 export { QueuedTrackDetails };
 
@@ -98,19 +99,25 @@ export function useQueuedTracks(partyId: string) {
         },
       }));
 
-      const playerQuery = apolloClient!.readQuery<Player>({
-        query: PLAYER_QUERY,
-      });
-      if (playerQuery && playerQuery.player) {
-        apolloClient!.writeQuery<Player>({
+      // Update the player if we's an admin
+      if (
+        partyQuery.data &&
+        partyQuery.data.party.permission === Permissions.ADMIN
+      ) {
+        const playerQuery = apolloClient!.readQuery<Player>({
           query: PLAYER_QUERY,
-          data: {
-            player: {
-              ...playerQuery.player,
-              item: nextTrack.track,
-            },
-          },
         });
+        if (playerQuery && playerQuery.player) {
+          apolloClient!.writeQuery<Player>({
+            query: PLAYER_QUERY,
+            data: {
+              player: {
+                ...playerQuery.player,
+                item: nextTrack.track,
+              },
+            },
+          });
+        }
       }
 
       markTrackSeen(nextActiveTrackId);

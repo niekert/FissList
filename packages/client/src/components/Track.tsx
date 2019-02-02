@@ -6,6 +6,7 @@ const Wrapper = styled.div<{ isNowPlaying?: boolean }>`
   display: flex;
   width: 100%;
   height: 70px;
+  overflow: hidden;
   justify-content: space-between;
   padding: ${props => `${props.theme.spacing[1]} ${props.theme.spacing[2]}`};
 `;

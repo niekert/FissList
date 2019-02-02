@@ -1,15 +1,9 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { ThumbUpIcon, ThumbDownIcon } from 'icons';
-
-interface Props {
-  isRequested: boolean;
-  voteCount: number;
-}
+import styled, { css } from 'styled-components';
+import { ThumbUpIcon, ThumbDownIcon, FavoriteIcon } from 'icons';
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-right: ${props => props.theme.spacing[2]};
@@ -20,20 +14,28 @@ const Wrapper = styled.div`
 
 const VoteCount = styled.span`
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 600;
   line-height: 1.5;
+  margin-right: ${props => props.theme.spacing[1]};
 `;
 
-const Icon = styled.svg`
-  width: 16p;
-  height: 16px;
-`;
+interface Props {
+  isRequested: boolean;
+  voteCount: number;
+  queuedTrackId: string;
+}
 
-function TrackVote({ isRequested, voteCount }: Props) {
+function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
   return (
     <Wrapper>
-      <Icon as={isRequested ? ThumbDownIcon : ThumbUpIcon} />
       <VoteCount>{voteCount}</VoteCount>
+      <FavoriteIcon
+        isActive={isRequested}
+        css={css`
+          width: 16px;
+          height: 16px;
+        `}
+      />
     </Wrapper>
   );
 }

@@ -31,10 +31,6 @@ const PosedWrapper = posed.div({
   },
 });
 
-const StyledWrapper = styled.div`
-  position: relative;
-`;
-
 function TracksQueue({ partyId }: Props) {
   const currentUser = useCurrentUser();
   const { addedTrackIds } = useChangedTracks();
@@ -52,14 +48,18 @@ function TracksQueue({ partyId }: Props) {
       <PoseGroup>
         {queuedTracks.data!.queuedTracks.map(queuedTrack => (
           <PosedWrapper key={queuedTrack.id}>
-            <PartyTrack
-              track={queuedTrack.track}
-              isActive={false}
-              isRequested={
-                !!currentUser && queuedTrack.userVotes.includes(currentUser.id)
-              }
-              voteCount={queuedTrack.userVotes.length}
-            />
+            <DraggableTrackVote>
+              <PartyTrack
+                queuedTrackId={queuedTrack.id}
+                track={queuedTrack.track}
+                isActive={false}
+                isRequested={
+                  !!currentUser &&
+                  queuedTrack.userVotes.includes(currentUser.id)
+                }
+                voteCount={queuedTrack.userVotes.length}
+              />
+            </DraggableTrackVote>
           </PosedWrapper>
         ))}
       </PoseGroup>
