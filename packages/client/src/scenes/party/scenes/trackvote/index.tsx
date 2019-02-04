@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { ThumbUpIcon, ThumbDownIcon, FavoriteIcon } from 'icons';
+import { FavoriteIcon } from 'icons';
+import { useTrackVoteMutation } from './mutation';
+import IconButton from 'components/IconButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,16 +28,23 @@ interface Props {
 }
 
 function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
+  const mutateTrackVote = useTrackVoteMutation();
+
   return (
     <Wrapper>
       <VoteCount>{voteCount}</VoteCount>
-      <FavoriteIcon
-        isActive={isRequested}
-        css={css`
-          width: 16px;
-          height: 16px;
-        `}
-      />
+      <IconButton
+        size="extra-small"
+        onClick={() => mutateTrackVote(queuedTrackId, isRequested)}
+      >
+        <FavoriteIcon
+          isActive={isRequested}
+          css={css`
+            width: 16px;
+            height: 16px;
+          `}
+        />
+      </IconButton>
     </Wrapper>
   );
 }

@@ -13,7 +13,6 @@ import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
 import Theme from './theme';
 import Party from 'scenes/party';
-import history from './history';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -31,7 +30,7 @@ const PageLoader = styled(Spinner)`
   min-height: 100vh;
 `;
 
-function App() {
+function App({ history }: { history: any }) {
   const me = useGetMe();
 
   return (

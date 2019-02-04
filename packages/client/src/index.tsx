@@ -14,6 +14,9 @@ import { onError } from 'apollo-link-error';
 import App from './App';
 import Spinner from 'components/Spinner';
 import styled from 'styled-components';
+import createHistory from 'history/createBrowserHistory';
+
+const history = createHistory();
 
 const PageLoader = styled(Spinner)`
   min-height: 100vh;
@@ -81,7 +84,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <ApolloHooksProvider client={client}>
       <React.Suspense fallback={<PageLoader />}>
-        <App />
+        <App history={history} />
       </React.Suspense>
     </ApolloHooksProvider>
   </ApolloProvider>,

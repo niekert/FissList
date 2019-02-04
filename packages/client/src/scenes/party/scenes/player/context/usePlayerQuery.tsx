@@ -1,4 +1,3 @@
-import * as React from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
 import { TrackInfo } from 'fragments/Track';
@@ -34,7 +33,7 @@ export interface PlayerQueryResult extends ApolloQueryResult<Player> {
 
 export function usePlayerQuery(): PlayerQueryResult {
   const player = useQuery<Player>(PLAYER_QUERY, {
-    pollInterval: 3000,
+    pollInterval: 15000,
   });
 
   return {

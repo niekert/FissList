@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import Track from 'components/Track';
 import { transparentize } from 'polished';
-import TrackVote from './TrackVote';
+import TrackVote from './scenes/trackvote';
 
 const Wrapper = styled.div<{ isActive: boolean }>`
   display: flex;

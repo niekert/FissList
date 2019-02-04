@@ -1,12 +1,13 @@
 import styled, { css } from 'styled-components';
 
 const sizes = {
+  'extra-small': 16,
   small: 22,
   normal: 28,
 };
 
 const IconButton = styled.button<{
-  size?: 'small' | 'normal';
+  size?: 'small' | 'normal' | 'extra-small';
   withBackground?: boolean;
 }>`
   background: none;

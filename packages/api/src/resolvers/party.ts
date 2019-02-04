@@ -302,13 +302,15 @@ async function trackVote(
   _,
   args: { queuedTrackId: string },
   context: Context,
-): Promise<string[]> {
+): Promise<boolean> {
   const [me, queuedTrack] = await Promise.all([
     context.spotify.fetchCurrentUser(),
     context.prisma.queuedTrack({ id: args.queuedTrackId }),
   ]);
 
-  const nextUserVotes = queuedTrack.userVotes.includes(me.id)
+  const isUpvoted = queuedTrack.userVotes.includes(me.id);
+
+  const nextUserVotes = isUpvoted
     ? queuedTrack.userVotes.filter(userId => userId !== me.id)
     : [...queuedTrack.userVotes, me.id];
 
@@ -321,7 +323,8 @@ async function trackVote(
     },
   });
 
-  return nextUserVotes;
+  // Return whether the user has a vote for the track after the mutation
+  return !isUpvoted;
 }
 
 export default {
