@@ -86,11 +86,14 @@ export function ChangedPartyTracksProvider({
   partyId: string;
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = React.useReducer<State, any>(changedTracksReducer, {
-    addedTrackIds: [],
-    deletedTrackIds: [],
-    nextActiveTrackId: null,
-  });
+  const [state, dispatch] = React.useReducer<typeof changedTracksReducer>(
+    changedTracksReducer,
+    {
+      addedTrackIds: [],
+      deletedTrackIds: [],
+      nextActiveTrackId: null,
+    },
+  );
   const markTrackSeen = React.useCallback((trackIds: string | string[]) => {
     dispatch({
       type: Actions.MARK_SEEN,

@@ -86,29 +86,26 @@ export function SelectedTracksContainer({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = React.useReducer<State, any>(
+  const [state, dispatch] = React.useReducer<typeof selectedTracksReducer>(
     selectedTracksReducer,
     initialState,
   );
 
-  React.useEffect(
-    () => {
-      if (state.commitSuccess) {
-        const timeout = setTimeout(
-          () =>
-            dispatch({
-              type: Actions.RESET_COMMIT_SUCCESS,
-            }),
-          2000,
-        );
+  React.useEffect(() => {
+    if (state.commitSuccess) {
+      const timeout = setTimeout(
+        () =>
+          dispatch({
+            type: Actions.RESET_COMMIT_SUCCESS,
+          }),
+        2000,
+      );
 
-        return () => clearTimeout(timeout);
-      }
+      return () => clearTimeout(timeout);
+    }
 
-      return undefined;
-    },
-    [state.commitSuccess],
-  );
+    return undefined;
+  }, [state.commitSuccess]);
 
   const toggleTrack = React.useCallback(trackId => {
     dispatch({
