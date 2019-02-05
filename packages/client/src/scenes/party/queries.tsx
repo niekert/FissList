@@ -116,6 +116,7 @@ export function useQueuedTracks(partyId: string) {
           query: PLAYER_QUERY,
         });
         if (playerQuery && playerQuery.player) {
+          console.log('nextTrack', nextTrack.track.name);
           apolloClient!.writeQuery<Player>({
             query: PLAYER_QUERY,
             data: {

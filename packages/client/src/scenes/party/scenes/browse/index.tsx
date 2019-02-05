@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { useDebounce } from 'use-debounce';
 import { RouteComponentProps } from 'react-router';
 import Playlists from './scenes/playlists';
 import { SearchBar, SearchResults } from './scenes/search';

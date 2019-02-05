@@ -7,6 +7,7 @@ import ActiveTrack from '../../ActiveTrack';
 import TrackNavigation from './TrackNavigation';
 import TrackProgressLine from './TrackProgressLine';
 import posed, { PoseGroup } from 'react-pose';
+import { placeholder } from 'polished';
 
 const PosedWrapper = posed.div({
   enter: {
@@ -72,16 +73,22 @@ export default function Player() {
     // Always make the web sdk device leading
     if (webSdkDeviceId) {
       playerContext!.setActiveDevice(webSdkDeviceId);
+
+      const timeout = setTimeout(() => playerContext!.refetch(), 500);
+      return () => clearTimeout(timeout);
     }
+    return;
   }, [webSdkDeviceId]);
 
   const { player } = playerContext!.data;
 
   const isPlaying = player ? player.isPlaying : false;
 
+  console.log('item', player && player.item && player.item.name);
+
   return (
     <>
-      {player && player.item && (
+      {player && (
         <PoseGroup animateOnMount={true}>
           <PlayerWrapper key="playerwrapper">
             {playbackState && (
@@ -100,7 +107,7 @@ export default function Player() {
                   ${props => props.theme.spacing[2]};
               `}
             >
-              <ActiveTrack {...player.item} />
+              {player.item && <ActiveTrack {...player.item} />}
 
               <TrackNavigation
                 isPlaying={isPlaying}
