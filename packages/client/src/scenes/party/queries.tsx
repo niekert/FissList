@@ -48,6 +48,8 @@ export function useQueuedTracks(partyId: string) {
     nextActiveTrackId,
     markTrackSeen,
   } = useChangedTracks();
+
+  const currentActiveTrack = React.useRef<string | null>(nextActiveTrackId);
   const partyQuery = usePartyQuery(partyId);
   const apolloClient = useApolloClient();
 
@@ -74,6 +76,11 @@ export function useQueuedTracks(partyId: string) {
   }, [deletedTrackIds]);
 
   React.useEffect(() => {
+    if (nextActiveTrackId === currentActiveTrack.current) {
+      // Do not do anything when the track id is the same as the current
+      return;
+    }
+
     if (nextActiveTrackId && query.data.queuedTracks) {
       const nextActiveTrackIndex = query.data.queuedTracks.findIndex(
         queuedTrack => queuedTrack.trackId === nextActiveTrackId,
@@ -84,6 +91,7 @@ export function useQueuedTracks(partyId: string) {
         return;
       }
 
+      currentActiveTrack.current = nextActiveTrackId;
       const nextQueue = query.data.queuedTracks.slice(nextActiveTrackIndex + 1);
       const nextTrack = query.data.queuedTracks[nextActiveTrackIndex];
 

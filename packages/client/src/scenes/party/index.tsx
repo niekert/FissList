@@ -186,30 +186,35 @@ export default function Party({ match, location, history }: IProps) {
                 </TabsCard>
               </StickyTop>
               <ContentWrapper>
-                <Switch>
-                  <Route path={`${match.path}/browse`} component={PlayLists} />
-                  {data.party.permission === Permissions.ADMIN && (
+                <React.Suspense fallback={<Spinner />}>
+                  <Switch>
                     <Route
-                      path={`${match.path}/settings`}
+                      path={`${match.path}/browse`}
+                      component={PlayLists}
+                    />
+                    {data.party.permission === Permissions.ADMIN && (
+                      <Route
+                        path={`${match.path}/settings`}
+                        render={props => (
+                          <PartySettings
+                            {...props}
+                            requestedUserCount={
+                              data.party.requestedUserIds
+                                ? data.party.requestedUserIds.length
+                                : 0
+                            }
+                            partyName={data.party.name}
+                          />
+                        )}
+                      />
+                    )}
+                    <Route
                       render={props => (
-                        <PartySettings
-                          {...props}
-                          requestedUserCount={
-                            data.party.requestedUserIds
-                              ? data.party.requestedUserIds.length
-                              : 0
-                          }
-                          partyName={data.party.name}
-                        />
+                        <TracksQueue partyId={match.params.partyId} />
                       )}
                     />
-                  )}
-                  <Route
-                    render={props => (
-                      <TracksQueue partyId={match.params.partyId} />
-                    )}
-                  />
-                </Switch>
+                  </Switch>
+                </React.Suspense>
               </ContentWrapper>
               <AddSelectedTracks partyId={data.party.id} />
             </SelectedTracksContainer>

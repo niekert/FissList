@@ -4,10 +4,11 @@ import Button from 'components/Button';
 import posed, { PoseGroup } from 'react-pose';
 import { GET_PARTY } from './queries';
 import AddTracksMutation from './mutations/AddTracksMutation';
-import TracksAdded from './TracksAdded';
 import styled from 'styled-components';
 import IconButton from 'components/IconButton';
 import CloseIcon from 'icons/CloseIcon';
+import Notification from './Notification';
+import { MAX_TRACKS_TO_REQUEST } from 'app-constants';
 
 const PosedSelectedTracks = posed.div({
   enter: {
@@ -46,6 +47,7 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
     clearSelectedTracks,
     commitTracks,
     commitSuccess,
+    isOverLimit,
   } = useSelectedTracks();
 
   return (
@@ -89,7 +91,29 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
             </SelectedTracksWrapper>
           )}
           {commitSuccess && (
-            <TracksAdded as={PosedSelectedTracks} key="tracksAdded" />
+            <Notification
+              key="commitTracks"
+              as={PosedSelectedTracks}
+              emoji={'🎉'}
+              content={
+                <>
+                  <b>Done!</b> The tracks you selected are added to the queue
+                </>
+              }
+            />
+          )}
+          {isOverLimit && (
+            <Notification
+              key="overLimit"
+              as={PosedSelectedTracks}
+              emoji={'🤭'}
+              content={
+                <>
+                  You can only request <b>{MAX_TRACKS_TO_REQUEST}</b> tracks at
+                  the time!
+                </>
+              }
+            />
           )}
         </PoseGroup>
       )}
