@@ -51,32 +51,26 @@ function reducer(state: number, action: Actions) {
 }
 
 function TrackProgressLine({ paused, duration, position }: Props) {
-  const [progressMs, dispatch] = React.useReducer<number, Actions>(
+  const [progressMs, dispatch] = React.useReducer<typeof reducer>(
     reducer,
     position,
   );
 
-  React.useEffect(
-    () => {
-      dispatch({ type: 'SET_PROGRESS', payload: position });
-    },
-    [position],
-  );
+  React.useEffect(() => {
+    dispatch({ type: 'SET_PROGRESS', payload: position });
+  }, [position]);
 
-  React.useEffect(
-    () => {
-      if (paused) {
-        return;
-      }
+  React.useEffect(() => {
+    if (paused) {
+      return;
+    }
 
-      const timeout = setTimeout(() => {
-        dispatch({ type: 'INCREMENT_PROGRESS' });
-      }, INCREMENT_PROGRESS_TIMEOUT_MS);
+    const timeout = setTimeout(() => {
+      dispatch({ type: 'INCREMENT_PROGRESS' });
+    }, INCREMENT_PROGRESS_TIMEOUT_MS);
 
-      return () => clearTimeout(timeout);
-    },
-    [paused, duration, position, progressMs],
-  );
+    return () => clearTimeout(timeout);
+  }, [paused, duration, position, progressMs]);
 
   const percentage = progressMs > 0 ? (progressMs / duration) * 100 : 0;
 
