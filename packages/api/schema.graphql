@@ -28,6 +28,19 @@ type SavedTrack {
   track: Track!
 }
 
+type PagedTracks {
+  offset: Int!
+  href: String!
+  total: Int!
+  limit: Int!
+  next: String!
+  items: [Track!]!
+}
+
+type SearchResult {
+  tracks: PagedTracks
+}
+
 type PagedSavedTracks {
   offset: Int!
   href: String!
@@ -155,6 +168,7 @@ type Query {
   savedTracks: PagedSavedTracks!
   userPlaylists(offset: Int): PagedPlaylists
   track(trackId: String!): Track!
+  search(query: String!): SearchResult!
 }
 
 type Mutation {

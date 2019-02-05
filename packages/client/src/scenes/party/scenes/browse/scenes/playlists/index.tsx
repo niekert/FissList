@@ -8,6 +8,8 @@ import { TrackSelectList } from './TrackSelectList';
 import { SAVED_MUSIC } from 'app-constants';
 import SongLibrary from './SongLibrary';
 import { BackIcon } from 'icons';
+import { mapPlaylistTracks } from './helpers';
+import Playlist from 'scenes/selectPlaylist/Playlist';
 
 const StyledSpinner = styled(Spinner)`
   margin: 0 auto;
@@ -81,7 +83,7 @@ export default function Playlists({ match, history }: RouteComponentProps) {
                     </IconLink>
                     {data.playlist.name}
                   </SelectedPlaylistName>
-                  <TrackSelectList {...data.playlist} />
+                  <TrackSelectList tracks={mapPlaylistTracks(data.playlist)} />
                 </>
               );
             }}

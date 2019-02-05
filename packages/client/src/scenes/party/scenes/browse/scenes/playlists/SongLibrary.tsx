@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
-import { SAVED_MUSIC } from 'app-constants';
 import Spinner from 'components/Spinner';
+import { TrackInfo as TrackInfoType } from 'fragments/__generated__/TrackInfo';
 import { TrackInfo } from 'fragments';
 import * as React from 'react';
 import { TrackSelectList } from './TrackSelectList';
@@ -23,6 +23,10 @@ const SAVED_SONGS_QUERY = gql`
   ${TrackInfo}
 `;
 
+export function mapSavedTracks(savedTracks: SavedTracks): TrackInfoType[] {
+  return savedTracks.savedTracks.items.map(item => item.track);
+}
+
 function SongLibrary() {
   const { loading, data } = useQuery<SavedTracks>(SAVED_SONGS_QUERY);
 
@@ -30,12 +34,7 @@ function SongLibrary() {
     return <Spinner />;
   }
 
-  return (
-    <TrackSelectList
-      tracks={{ items: data.savedTracks.items }}
-      id={SAVED_MUSIC}
-    />
-  );
+  return <TrackSelectList tracks={mapSavedTracks(data)} />;
 }
 
 export default SongLibrary;

@@ -24,6 +24,7 @@
     "node-fetch": "^2.2.1",
     "nodemon": "^1.18.7",
     "prisma-client-lib": "^1.23.0-test.3",
+    "query-string": "^6.2.0",
     "serve-static": "^1.13.2",
     "subscriptions-transport-ws": "^0.9.15"
   },

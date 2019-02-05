@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { transparentize } from 'polished';
 import Track from 'components/Track';
-import { PlaylistInfo_tracks_items } from 'fragments/__generated__/PlaylistInfo';
+import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import styled from 'styled-components';
 
 const ListItem = styled.div<{ isSelected: boolean }>`
@@ -30,19 +30,15 @@ const Checkbox = styled.input.attrs({
   type: 'checkbox',
 })``;
 
-interface Props extends PlaylistInfo_tracks_items {
+interface Props {
   isSelected: boolean;
+  track: TrackInfo;
   onChange: (trackId: string) => void;
 }
 
-function SelectableTrackListItem({
-  isSelected,
-  track,
-  addedAt,
-  onChange,
-}: Props) {
+function SelectableTrackListItem({ isSelected, track, onChange }: Props) {
   return (
-    <ListItem key={`${addedAt}-${track.id}`} isSelected={isSelected}>
+    <ListItem isSelected={isSelected}>
       <SelectWrapper>
         <Checkbox
           checked={isSelected}

@@ -16,7 +16,7 @@ import AddSelectedTracks from './AddSelectedTracks';
 import { PlayerContainer } from './scenes/player/context';
 import { PartyContext } from './context';
 import Player from './scenes/player';
-import PlayLists from 'scenes/playlists';
+import Browse from './scenes/browse';
 import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
@@ -188,10 +188,7 @@ export default function Party({ match, location, history }: IProps) {
               <ContentWrapper>
                 <React.Suspense fallback={<Spinner />}>
                   <Switch>
-                    <Route
-                      path={`${match.path}/browse`}
-                      component={PlayLists}
-                    />
+                    <Route path={`${match.path}/browse`} component={Browse} />
                     {data.party.permission === Permissions.ADMIN && (
                       <Route
                         path={`${match.path}/settings`}
