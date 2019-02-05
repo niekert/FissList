@@ -35,7 +35,7 @@ export default function Player() {
   ] = usePrevState(false);
   const playerContext = usePlayer();
   const didConnectRef = React.useRef<boolean>(false);
-  const { deviceId: webSdkDeviceId, script } = useSpotifyWebSdk({
+  const { deviceId: webSdkDeviceId } = useSpotifyWebSdk({
     name: 'PampaPlay',
     getOAuthToken: () =>
       Promise.resolve(localStorage.getItem('accessToken') as string),
