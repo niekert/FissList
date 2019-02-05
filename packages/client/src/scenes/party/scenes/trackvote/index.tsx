@@ -35,6 +35,11 @@ const Wrapper = styled.div`
   top: 5px;
   opacity: 0.8;
   padding: ${props => props.theme.spacing[2]};
+  padding-left: 0;
+
+  :hover {
+    color: ${props => props.theme.textColors.active};
+  }
 `;
 
 const VoteCount = styled(PosedCounter)`
@@ -65,10 +70,6 @@ const StyledFavoriteIcon = styled(FavoriteIcon)`
   cursor: pointer;
   width: 16px;
   height: 16px;
-
-  ${Wrapper}:hover & {
-    transform: ${props => (props.expand ? 'scale(1.1)' : 'scale(1)')};
-  }
 `;
 
 interface Props {
@@ -105,7 +106,7 @@ function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
       </PoseGroup>
       <PosedFavoriteIcon pose={isActive ? 'active' : 'idle'}>
         <IconButton size="extra-small">
-          <StyledFavoriteIcon expand={!isActive} isActive={isRequested} />
+          <StyledFavoriteIcon isActive={isRequested} />
         </IconButton>
       </PosedFavoriteIcon>
     </Wrapper>
