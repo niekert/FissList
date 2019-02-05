@@ -64,8 +64,6 @@ const link = split(
         const hasAuthError = graphQLErrors.some(
           err => !!err.extensions && err.extensions.code === 'UNAUTHENTICATED',
         );
-
-        console.log('auth error', hasAuthError);
       }
     }),
     new HttpLink({

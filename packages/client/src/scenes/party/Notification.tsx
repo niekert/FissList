@@ -22,10 +22,11 @@ interface Props {
   emoji: React.ReactNode;
   content: React.ReactNode;
   as: any;
+  onClick?: () => void;
 }
-function Notification({ emoji, content, as, ...props }: Props) {
+function Notification({ emoji, content, as, onClick, ...props }: Props) {
   return (
-    <Wrapper as={as} {...props}>
+    <Wrapper as={as} onClick={onClick} {...props}>
       <Emoji>{emoji}</Emoji>
       <Content>{content}</Content>
     </Wrapper>

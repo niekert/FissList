@@ -33,7 +33,7 @@ type PagedTracks {
   href: String!
   total: Int!
   limit: Int!
-  next: String!
+  next: String
   items: [Track!]!
 }
 

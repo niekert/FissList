@@ -12,7 +12,11 @@ const SEARCH_DEBOUNCE_MS = 2000;
 
 function Browse(props: Props) {
   const [searchQuery, setSearchQuery] = React.useState<string>('');
-  const debouncedSearch = useDebounce(searchQuery, SEARCH_DEBOUNCE_MS);
+  const [debouncedSearch, setDebouncedSearch] = React.useState<string>('');
+  React.useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedSearch(searchQuery), 1000);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
   const isSearchActive = debouncedSearch.length > 0 && searchQuery.length > 0;
 
@@ -23,6 +27,7 @@ function Browse(props: Props) {
         exact={true}
         render={() => (
           <SearchBar
+            onSubmit={() => setDebouncedSearch(searchQuery)}
             onChange={e => setSearchQuery(e.target.value)}
             value={searchQuery}
           />

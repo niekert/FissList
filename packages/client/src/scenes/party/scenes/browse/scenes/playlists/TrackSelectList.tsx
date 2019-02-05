@@ -8,7 +8,6 @@ interface Props {
 }
 
 export function TrackSelectList({ tracks }: Props) {
-  console.log('tracks is', tracks);
   const { toggleTrack, selectedTracks } = useSelectedTracks();
 
   return (

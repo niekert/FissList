@@ -4,10 +4,9 @@ import { MAX_TRACKS_TO_REQUEST } from 'app-constants';
 enum Actions {
   TOGGLE_TRACK,
   COMMIT_TRACKS,
-  RESET_COMMIT_SUCCESS,
+  CLEAR_WARNINGS,
   CLEAR_SELECTED_TRACKS,
   MARK_TRACK_SEEN,
-  CLEAR_OVER_LIMIT,
 }
 
 export interface State {
@@ -21,6 +20,7 @@ export interface Context extends State {
   toggleTrack: (trackId) => void;
   commitTracks: () => void;
   clearSelectedTracks: () => void;
+  clearWarnings: () => void;
 }
 
 const initialState: State = {
@@ -50,22 +50,17 @@ function selectedTracksReducer(state: State, action): State {
         commitSuccess: true,
       };
     }
-    case Actions.CLEAR_OVER_LIMIT: {
+    case Actions.CLEAR_WARNINGS: {
       return {
         ...state,
         isOverLimit: false,
+        commitSuccess: false,
       };
     }
     case Actions.CLEAR_SELECTED_TRACKS: {
       return {
         ...state,
         selectedTracks: [],
-      };
-    }
-    case Actions.RESET_COMMIT_SUCCESS: {
-      return {
-        ...state,
-        commitSuccess: false,
       };
     }
     default: {
@@ -84,6 +79,7 @@ const SelectedTracksContext = React.createContext<Context>({
   clearSelectedTracks: noProvider,
   toggleTrack: noProvider,
   commitTracks: noProvider,
+  clearWarnings: noProvider,
   isOverLimit: false,
 });
 
@@ -98,11 +94,11 @@ export function SelectedTracksContainer({
   );
 
   React.useEffect(() => {
-    if (state.commitSuccess) {
+    if (state.commitSuccess || state.isOverLimit) {
       const timeout = setTimeout(
         () =>
           dispatch({
-            type: Actions.RESET_COMMIT_SUCCESS,
+            type: Actions.CLEAR_WARNINGS,
           }),
         2000,
       );
@@ -111,20 +107,7 @@ export function SelectedTracksContainer({
     }
 
     return undefined;
-  }, [state.commitSuccess]);
-
-  React.useEffect(() => {
-    if (state.isOverLimit) {
-      const timeout = setTimeout(
-        () => dispatch({ type: Actions.CLEAR_OVER_LIMIT }),
-        3000,
-      );
-
-      return () => clearTimeout(timeout);
-    }
-
-    return;
-  }, [state.isOverLimit]);
+  }, [state.commitSuccess, state.isOverLimit]);
 
   const toggleTrack = React.useCallback(trackId => {
     dispatch({
@@ -146,12 +129,17 @@ export function SelectedTracksContainer({
     [],
   );
 
+  const clearWarnings = React.useCallback(() => {
+    dispatch({ type: Actions.CLEAR_WARNINGS });
+  }, []);
+
   const context = React.useMemo<Context>(
     () => ({
       ...state,
       toggleTrack,
       commitTracks,
       clearSelectedTracks,
+      clearWarnings,
     }),
     [state],
   );

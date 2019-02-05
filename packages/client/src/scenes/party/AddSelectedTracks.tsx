@@ -48,6 +48,7 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
     commitTracks,
     commitSuccess,
     isOverLimit,
+    clearWarnings,
   } = useSelectedTracks();
 
   return (
@@ -92,6 +93,7 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
           )}
           {commitSuccess && (
             <Notification
+              onClick={clearWarnings}
               key="commitTracks"
               as={PosedSelectedTracks}
               emoji={'🎉'}
@@ -104,6 +106,7 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
           )}
           {isOverLimit && (
             <Notification
+              onClick={clearWarnings}
               key="overLimit"
               as={PosedSelectedTracks}
               emoji={'🤭'}

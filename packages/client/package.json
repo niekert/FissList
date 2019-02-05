@@ -86,7 +86,6 @@
     "typography-theme-ocean-beach": "^0.15.11",
     "url-loader": "1.1.2",
     "use-component-size-typed": "1.0.2",
-    "use-debounce": "^0.0.7",
     "use-spotify-web-playback-sdk": "^0.0.9",
     "webpack": "^4.25.1",
     "webpack-manifest-plugin": "2.0.4",

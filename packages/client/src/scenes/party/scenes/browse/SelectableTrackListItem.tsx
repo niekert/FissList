@@ -18,9 +18,8 @@ const ListItem = styled.div<{ isSelected: boolean }>`
     ${props => transparentize(0.5, props.theme.colors.outline)};
 `;
 const SelectWrapper = styled.div`
-  width: 30px;
-  height: 30px;
-  padding: ${props => props.theme.spacing[1]};
+  padding: ${props => props.theme.spacing[2]};
+  padding-right: ${props => props.theme.spacing[1]};
 `;
 
 const StyledTrack = styled(Track)`
