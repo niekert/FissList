@@ -15,6 +15,9 @@ import App from './App';
 import Spinner from 'components/Spinner';
 import styled from 'styled-components';
 import createHistory from 'history/createBrowserHistory';
+import { register } from './serviceworker';
+
+register();
 
 const history = createHistory();
 
