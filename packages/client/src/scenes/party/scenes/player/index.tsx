@@ -88,8 +88,6 @@ export default function Player({ partyId }: Props) {
 
   const isPlaying = player ? player.isPlaying : false;
 
-  console.log('item', player && player.item && player.item.name);
-
   return (
     <>
       {player && (
