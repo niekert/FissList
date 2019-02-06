@@ -2,8 +2,9 @@ import * as React from 'react';
 import { transparentize } from 'polished';
 import Track from 'components/Track';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { AnimatedCheckbox } from 'components/AnimatedCheckbox';
+import { isTouchDevice } from 'helpers/device';
 
 const ListItem = styled.div<{ isSelected: boolean }>`
   display: flex;
@@ -17,6 +18,15 @@ const ListItem = styled.div<{ isSelected: boolean }>`
   max-width: 100%;
   border-bottom: 1px solid
     ${props => transparentize(0.5, props.theme.colors.outline)};
+
+  ${!isTouchDevice &&
+    css`
+      &:hover {
+        cursor: pointer;
+        background: ${props =>
+          transparentize(0.2, props.theme.colors.activeBackground)};
+      }
+    `}
 `;
 const SelectWrapper = styled.div`
   padding: ${props => props.theme.spacing[2]};
