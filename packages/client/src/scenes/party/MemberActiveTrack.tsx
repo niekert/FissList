@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { useTrackQuery } from 'queries';
 import styled from 'styled-components';
 import posed from 'react-pose';
-import ActiveTrack from './ActiveTrack';
-import { TrackInfo } from 'fragments/__generated__/TrackInfo';
+import ActiveTrackContainer from './scenes/activeTrack';
 
 const PosedWrapper = posed.div({
   active: {
@@ -25,21 +23,13 @@ const Wrapper = styled(PosedWrapper)`
 
 interface Props {
   trackId: string;
+  partyId: string;
 }
 
-function MemberActiveTrack({ trackId }: Props) {
-  const [track, setTrack] = React.useState<TrackInfo | undefined>(undefined);
-  const trackQuery = useTrackQuery(trackId);
-
-  React.useEffect(() => {
-    if (trackQuery.data.track) {
-      setTrack(trackQuery.data.track);
-    }
-  }, [trackQuery.data.track]);
-
+function MemberActiveTrack({ trackId, partyId }: Props) {
   return (
-    <Wrapper pose={track ? 'active' : 'loading'}>
-      {track && <ActiveTrack {...track} />}
+    <Wrapper pose={trackId ? 'active' : 'loading'}>
+      <ActiveTrackContainer partyId={partyId} />
     </Wrapper>
   );
 }

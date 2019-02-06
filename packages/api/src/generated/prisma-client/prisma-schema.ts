@@ -62,7 +62,7 @@ type Party {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  activeTrackId: String
+  activeTrackId: String!
   queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack!]
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
@@ -82,7 +82,7 @@ input PartyCreatebannedUserIdsInput {
 input PartyCreateInput {
   name: String!
   ownerUserId: String!
-  activeTrackId: String
+  activeTrackId: String!
   queuedTracks: QueuedTrackCreateManyInput
   requestedUserIds: PartyCreaterequestedUserIdsInput
   bannedUserIds: PartyCreatebannedUserIdsInput
@@ -123,7 +123,7 @@ type PartyPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  activeTrackId: String
+  activeTrackId: String!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!
   partyUserIds: [String!]!

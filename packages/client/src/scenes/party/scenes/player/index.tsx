@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { usePrevState } from 'hooks';
 import { useSpotifyWebSdk } from 'hooks/spotifyWebSdk';
 import { usePlayer } from './context';
-import ActiveTrack from '../../ActiveTrack';
+import ActiveTrackContainer from '../activeTrack';
 import TrackNavigation from './TrackNavigation';
 import TrackProgressLine from './TrackProgressLine';
 import posed, { PoseGroup } from 'react-pose';
@@ -25,7 +25,11 @@ const PlayerWrapper = styled(PosedWrapper)`
   align-self: center;
 `;
 
-export default function Player() {
+interface Props {
+  partyId: string;
+}
+
+export default function Player({ partyId }: Props) {
   const [playbackState, setPlaybackState] = React.useState<
     Spotify.PlaybackState | undefined
   >(undefined);
@@ -107,7 +111,7 @@ export default function Player() {
                   ${props => props.theme.spacing[2]};
               `}
             >
-              {player.item && <ActiveTrack {...player.item} />}
+              <ActiveTrackContainer partyId={partyId} />
 
               <TrackNavigation
                 isPlaying={isPlaying}

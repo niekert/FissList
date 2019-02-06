@@ -7,11 +7,31 @@ import { Permissions } from "./../../../../__generated__/globalTypes";
 // GraphQL query operation: GetPartyById
 // ====================================================
 
+export interface GetPartyById_party_activeTrack_artists {
+  id: string;
+  name: string;
+}
+
+export interface GetPartyById_party_activeTrack_images {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+
+export interface GetPartyById_party_activeTrack {
+  artists: GetPartyById_party_activeTrack_artists[];
+  images: GetPartyById_party_activeTrack_images[] | null;
+  id: string;
+  name: string;
+  uri: string;
+}
+
 export interface GetPartyById_party {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrackId: string | null;
+  activeTrack: GetPartyById_party_activeTrack;
+  activeTrackId: string;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;

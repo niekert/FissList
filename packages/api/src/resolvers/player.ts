@@ -1,45 +1,15 @@
 import { Context } from '../types';
-import { Track } from '../spotify';
+import { Player, Device, DeviceResp } from '../spotify';
 import { GraphQLError } from 'graphql';
 import { getPermissionForParty, Permissions } from '../permissions';
 import { AuthenticationError, PubSub } from 'apollo-server';
 import pubsub, { PubsubEvents } from '../pubsub';
 import { sortQueuedTracks } from '../helpers';
 
-interface PlayerContext {
-  uri: string;
-  href: string;
-}
-
 enum Playback {
   Play = 'PLAY',
   Pause = 'PAUSE',
   Skip = 'SKIP',
-}
-
-interface Player {
-  device: Device;
-  repeatState: string;
-  shuffleState: boolean;
-  isPlaying: boolean;
-  item: Track;
-  currentlyPlayingType: string;
-  devices: Device[];
-  context?: PlayerContext;
-}
-
-interface Device {
-  id: string;
-  isActive: boolean;
-  isPrivateSession: boolean;
-  isRestricted: boolean;
-  name: string;
-  type: string;
-  volumePercent: number;
-}
-
-interface DeviceResp {
-  devices: Device[];
 }
 
 export async function player(root, args, context: Context): Promise<Player> {
@@ -155,8 +125,19 @@ async function playback(
   }
 
   if (args.playback === Playback.Play) {
+    if (player.data.item && player.data.item.id === party.activeTrackId) {
+      console.log('is already playing, no stress');
+      await context.spotify.fetchResource('/me/player/play', {
+        method: 'PUT',
+      });
+      return '';
+    }
+
     await context.spotify.fetchResource('/me/player/play', {
       method: 'PUT',
+      body: JSON.stringify({
+        uris: [`spotify:track:${party.activeTrackId}`],
+      }),
     });
   }
 

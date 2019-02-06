@@ -149,11 +149,14 @@ export default function Party({ match, location, history }: IProps) {
               <StickyTop>
                 {data.party.permission === Permissions.ADMIN ? (
                   <PlayerContainer>
-                    <Player />
+                    <Player partyId={data.party.id} />
                   </PlayerContainer>
                 ) : (
                   data.party.activeTrackId && (
-                    <MemberActiveTrack trackId={data.party.activeTrackId} />
+                    <MemberActiveTrack
+                      trackId={data.party.activeTrackId}
+                      partyId={data.party.id}
+                    />
                   )
                 )}
                 <TabsCard>

@@ -102,11 +102,17 @@ async function createParty(
   }
   const user = await context.spotify.fetchCurrentUser();
 
+  const [firstTrackId, ...queuedTrackIds] = trackIds;
+
+  // Pause the player
+  await context.spotify.fetchResource('/me/player/pause', { method: 'PUT' });
+
   return context.prisma.createParty({
     name,
     ownerUserId: user.id,
+    activeTrackId: firstTrackId,
     queuedTracks: {
-      create: trackIds.map(trackId => ({
+      create: queuedTrackIds.map(trackId => ({
         userVotes: {
           set: [], // TODO: should we vorte for the tracks?
         },

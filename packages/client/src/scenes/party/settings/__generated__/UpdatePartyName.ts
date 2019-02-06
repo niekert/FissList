@@ -7,11 +7,31 @@ import { Permissions } from "./../../../../../__generated__/globalTypes";
 // GraphQL mutation operation: UpdatePartyName
 // ====================================================
 
+export interface UpdatePartyName_updatePartyName_activeTrack_artists {
+  id: string;
+  name: string;
+}
+
+export interface UpdatePartyName_updatePartyName_activeTrack_images {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+
+export interface UpdatePartyName_updatePartyName_activeTrack {
+  artists: UpdatePartyName_updatePartyName_activeTrack_artists[];
+  images: UpdatePartyName_updatePartyName_activeTrack_images[] | null;
+  id: string;
+  name: string;
+  uri: string;
+}
+
 export interface UpdatePartyName_updatePartyName {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrackId: string | null;
+  activeTrack: UpdatePartyName_updatePartyName_activeTrack;
+  activeTrackId: string;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;

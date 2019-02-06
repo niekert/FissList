@@ -1,9 +1,7 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { PartyInfo, TrackInfo } from 'fragments';
-import { PLAYER_QUERY } from './scenes/player/context/usePlayerQuery';
 import { useQuery, useApolloClient } from 'react-apollo-hooks';
-import { Player } from './scenes/player/context/__generated__/Player';
 import {
   GetPartyById,
   GetPartyByIdVariables,
@@ -13,7 +11,6 @@ import {
   QueuedTrackDetailsVariables,
 } from './__generated__/QueuedTrackDetails';
 import { useChangedTracks } from 'context/ChangedPartyTracksContext';
-import { Permissions } from '../../globalTypes';
 
 export { QueuedTrackDetails };
 
@@ -103,31 +100,12 @@ export function useQueuedTracks(partyId: string) {
       partyQuery.updateQuery(() => ({
         party: {
           ...partyQuery.data.party,
+          activeTrack: {
+            ...nextTrack.track,
+          },
           activeTrackId: nextActiveTrackId,
         },
       }));
-
-      // Update the player if we's an admin
-      if (
-        partyQuery.data &&
-        partyQuery.data.party.permission === Permissions.ADMIN
-      ) {
-        const playerQuery = apolloClient!.readQuery<Player>({
-          query: PLAYER_QUERY,
-        });
-        if (playerQuery && playerQuery.player) {
-          console.log('nextTrack', nextTrack.track.name);
-          apolloClient!.writeQuery<Player>({
-            query: PLAYER_QUERY,
-            data: {
-              player: {
-                ...playerQuery.player,
-                item: nextTrack.track,
-              },
-            },
-          });
-        }
-      }
 
       markTrackSeen(nextActiveTrackId);
     }
@@ -139,7 +117,6 @@ export function useQueuedTracks(partyId: string) {
 export function usePartyQuery(partyId: string) {
   return useQuery<GetPartyById, GetPartyByIdVariables>(GET_PARTY, {
     errorPolicy: 'all',
-    // TODO: Enable suspense here
     variables: {
       partyId,
     },

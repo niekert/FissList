@@ -77,7 +77,8 @@ type Party {
   name: String!
   permission: Permissions!
   ownerUserId: String!
-  activeTrackId: String
+  activeTrackId: String!
+  activeTrack: Track!
   requestedUserIds: [String!]
   partyUserIds: [String!]
   queuedTracks: [QueuedTrack!]!

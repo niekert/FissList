@@ -17,7 +17,7 @@ type Party {
   createdAt: DateTime!
   updatedAt: DateTime!
   ownerUserId: String!
-  activeTrackId: String
+  activeTrackId: String!
   queuedTracks: [QueuedTrack!]!
   requestedUserIds: [String!]!
   bannedUserIds: [String!]!

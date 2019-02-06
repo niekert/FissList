@@ -7,11 +7,31 @@ import { Permissions } from "./../../../../__generated__/globalTypes";
 // GraphQL subscription operation: PartySubscription
 // ====================================================
 
+export interface PartySubscription_party_activeTrack_artists {
+  id: string;
+  name: string;
+}
+
+export interface PartySubscription_party_activeTrack_images {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+
+export interface PartySubscription_party_activeTrack {
+  artists: PartySubscription_party_activeTrack_artists[];
+  images: PartySubscription_party_activeTrack_images[] | null;
+  id: string;
+  name: string;
+  uri: string;
+}
+
 export interface PartySubscription_party {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrackId: string | null;
+  activeTrack: PartySubscription_party_activeTrack;
+  activeTrackId: string;
   requestedUserIds: string[] | null;
   ownerUserId: string;
   partyUserIds: string[] | null;

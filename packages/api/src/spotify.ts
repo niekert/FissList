@@ -11,6 +11,36 @@ export interface Playlist {
   tracks: Paging<PlaylistTrack>;
 }
 
+interface PlayerContext {
+  uri: string;
+  href: string;
+}
+
+export interface Player {
+  device: Device;
+  repeatState: string;
+  shuffleState: boolean;
+  isPlaying: boolean;
+  item: Track;
+  currentlyPlayingType: string;
+  devices: Device[];
+  context?: PlayerContext;
+}
+
+export interface Device {
+  id: string;
+  isActive: boolean;
+  isPrivateSession: boolean;
+  isRestricted: boolean;
+  name: string;
+  type: string;
+  volumePercent: number;
+}
+
+export interface DeviceResp {
+  devices: Device[];
+}
+
 interface Paging<T> {
   href: string;
   limit: number;

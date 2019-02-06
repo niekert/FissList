@@ -92,5 +92,16 @@ export default {
     ): Promise<QueuedTrackDetails[]> => {
       return fetchQueuedTracks({ partyId: partyQuery.id }, context);
     },
+    async activeTrack(
+      root: { activeTrackId: string },
+      _,
+      context: Context,
+    ): Promise<Track> {
+      const { data } = await context.spotify.fetchResource<Track>(
+        `/tracks/${root.activeTrackId}`,
+      );
+
+      return data;
+    },
   },
 };

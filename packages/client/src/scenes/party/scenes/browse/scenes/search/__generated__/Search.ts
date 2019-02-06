@@ -29,7 +29,7 @@ export interface Search_search_tracks {
   offset: number;
   total: number;
   limit: number;
-  next: string;
+  next: string | null;
 }
 
 export interface Search_search {
