@@ -3,6 +3,7 @@ import { transparentize } from 'polished';
 import Track from 'components/Track';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import styled from 'styled-components';
+import { AnimatedCheckbox } from 'components/AnimatedCheckbox';
 
 const ListItem = styled.div<{ isSelected: boolean }>`
   display: flex;
@@ -25,9 +26,6 @@ const SelectWrapper = styled.div`
 const StyledTrack = styled(Track)`
   overflow: hidden;
 `;
-const Checkbox = styled.input.attrs({
-  type: 'checkbox',
-})``;
 
 interface Props {
   isSelected: boolean;
@@ -39,7 +37,7 @@ function SelectableTrackListItem({ isSelected, track, onChange }: Props) {
   return (
     <ListItem isSelected={isSelected}>
       <SelectWrapper>
-        <Checkbox
+        <AnimatedCheckbox
           checked={isSelected}
           value={track.id}
           onChange={e => onChange(e.target.value)}

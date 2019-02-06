@@ -19,6 +19,7 @@ const DEFAULT_THEME = {
     success: '#2daf49',
     notification: '#DB5850',
     danger: '#DB5850',
+    raisedInput: 'rgba(225, 230, 231, 0.7)',
   },
   spacing: ['0px', '8px', '16px', '24px'],
   textColors: {

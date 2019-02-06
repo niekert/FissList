@@ -11,7 +11,7 @@ interface Props {
 const SearchInput = styled(Input).attrs({ type: 'search' })`
   margin: ${props => props.theme.spacing[2]};
   border-radius: 10px;
-  background: rgba(225, 230, 231, 0.7);
+  background: ${props => props.theme.colors.raisedInput};
   border: none;
   outline: none;
   width: 100%;
