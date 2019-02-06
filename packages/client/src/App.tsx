@@ -6,13 +6,14 @@ import { useGetMe } from 'queries/useGetMe';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { Route, Router, Switch } from 'react-router-dom';
 import Spinner from 'components/Spinner';
-import NewParty from 'scenes/newParty';
 import SelectType from 'scenes/selectType';
-import JoinParty from 'scenes/joinParty';
 import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
 import Theme from './theme';
-import Party from 'scenes/party';
+
+const AsyncNewParty = React.lazy(() => import('scenes/newParty'));
+const AsyncJoinparty = React.lazy(() => import('scenes/joinParty'));
+const AsyncParty = React.lazy(() => import('scenes/party'));
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -50,9 +51,9 @@ function App({ history }: { history: any }) {
 
               {me.data && me.data.me && (
                 <Switch>
-                  <Route path="/new" component={NewParty} />
-                  <Route path="/join" component={JoinParty} />
-                  <Route path="/party/:partyId" component={Party} />
+                  <Route path="/new" component={AsyncNewParty} />
+                  <Route path="/join" component={AsyncJoinparty} />
+                  <Route path="/party/:partyId" component={AsyncParty} />
                   <Route
                     path=""
                     render={props => (

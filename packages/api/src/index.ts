@@ -35,6 +35,7 @@ const app = express();
 app.use(cors());
 
 app.use('/static', express.static(path.resolve(__dirname, 'www/static')));
+app.use('/public', express.static(path.resolve(__dirname, 'www/public')));
 
 const pubsub = new PubSub();
 

@@ -16,7 +16,6 @@ import AddSelectedTracks from './AddSelectedTracks';
 import { PlayerContainer } from './scenes/player/context';
 import { PartyContext } from './context';
 import Player from './scenes/player';
-import Browse from './scenes/browse';
 import JoinParty from './JoinParty';
 import { SettingsIcon } from 'icons';
 import PartySettings from './settings';
@@ -26,6 +25,8 @@ import { Permissions } from 'globalTypes';
 
 export { usePartyContext } from './context';
 export { GET_PARTY } from './queries';
+
+const AsyncBrowse = React.lazy(() => import('./scenes/browse'));
 
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 0;
@@ -191,7 +192,10 @@ export default function Party({ match, location, history }: IProps) {
               <ContentWrapper>
                 <React.Suspense fallback={<Spinner />}>
                   <Switch>
-                    <Route path={`${match.path}/browse`} component={Browse} />
+                    <Route
+                      path={`${match.path}/browse`}
+                      component={AsyncBrowse}
+                    />
                     {data.party.permission === Permissions.ADMIN && (
                       <Route
                         path={`${match.path}/settings`}
