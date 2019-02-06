@@ -36,6 +36,7 @@ app.use(cors());
 
 app.use('/static', express.static(path.resolve(__dirname, 'www/static')));
 app.use('/public', express.static(path.resolve(__dirname, 'www/public')));
+app.use('/service-worker.js', express.static(path.resolve(__dirname, 'www')));
 
 const pubsub = new PubSub();
 
