@@ -5,7 +5,8 @@ import {
   PartyTracksChangedSubscription,
   PartyTracksChangedSubscriptionVariables,
   PartyTracksChangedSubscription_partyTracksChanged,
-} from './__generated__/PartyTracksChangedSubscription';
+} from '../../../context/__generated__/PartyTracksChangedSubscription';
+import { useQueuedTracks, usePartyQuery } from '../queries';
 
 const PARTY_CHANGES_SUBSCRIPTION = gql`
   subscription PartyTracksChangedSubscription($partyId: String!) {
@@ -86,6 +87,8 @@ export function ChangedPartyTracksProvider({
   partyId: string;
   children: React.ReactNode;
 }) {
+  const queuedTracks = useQueuedTracks(partyId);
+  const partyQuery = usePartyQuery(partyId);
   const [state, dispatch] = React.useReducer<typeof changedTracksReducer>(
     changedTracksReducer,
     {
@@ -102,6 +105,9 @@ export function ChangedPartyTracksProvider({
       },
     });
   }, []);
+  const currentActiveTrack = React.useRef<string | null>(
+    state.nextActiveTrackId,
+  );
 
   const context = React.useMemo(
     () => ({
@@ -110,6 +116,62 @@ export function ChangedPartyTracksProvider({
     }),
     [state],
   );
+
+  React.useEffect(() => {
+    if (state.deletedTrackIds.length > 0) {
+      queuedTracks.updateQuery(previousQueryResult => ({
+        queuedTracks: previousQueryResult.queuedTracks.filter(
+          queuedTrack => !state.deletedTrackIds.includes(queuedTrack.trackId),
+        ),
+      }));
+
+      markTrackSeen(state.deletedTrackIds);
+    }
+  }, [state.deletedTrackIds]);
+
+  React.useEffect(() => {
+    if (
+      !state.nextActiveTrackId ||
+      state.nextActiveTrackId === currentActiveTrack.current
+    ) {
+      // Do not do anything when the track id is the same as the current
+      return;
+    }
+
+    if (state.nextActiveTrackId && queuedTracks.data.queuedTracks) {
+      const nextActiveTrackIndex = queuedTracks.data.queuedTracks.findIndex(
+        queuedTrack => queuedTrack.trackId === state.nextActiveTrackId,
+      );
+
+      if (nextActiveTrackIndex === -1) {
+        console.error('Next track was not found in the play queue');
+        return;
+      }
+
+      currentActiveTrack.current = state.nextActiveTrackId;
+      const nextQueue = queuedTracks.data.queuedTracks.slice(
+        nextActiveTrackIndex + 1,
+      );
+      const nextTrack = queuedTracks.data.queuedTracks[nextActiveTrackIndex];
+
+      queuedTracks.updateQuery(() => ({
+        queuedTracks: nextQueue,
+      }));
+
+      // Update the party to have the new track
+      partyQuery.updateQuery(() => ({
+        party: {
+          ...partyQuery.data.party,
+          activeTrack: {
+            ...nextTrack.track,
+          },
+          activeTrackId: state.nextActiveTrackId!,
+        },
+      }));
+
+      markTrackSeen(state.nextActiveTrackId);
+    }
+  }, [state.nextActiveTrackId]);
 
   return (
     <>

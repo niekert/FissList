@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import { match as Match, Route, Switch } from 'react-router-dom';
 import { Card } from 'components/Card';
 import styled, { css } from 'styled-components';
-import { ChangedPartyTracksProvider } from 'context/ChangedPartyTracksContext';
+import { ChangedPartyTracksProvider } from 'scenes/party/context/ChangedPartyTracksContext';
 import { Tabs, Tab } from 'components/Tabs';
 import PartySubscription from './PartyChangesSubscription';
 import AddSelectedTracks from './AddSelectedTracks';

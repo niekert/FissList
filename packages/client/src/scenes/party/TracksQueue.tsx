@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCurrentUser } from 'context/CurrentUser';
-import { useChangedTracks } from 'context/ChangedPartyTracksContext';
+import { useChangedTracks } from 'scenes/party/context/ChangedPartyTracksContext';
 import { useQueuedTracks } from './queries';
 import PartyTrack from './PartyTrack';
 import Spinner from 'components/Spinner';

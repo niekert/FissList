@@ -27,6 +27,10 @@ function Browse(props: Props) {
         render={() => (
           <SearchBar
             onSubmit={() => setDebouncedSearch(searchQuery)}
+            onClear={() => {
+              setSearchQuery('');
+              setDebouncedSearch('');
+            }}
             onChange={e => setSearchQuery(e.target.value)}
             value={searchQuery}
           />

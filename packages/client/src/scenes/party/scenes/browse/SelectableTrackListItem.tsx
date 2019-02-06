@@ -35,7 +35,7 @@ interface Props {
 
 function SelectableTrackListItem({ isSelected, track, onChange }: Props) {
   return (
-    <ListItem isSelected={isSelected}>
+    <ListItem isSelected={false}>
       <SelectWrapper>
         <AnimatedCheckbox
           checked={isSelected}
