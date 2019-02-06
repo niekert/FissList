@@ -48,7 +48,7 @@ function SelectPlaylist({ selectedPlaylistId, onClick }: IProps) {
             description="All songs from your library"
           />
           <PoseGroup animateOnMount={true}>
-            {data.userPlaylists.items.map((playlist, i) => (
+            {data.userPlaylists.items.map(playlist => (
               <Playlist
                 isSelected={playlist.id === selectedPlaylistId}
                 key={playlist.id}

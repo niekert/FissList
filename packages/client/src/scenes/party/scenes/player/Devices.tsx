@@ -47,7 +47,6 @@ export default function Devices({
   activeDevice,
   devices = [],
   onDeviceChange,
-  webSdkDeviceId,
 }: IProps) {
   const selectRef = React.useRef<any>(undefined);
   const onDeviceClick = () => {

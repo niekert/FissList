@@ -4,7 +4,7 @@ import NewPartyForm from './NewPartyForm';
 import NewPartyCard from './NewPartyCard';
 import { useInputField } from 'hooks';
 
-function NewParty({ path }: { path?: string }) {
+function NewParty() {
   const partyName = useInputField('');
   const { mutate, isLoading, data } = useNewParty();
   const [selectedPlaylistId, setSelectedPlaylist] = React.useState<string>('');

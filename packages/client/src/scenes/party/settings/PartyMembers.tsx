@@ -70,7 +70,6 @@ export default function PartyNameForm() {
   };
 
   const onRejectAccess = (userId: string) => {
-    console.log('rejecting', userId);
     setAccessMutation({
       variables: {
         userId,

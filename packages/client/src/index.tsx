@@ -59,11 +59,11 @@ const link = split(
   }),
   from([
     authLink,
-    onError(({ graphQLErrors, networkError }) => {
+    onError(({ graphQLErrors }) => {
       if (graphQLErrors) {
-        const hasAuthError = graphQLErrors.some(
-          err => !!err.extensions && err.extensions.code === 'UNAUTHENTICATED',
-        );
+        // const hasAuthError = graphQLErrors.some(
+        //   err => !!err.extensions && err.extensions.code === 'UNAUTHENTICATED',
+        // );
       }
     }),
     new HttpLink({

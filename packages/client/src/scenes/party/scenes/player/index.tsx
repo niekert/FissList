@@ -7,7 +7,6 @@ import ActiveTrackContainer from '../activeTrack';
 import TrackNavigation from './TrackNavigation';
 import TrackProgressLine from './TrackProgressLine';
 import posed, { PoseGroup } from 'react-pose';
-import { placeholder } from 'polished';
 
 const PosedWrapper = posed.div({
   enter: {

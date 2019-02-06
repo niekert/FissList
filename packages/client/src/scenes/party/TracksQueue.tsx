@@ -5,7 +5,6 @@ import { useQueuedTracks } from './queries';
 import PartyTrack from './PartyTrack';
 import Spinner from 'components/Spinner';
 import posed, { PoseGroup } from 'react-pose';
-import styled from 'styled-components';
 import DraggableTrackVote from './DraggableTrackVote';
 
 interface Props {

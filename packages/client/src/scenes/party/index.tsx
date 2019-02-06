@@ -209,7 +209,7 @@ export default function Party({ match, location, history }: IProps) {
                       />
                     )}
                     <Route
-                      render={props => (
+                      render={() => (
                         <TracksQueue partyId={match.params.partyId} />
                       )}
                     />

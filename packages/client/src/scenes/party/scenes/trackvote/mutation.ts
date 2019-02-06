@@ -1,14 +1,9 @@
 import gql from 'graphql-tag';
-import { useStateMutation } from 'hooks';
 import { TrackVote, TrackVoteVariables } from './__generated__/TrackVote';
 import { useMutation } from 'react-apollo-hooks';
 import { useCurrentUser } from 'context/CurrentUser';
 import { usePartyContext } from 'scenes/party/context';
-import {
-  QUEUED_TRACK_DETAILS,
-  QueuedTrackDetails,
-  useQueuedTracks,
-} from 'scenes/party/queries';
+import { QUEUED_TRACK_DETAILS, QueuedTrackDetails } from 'scenes/party/queries';
 import { QueuedTrackDetailsVariables } from 'scenes/party/__generated__/QueuedTrackDetails';
 
 const TRACK_VOTE_MUTATION = gql`

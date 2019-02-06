@@ -9,7 +9,6 @@ import { SAVED_MUSIC } from 'app-constants';
 import SongLibrary from './SongLibrary';
 import { BackIcon } from 'icons';
 import { mapPlaylistTracks } from './helpers';
-import Playlist from 'scenes/selectPlaylist/Playlist';
 
 const StyledSpinner = styled(Spinner)`
   margin: 0 auto;

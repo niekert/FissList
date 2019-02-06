@@ -5,10 +5,6 @@ import { Title } from 'components/Typography';
 import { Input, Label, Button } from 'components/Form';
 import { Card } from 'components/Card';
 
-interface IProps {
-  path?: string;
-}
-
 const ProTip = styled.div`
   margin-top: ${props => props.theme.spacing[3]};
   color: ${props => props.theme.textColors.secondary};
@@ -19,7 +15,7 @@ const JoinButton = styled(Button)`
   margin-top: ${props => props.theme.spacing[2]};
 `;
 
-function JoinParty(props: IProps) {
+function JoinParty() {
   return (
     <Page>
       <Title>Join party</Title>

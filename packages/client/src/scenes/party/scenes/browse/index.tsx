@@ -5,11 +5,7 @@ import Playlists from './scenes/playlists';
 import { SearchBar, SearchResults } from './scenes/search';
 import Spinner from 'components/Spinner';
 
-interface Props extends RouteComponentProps {}
-
-const SEARCH_DEBOUNCE_MS = 2000;
-
-function Browse(props: Props) {
+function Browse(props: RouteComponentProps) {
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [debouncedSearch, setDebouncedSearch] = React.useState<string>('');
   React.useEffect(() => {

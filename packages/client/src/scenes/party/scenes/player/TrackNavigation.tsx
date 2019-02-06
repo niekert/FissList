@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NextIcon, PlayIcon, PauseIcon, PrevIcon } from 'icons';
+import { NextIcon, PlayIcon, PauseIcon } from 'icons';
 import IconButton from 'components/IconButton';
 import styled, { css } from 'styled-components';
 

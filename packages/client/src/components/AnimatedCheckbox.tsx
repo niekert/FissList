@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { PosedCheckIcon } from 'icons';
 import { transparentize } from 'polished';
-import posed from 'react-pose';
 
 const Wrapper = styled.div`
   width: 23px;
@@ -28,26 +27,6 @@ const CheckboxElement = styled.input.attrs({
   width: 100%;
   height: 100%;
   visibility: hidden;
-`;
-
-const PosedCheckedBubble = posed.div({
-  checked: {
-    scale: 1,
-    transition: 'spring',
-  },
-  unchecked: {
-    scale: 0,
-    transition: 'spring',
-  },
-});
-
-const CheckedBubble = styled(PosedCheckedBubble)`
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  padding: 4px;
-  background: ${props => transparentize(0.3, props.theme.colors.cta)};
-  box-shadow: rgba(200, 223, 245, 0.2) 0px 4px 8px 0px;
 `;
 
 interface Props {

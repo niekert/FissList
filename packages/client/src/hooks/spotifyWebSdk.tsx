@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // tslint:disable-next-line
-const noop = e => {};
+const noop = () => {};
 
 interface Options {
   name: string;

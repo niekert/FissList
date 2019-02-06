@@ -2,7 +2,7 @@ import * as React from 'react';
 import gql from 'graphql-tag';
 import posed, { PoseGroup } from 'react-pose';
 import styled, { css } from 'styled-components';
-import { FormField, Input, Button } from 'components/Form';
+import { Input, Button } from 'components/Form';
 import { PartyInfo } from 'fragments/Party';
 import { useInputField, useStateMutation } from 'hooks';
 import {
@@ -61,17 +61,14 @@ export default function PartyNameForm({ partyId, partyName }: Props) {
     });
   };
 
-  React.useEffect(
-    () => {
-      if (isSuccess) {
-        const timeout = setTimeout(clearSuccess, 3000);
-        return () => clearTimeout(timeout);
-      }
+  React.useEffect(() => {
+    if (isSuccess) {
+      const timeout = setTimeout(clearSuccess, 3000);
+      return () => clearTimeout(timeout);
+    }
 
-      return;
-    },
-    [isSuccess],
-  );
+    return;
+  }, [isSuccess]);
 
   return (
     <form

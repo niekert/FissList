@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import Spinner from 'components/Spinner';
 import { lighten } from 'polished';
 
-const getType = ({ buttonType = 'primary', theme }) => {
+const getType = ({ theme }) => {
   return css`
     background: ${theme.colors.cta};
     color: white;

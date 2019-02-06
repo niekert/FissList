@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { decay, spring, transform, value } from 'popmotion';
+import { spring, transform, value } from 'popmotion';
 import { allowDraggableTrackVote } from 'featureFlags';
 import styled, { css } from 'styled-components';
 import posed from 'react-pose';
 import { ThumbUpIcon, ThumbDownIcon } from 'icons';
 
-const { pipe, clamp, interpolate, blendColor } = transform;
+const { pipe, clamp, interpolate } = transform;
 
 const TRIGGER_DISTANCE = 120;
-
-const Styled = styled.div``;
 
 const Slidable = posed.div({
   draggable: 'x',

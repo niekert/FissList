@@ -6,7 +6,6 @@ import { useGetMe } from 'queries/useGetMe';
 function AuthCallback({ history }: RouteComponentProps) {
   const me = useGetMe();
   React.useEffect(() => {
-    console.log('hello');
     const query: OutputParams = parse(location!.search);
 
     if (query.token && query.refreshToken) {

@@ -40,7 +40,7 @@ interface Props {
   permission: Permissions;
 }
 
-function JoinPartyForm({ partyName, partyId, permission }: Props) {
+function JoinPartyForm({ partyId }: Props) {
   const { mutate, isSuccess, isLoading } = useStateMutation<
     JoinPartyRequest,
     JoinPartyRequestVariables

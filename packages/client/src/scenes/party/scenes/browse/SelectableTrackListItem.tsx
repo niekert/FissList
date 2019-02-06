@@ -30,7 +30,7 @@ const ListItem = styled.div<{ isSelected: boolean }>`
 `;
 const SelectWrapper = styled.div`
   padding: ${props => props.theme.spacing[2]};
-  padding-right: ${props => props.theme.spacing[1]};
+  padding-left: ${props => props.theme.spacing[1]};
 `;
 
 const StyledTrack = styled(Track)`
@@ -46,6 +46,7 @@ interface Props {
 function SelectableTrackListItem({ isSelected, track, onChange }: Props) {
   return (
     <ListItem isSelected={false}>
+      <StyledTrack {...track} onClick={trackId => onChange(trackId)} />
       <SelectWrapper>
         <AnimatedCheckbox
           checked={isSelected}
@@ -53,7 +54,6 @@ function SelectableTrackListItem({ isSelected, track, onChange }: Props) {
           onChange={e => onChange(e.target.value)}
         />
       </SelectWrapper>
-      <StyledTrack {...track} onClick={trackId => onChange(trackId)} />
     </ListItem>
   );
 }

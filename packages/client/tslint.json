@@ -4,8 +4,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "jsx-no-lambda": false,
-    "interface-name": false,
-    "no-unused-variable": true
+    "interface-name": false
   },
   "defaultSeverity": "error",
   "linterOptions": {
