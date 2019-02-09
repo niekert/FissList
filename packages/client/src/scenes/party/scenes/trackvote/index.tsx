@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FavoriteIcon } from 'icons';
 import { useTrackVoteMutation } from './mutation';
 import IconButton from 'components/IconButton';
@@ -27,7 +27,7 @@ const PosedCounter = posed.span({
   },
 });
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isActive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,6 +46,8 @@ const VoteCount = styled(PosedCounter)`
   font-size: 12px;
   font-weight: 600;
   line-height: 1.5;
+  color: ${props =>
+    props.isActive ? props.theme.colors.favorited : 'inherit'};
   margin-right: ${props => props.theme.spacing[1]};
 `;
 
@@ -102,10 +104,17 @@ function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
       }}
     >
       <PoseGroup preEnterPose="preEnter" withParent={false}>
-        <VoteCount key={voteCount}>{voteCount}</VoteCount>
+        <VoteCount key={voteCount} isActive={isRequested || isActive}>
+          {voteCount}
+        </VoteCount>
       </PoseGroup>
       <PosedFavoriteIcon pose={isActive ? 'active' : 'idle'}>
-        <IconButton size="extra-small">
+        <IconButton
+          size="extra-small"
+          css={css`
+            color: inherit;
+          `}
+        >
           <StyledFavoriteIcon isActive={isRequested} />
         </IconButton>
       </PosedFavoriteIcon>

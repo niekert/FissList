@@ -13,6 +13,8 @@ export const PartyInfo = gql`
     requestedUserIds
     ownerUserId
     partyUserIds
+    userCount
+    updatedAt
   }
 
   ${TrackInfo}

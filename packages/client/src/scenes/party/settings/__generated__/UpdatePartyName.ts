@@ -32,9 +32,11 @@ export interface UpdatePartyName_updatePartyName {
   permission: Permissions;
   activeTrack: UpdatePartyName_updatePartyName_activeTrack;
   activeTrackId: string;
-  requestedUserIds: string[] | null;
+  requestedUserIds: string[];
   ownerUserId: string;
-  partyUserIds: string[] | null;
+  partyUserIds: string[];
+  userCount: number;
+  updatedAt: string;
 }
 
 export interface UpdatePartyName {

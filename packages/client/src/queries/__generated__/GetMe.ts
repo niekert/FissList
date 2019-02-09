@@ -20,6 +20,8 @@ export interface GetMe_me_user {
 export interface GetMe_me_parties {
   id: string;
   name: string;
+  updatedAt: string;
+  userCount: number;
 }
 
 export interface GetMe_me {

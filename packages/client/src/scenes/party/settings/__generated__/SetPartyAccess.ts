@@ -32,9 +32,11 @@ export interface SetPartyAccess_setPartyAccess {
   permission: Permissions;
   activeTrack: SetPartyAccess_setPartyAccess_activeTrack;
   activeTrackId: string;
-  requestedUserIds: string[] | null;
+  requestedUserIds: string[];
   ownerUserId: string;
-  partyUserIds: string[] | null;
+  partyUserIds: string[];
+  userCount: number;
+  updatedAt: string;
 }
 
 export interface SetPartyAccess {

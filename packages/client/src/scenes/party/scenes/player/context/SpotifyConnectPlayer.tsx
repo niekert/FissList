@@ -28,64 +28,57 @@ export function PlayerContainer({ children }: IProps) {
     });
   };
 
-  const startPlayback = React.useCallback(
-    async () => {
-      await mutatePlayback({
-        variables: {
-          partyId: party.id,
-          playback: Playback.PLAY,
-        },
-      });
+  const startPlayback = React.useCallback(async () => {
+    await mutatePlayback({
+      variables: {
+        partyId: party.id,
+        playback: Playback.PLAY,
+      },
+    });
 
-      setRefetchTimeout(
-        setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS),
-      );
-    },
-    [setRefetchTimeout],
-  );
+    setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
+  }, [setRefetchTimeout]);
 
-  const pausePlayback = React.useCallback(
-    () => {
+  const pausePlayback = React.useCallback(() => {
+    mutatePlayback({
+      variables: {
+        partyId: party.id,
+        playback: Playback.PAUSE,
+      },
+    });
+
+    setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
+  }, [setRefetchTimeout]);
+
+  React.useEffect(() => {
+    return () => {
+      if (refetchTimeout) {
+        return clearTimeout(refetchTimeout);
+      }
+    };
+  }, [refetchTimeout]);
+
+  React.useEffect(() => {
+    return () => {
       mutatePlayback({
         variables: {
           partyId: party.id,
           playback: Playback.PAUSE,
         },
       });
+    };
+  }, []);
 
-      setRefetchTimeout(
-        setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS),
-      );
-    },
-    [setRefetchTimeout],
-  );
+  const skipTrack = React.useCallback(async () => {
+    await mutatePlayback({
+      variables: {
+        partyId: party.id,
+        playback: Playback.SKIP,
+      },
+    });
 
-  React.useEffect(
-    () => {
-      return () => {
-        if (refetchTimeout) {
-          return clearTimeout(refetchTimeout);
-        }
-      };
-    },
-    [refetchTimeout],
-  );
-
-  const skipTrack = React.useCallback(
-    async () => {
-      await mutatePlayback({
-        variables: {
-          partyId: party.id,
-          playback: Playback.SKIP,
-        },
-      });
-
-      setRefetchTimeout(
-        setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS),
-      );
-    },
-    [setRefetchTimeout],
-  );
+    setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
+  }, [setRefetchTimeout]);
 
   return (
     <PlayerContext.Provider

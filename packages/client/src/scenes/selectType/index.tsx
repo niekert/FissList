@@ -8,7 +8,7 @@ import Link from 'components/Link';
 import Party from 'components/Party';
 import useLogout from 'hooks/logout';
 import OptionCard from './OptionCard';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { PartyInfo } from 'fragments/__generated__/PartyInfo';
 
@@ -55,23 +55,39 @@ function SelectType({ history, parties }: IProps) {
               onClick={() => history.push('/join')}
             />
             {parties.length > 0 && (
-              <Card>
-                <CardTitle>Your parties</CardTitle>
+              <Card
+                css={css`
+                  padding: 0;
+                `}
+              >
+                <CardTitle
+                  css={css`
+                    padding: ${props => props.theme.spacing[2]};
+                    padding-bottom: 0;
+                  `}
+                >
+                  Your parties
+                </CardTitle>
                 {parties.map(party => (
                   <Party
                     key={party!.id}
                     name={party!.name}
+                    userCount={party.userCount}
+                    updatedAt={party.updatedAt}
                     onClick={() => history.push(`/party/${party!.id}`)}
                   />
                 ))}
               </Card>
             )}
           </PosedListItem>
+
+          <PosedListItem key="logout">
+            <Text textAlign="center" key="logout">
+              <Link onClick={() => logout()}>Log out</Link>
+            </Text>
+          </PosedListItem>
         </PoseGroup>
       </PartyOptions>
-      <Text textAlign="center">
-        <Link onClick={() => logout()}>Log out</Link>
-      </Text>
     </>
   );
 }

@@ -17,6 +17,8 @@ export const GET_ME = gql`
       parties {
         id
         name
+        updatedAt
+        userCount
       }
     }
   }

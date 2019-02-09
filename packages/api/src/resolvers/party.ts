@@ -36,6 +36,10 @@ async function party(
   const user = await context.spotify.fetchCurrentUser();
   const party = await context.prisma.party({ id: args.partyId });
 
+  if (!party) {
+    throw new GraphQLError('Party not found');
+  }
+
   return {
     id: party.id,
     name: party.name,
@@ -388,6 +392,13 @@ export default {
         .partyUserIds();
 
       return partyUserIds.map(user => user.userId);
+    },
+    async userCount(root: Party, args, context: Context): Promise<number> {
+      const partyUserIds = await context.prisma
+        .party({ id: root.id })
+        .partyUserIds();
+
+      return partyUserIds.length;
     },
   },
   Subscription: {

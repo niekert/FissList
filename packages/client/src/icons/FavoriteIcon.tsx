@@ -10,7 +10,7 @@ const FavoriteIcon = React.forwardRef<SVGSVGElement, Props>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill={isActive ? color : 'none'}
+        fill={isActive ? '#E0235E' : 'none'}
         viewBox="0 0 24 24"
         ref={ref}
         {...props}

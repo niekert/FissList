@@ -32,9 +32,11 @@ export interface GetPartyById_party {
   permission: Permissions;
   activeTrack: GetPartyById_party_activeTrack;
   activeTrackId: string;
-  requestedUserIds: string[] | null;
+  requestedUserIds: string[];
   ownerUserId: string;
-  partyUserIds: string[] | null;
+  partyUserIds: string[];
+  userCount: number;
+  updatedAt: string;
 }
 
 export interface GetPartyById {

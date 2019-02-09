@@ -38,6 +38,7 @@ export function useSpotifyWebSdk({
           cb(token);
         },
       });
+      setIsReady(true);
     }
 
     (window as any).onSpotifyWebPlaybackSDKReady = () => {

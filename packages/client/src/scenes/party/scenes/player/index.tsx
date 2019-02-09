@@ -65,6 +65,7 @@ export default function Player({ partyId }: Props) {
       setPlaybackState(state);
     },
   });
+
   React.useEffect(() => {
     if (!startedTrackPlayback && prevTrackPlayback) {
       // Skip to the next one

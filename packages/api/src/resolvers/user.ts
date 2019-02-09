@@ -17,7 +17,7 @@ async function me(root, args, context: Context, info): Promise<Me> {
           { partyUserIds_some: { userId: user.id } },
         ],
       },
-      orderBy: 'createdAt_DESC',
+      orderBy: 'updatedAt_DESC',
     });
 
     return {

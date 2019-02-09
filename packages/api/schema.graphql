@@ -82,6 +82,8 @@ type Party {
   requestedUserIds: [String!]!
   partyUserIds: [String!]!
   queuedTracks: [QueuedTrack!]!
+  updatedAt: String!
+  userCount: Int!
 }
 
 type Artist {
