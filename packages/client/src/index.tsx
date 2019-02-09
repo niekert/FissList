@@ -16,6 +16,8 @@ import Spinner from 'components/Spinner';
 import styled from 'styled-components';
 import createHistory from 'history/createBrowserHistory';
 import { register } from './serviceworker';
+import InitialLoader from 'InitialLoader';
+import Theme from 'theme';
 
 register();
 
@@ -84,9 +86,11 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ApolloHooksProvider client={client}>
-      <React.Suspense fallback={<PageLoader />}>
-        <App history={history} />
-      </React.Suspense>
+      <Theme>
+        <React.Suspense fallback={<InitialLoader />}>
+          <App history={history} />
+        </React.Suspense>
+      </Theme>
     </ApolloHooksProvider>
   </ApolloProvider>,
   document.getElementById('root') as HTMLElement,
