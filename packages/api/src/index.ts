@@ -32,7 +32,11 @@ const resolvers = merge(
 const REDIRECT_URI = encodeURIComponent(`${process.env.HOST}/auth-callback`);
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:3001', 'https://pampaplay.netlify.com'],
+  }),
+);
 
 app.use('/static', express.static(path.resolve(__dirname, 'www/static')));
 app.use('/public', express.static(path.resolve(__dirname, 'www/public')));
