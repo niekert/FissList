@@ -114,7 +114,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<UserNode>;
   userNodesConnection: (
     args?: {
@@ -125,7 +125,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => UserNodeConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
@@ -188,17 +188,17 @@ export interface Prisma {
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
   createUserNode: (data: UserNodeCreateInput) => UserNodePromise;
   updateUserNode: (
-    args: { data: UserNodeUpdateInput; where: UserNodeWhereUniqueInput },
+    args: { data: UserNodeUpdateInput; where: UserNodeWhereUniqueInput }
   ) => UserNodePromise;
   updateManyUserNodes: (
-    args: { data: UserNodeUpdateManyMutationInput; where?: UserNodeWhereInput },
+    args: { data: UserNodeUpdateManyMutationInput; where?: UserNodeWhereInput }
   ) => BatchPayloadPromise;
   upsertUserNode: (
     args: {
       where: UserNodeWhereUniqueInput;
       create: UserNodeCreateInput;
       update: UserNodeUpdateInput;
-    },
+    }
   ) => UserNodePromise;
   deleteUserNode: (where: UserNodeWhereUniqueInput) => UserNodePromise;
   deleteManyUserNodes: (where?: UserNodeWhereInput) => BatchPayloadPromise;
@@ -221,7 +221,7 @@ export interface Subscription {
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
   userNode: (
-    where?: UserNodeSubscriptionWhereInput,
+    where?: UserNodeSubscriptionWhereInput
   ) => UserNodeSubscriptionPayloadSubscription;
 }
 
@@ -244,30 +244,30 @@ export type QueuedTrackOrderByInput =
   | "updatedAt_DESC";
 
 export type UserNodeOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'userId_ASC'
-  | 'userId_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "userId_ASC"
+  | "userId_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type PartyOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  | 'ownerUserId_ASC'
-  | 'ownerUserId_DESC'
-  | 'activeTrackId_ASC'
-  | 'activeTrackId_DESC'
-  | 'lastTimeUsersChanged_ASC'
-  | 'lastTimeUsersChanged_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "ownerUserId_ASC"
+  | "ownerUserId_DESC"
+  | "activeTrackId_ASC"
+  | "activeTrackId_DESC"
+  | "lastTimeUsersChanged_ASC"
+  | "lastTimeUsersChanged_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -871,7 +871,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   bannedUserIds: <T = FragmentableArray<UserNode>>(
     args?: {
@@ -882,7 +882,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   partyUserIds: <T = FragmentableArray<UserNode>>(
     args?: {
@@ -893,7 +893,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   lastTimeUsersChanged: () => Promise<String>;
 }
@@ -928,7 +928,7 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   bannedUserIds: <T = Promise<AsyncIterator<UserNodeSubscription>>>(
     args?: {
@@ -939,7 +939,7 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   partyUserIds: <T = Promise<AsyncIterator<UserNodeSubscription>>>(
     args?: {
@@ -950,7 +950,7 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   lastTimeUsersChanged: () => Promise<AsyncIterator<String>>;
 }
@@ -1500,13 +1500,13 @@ export const models = [
     embedded: false
   },
   {
-    name: 'User',
-    embedded: false,
+    name: "User",
+    embedded: false
   },
   {
-    name: 'UserNode',
-    embedded: false,
-  },
+    name: "UserNode",
+    embedded: false
+  }
 ];
 
 /**
