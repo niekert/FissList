@@ -75,16 +75,16 @@ export function PlayerContainer({ children }: IProps) {
 
   const skipTrack = async () => {
     const [nextInQueue] = queuedTracks.data.queuedTracks;
+    if (nextInQueue) {
+      setNextActiveTrack(nextInQueue.trackId);
+    }
+
     await mutatePlayback({
       variables: {
         partyId: party.id,
         playback: Playback.SKIP,
       },
     });
-
-    if (nextInQueue) {
-      setNextActiveTrack(nextInQueue.trackId);
-    }
 
     setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
   };

@@ -160,7 +160,6 @@ export function ChangedPartyTracksProvider({
   }, [state.deletedTrackIds]);
 
   React.useEffect(() => {
-    console.log('next', state.nextActiveTrackId);
     if (
       !state.nextActiveTrackId ||
       state.nextActiveTrackId === currentActiveTrack.current
