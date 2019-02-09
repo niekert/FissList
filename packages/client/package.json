@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "proxy": "http://localhost:4000",
-  "homepage": "https://pampaplayg.herokuapp.com",
+  "homepage": "https://pampaplay.netlify.com",
   "engines": {
     "node": "11.x.x"
   },
