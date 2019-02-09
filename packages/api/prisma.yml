@@ -1,5 +1,6 @@
 endpoint: https://heroku-3a2922e17a.herokuapp.com/api/dev
 datamodel: datamodel.prisma
+secret: ${env:MANAGEMENT_API_SECRET}
 
 generate:
   - generator: typescript-client
