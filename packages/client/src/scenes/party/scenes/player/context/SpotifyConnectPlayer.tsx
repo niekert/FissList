@@ -73,7 +73,7 @@ export function PlayerContainer({ children }: IProps) {
     };
   }, []);
 
-  const skipTrack = React.useCallback(async () => {
+  const skipTrack = async () => {
     const [nextInQueue] = queuedTracks.data.queuedTracks;
     await mutatePlayback({
       variables: {
@@ -87,7 +87,7 @@ export function PlayerContainer({ children }: IProps) {
     }
 
     setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
-  }, [setRefetchTimeout]);
+  };
 
   return (
     <PlayerContext.Provider

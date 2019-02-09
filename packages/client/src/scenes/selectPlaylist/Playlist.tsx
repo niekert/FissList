@@ -23,7 +23,6 @@ const Wrapper = styled.div<{ isSelected: boolean }>`
 `;
 
 const Content = styled.div`
-  margin-left: 8px;
   display: flex;
   flex-direction: column;
 `;
@@ -32,6 +31,7 @@ const Thumbnail = styled.img`
   margin-bottom: 0;
   width: 60px;
   height: 60px;
+  margin-right: ${props => props.theme.spacing[1]};
   border-radius: 4px;
 `;
 
