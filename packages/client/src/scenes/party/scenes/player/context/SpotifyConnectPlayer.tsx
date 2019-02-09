@@ -73,6 +73,7 @@ export function PlayerContainer({ children }: IProps) {
 
   const skipTrack = React.useCallback(async () => {
     const [nextInQueue] = queuedTracks.data.queuedTracks;
+    console.log('optimistic', nextInQueue);
     await mutatePlayback({
       variables: {
         partyId: party.id,
