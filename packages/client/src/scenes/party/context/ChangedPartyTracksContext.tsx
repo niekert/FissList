@@ -30,26 +30,42 @@ interface State {
   nextActiveTrackId: string | null;
 }
 interface ContextValue extends State {
+  setNextActiveTrack: (trackId: string) => void;
   markTrackSeen: (trackIds: string | string[]) => void;
 }
 
+const noProvider = () => {
+  throw new Error(`No ChangedPartyTracksProvider in parent tree.`);
+};
+
 export const Context = React.createContext<ContextValue>({
-  // tslint:disable-next-line
-  markTrackSeen: () => {},
+  markTrackSeen: noProvider,
+  setNextActiveTrack: noProvider,
   addedTrackIds: [],
   deletedTrackIds: [],
   nextActiveTrackId: '',
 });
 
-enum Actions {
-  ADD_CHANGED_TRACKS = 'add_changed',
-  MARK_SEEN = 'mark_seen',
-}
+type Actions =
+  | {
+      type: 'ADD_CHANGED_TRACKS';
+      payload: PartyTracksChangedSubscription_partyTracksChanged;
+    }
+  | {
+      type: 'MARK_SEEN';
+      payload: {
+        trackIds: Set<string>;
+      };
+    }
+  | {
+      type: 'SET_ACTIVE_TRACK';
+      payload: string;
+    };
 
-function changedTracksReducer(state: State, action): State {
+function changedTracksReducer(state: State, action: Actions): State {
   switch (action.type) {
-    case Actions.ADD_CHANGED_TRACKS: {
-      const payload = action.payload as PartyTracksChangedSubscription_partyTracksChanged;
+    case 'ADD_CHANGED_TRACKS': {
+      const payload = action.payload;
 
       return {
         addedTrackIds: [
@@ -63,7 +79,7 @@ function changedTracksReducer(state: State, action): State {
         nextActiveTrackId: payload.nextActiveTrackId,
       };
     }
-    case Actions.MARK_SEEN: {
+    case 'MARK_SEEN': {
       return {
         ...state,
         addedTrackIds: state.addedTrackIds.filter(
@@ -72,6 +88,12 @@ function changedTracksReducer(state: State, action): State {
         deletedTrackIds: state.deletedTrackIds.filter(
           trackId => !action.payload.trackIds.has(trackId),
         ),
+      };
+    }
+    case 'SET_ACTIVE_TRACK': {
+      return {
+        ...state,
+        nextActiveTrackId: action.payload,
       };
     }
     default: {
@@ -99,7 +121,7 @@ export function ChangedPartyTracksProvider({
   );
   const markTrackSeen = React.useCallback((trackIds: string | string[]) => {
     dispatch({
-      type: Actions.MARK_SEEN,
+      type: 'MARK_SEEN',
       payload: {
         trackIds: new Set(Array.isArray(trackIds) ? trackIds : [trackIds]),
       },
@@ -109,9 +131,17 @@ export function ChangedPartyTracksProvider({
     state.nextActiveTrackId,
   );
 
+  const setNextActiveTrack = React.useCallback((nextTrackId: string) => {
+    dispatch({
+      type: 'SET_ACTIVE_TRACK',
+      payload: nextTrackId,
+    });
+  }, []);
+
   const context = React.useMemo(
     () => ({
       ...state,
+      setNextActiveTrack,
       markTrackSeen,
     }),
     [state],
@@ -180,8 +210,8 @@ export function ChangedPartyTracksProvider({
         subscription={PARTY_CHANGES_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
           dispatch({
-            type: Actions.ADD_CHANGED_TRACKS,
-            payload: subscriptionData.data!.partyTracksChanged,
+            type: 'ADD_CHANGED_TRACKS',
+            payload: subscriptionData.data!.partyTracksChanged!,
           });
         }}
         variables={{ partyId }}

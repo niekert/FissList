@@ -5,6 +5,7 @@ import { usePartyContext } from 'scenes/party';
 import PlayerContext from './PlayerContext';
 import { Playback } from 'globalTypes';
 import { useQueuedTracks } from 'scenes/party/queries';
+import { useChangedTracks } from 'scenes/party/context/ChangedPartyTracksContext';
 
 interface IProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ export function PlayerContainer({ children }: IProps) {
   const player = usePlayerQuery();
   const party = usePartyContext();
   const queuedTracks = useQueuedTracks(party.id);
+  const { setNextActiveTrack } = useChangedTracks();
   const [refetchTimeout, setRefetchTimeout] = React.useState<
     NodeJS.Timeout | undefined
   >(undefined);
@@ -73,16 +75,16 @@ export function PlayerContainer({ children }: IProps) {
 
   const skipTrack = React.useCallback(async () => {
     const [nextInQueue] = queuedTracks.data.queuedTracks;
-    console.log('optimistic', nextInQueue);
     await mutatePlayback({
       variables: {
         partyId: party.id,
         playback: Playback.SKIP,
       },
-      optimisticResponse: {
-        playback: nextInQueue ? nextInQueue.trackId : '',
-      },
     });
+
+    if (nextInQueue) {
+      setNextActiveTrack(nextInQueue.trackId);
+    }
 
     setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
   }, [setRefetchTimeout]);
