@@ -79,7 +79,7 @@ async function playback(
       .then(sortQueuedTracks),
   ]);
 
-  const permissions = getPermissionForParty(party, me);
+  const permissions = await getPermissionForParty(context.prisma, party, me);
   if (permissions !== Permissions.Admin) {
     throw new AuthenticationError('You are not authorized to do this.');
   }

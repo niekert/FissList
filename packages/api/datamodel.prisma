@@ -11,6 +11,11 @@ type QueuedTrack {
   updatedAt: DateTime!
 }
 
+type UserNode {
+  id: ID! @unique
+  userId: String!
+}
+
 type Party {
   id: ID! @unique
   name: String!
@@ -19,7 +24,8 @@ type Party {
   ownerUserId: String!
   activeTrackId: String!
   queuedTracks: [QueuedTrack!]!
-  requestedUserIds: [String!]!
-  bannedUserIds: [String!]!
-  partyUserIds: [String!]!
+  requestedUserIds: [UserNode!]! @relation(name: "RequestedUserIds")
+  bannedUserIds: [UserNode!]! @relation(name: "BannedUserIds")
+  partyUserIds: [UserNode!]! @relation(name: "PartyUserIds")
+  lastTimeUsersChanged: String
 }

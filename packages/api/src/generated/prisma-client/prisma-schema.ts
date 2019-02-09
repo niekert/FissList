@@ -10,6 +10,10 @@ type AggregateUser {
   count: Int!
 }
 
+type AggregateUserNode {
+  count: Int!
+}
+
 type BatchPayload {
   count: Long!
 }
@@ -37,6 +41,12 @@ type Mutation {
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createUserNode(data: UserNodeCreateInput!): UserNode!
+  updateUserNode(data: UserNodeUpdateInput!, where: UserNodeWhereUniqueInput!): UserNode
+  updateManyUserNodes(data: UserNodeUpdateManyMutationInput!, where: UserNodeWhereInput): BatchPayload!
+  upsertUserNode(where: UserNodeWhereUniqueInput!, create: UserNodeCreateInput!, update: UserNodeUpdateInput!): UserNode!
+  deleteUserNode(where: UserNodeWhereUniqueInput!): UserNode
+  deleteManyUserNodes(where: UserNodeWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -64,9 +74,10 @@ type Party {
   ownerUserId: String!
   activeTrackId: String!
   queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack!]
-  requestedUserIds: [String!]!
-  bannedUserIds: [String!]!
-  partyUserIds: [String!]!
+  requestedUserIds(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode!]
+  bannedUserIds(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode!]
+  partyUserIds(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode!]
+  lastTimeUsersChanged: String
 }
 
 type PartyConnection {
@@ -75,26 +86,15 @@ type PartyConnection {
   aggregate: AggregateParty!
 }
 
-input PartyCreatebannedUserIdsInput {
-  set: [String!]
-}
-
 input PartyCreateInput {
   name: String!
   ownerUserId: String!
   activeTrackId: String!
   queuedTracks: QueuedTrackCreateManyInput
-  requestedUserIds: PartyCreaterequestedUserIdsInput
-  bannedUserIds: PartyCreatebannedUserIdsInput
-  partyUserIds: PartyCreatepartyUserIdsInput
-}
-
-input PartyCreatepartyUserIdsInput {
-  set: [String!]
-}
-
-input PartyCreaterequestedUserIdsInput {
-  set: [String!]
+  requestedUserIds: UserNodeCreateManyInput
+  bannedUserIds: UserNodeCreateManyInput
+  partyUserIds: UserNodeCreateManyInput
+  lastTimeUsersChanged: String
 }
 
 type PartyEdge {
@@ -115,6 +115,8 @@ enum PartyOrderByInput {
   ownerUserId_DESC
   activeTrackId_ASC
   activeTrackId_DESC
+  lastTimeUsersChanged_ASC
+  lastTimeUsersChanged_DESC
 }
 
 type PartyPreviousValues {
@@ -124,9 +126,7 @@ type PartyPreviousValues {
   updatedAt: DateTime!
   ownerUserId: String!
   activeTrackId: String!
-  requestedUserIds: [String!]!
-  bannedUserIds: [String!]!
-  partyUserIds: [String!]!
+  lastTimeUsersChanged: String
 }
 
 type PartySubscriptionPayload {
@@ -147,35 +147,22 @@ input PartySubscriptionWhereInput {
   NOT: [PartySubscriptionWhereInput!]
 }
 
-input PartyUpdatebannedUserIdsInput {
-  set: [String!]
-}
-
 input PartyUpdateInput {
   name: String
   ownerUserId: String
   activeTrackId: String
   queuedTracks: QueuedTrackUpdateManyInput
-  requestedUserIds: PartyUpdaterequestedUserIdsInput
-  bannedUserIds: PartyUpdatebannedUserIdsInput
-  partyUserIds: PartyUpdatepartyUserIdsInput
+  requestedUserIds: UserNodeUpdateManyInput
+  bannedUserIds: UserNodeUpdateManyInput
+  partyUserIds: UserNodeUpdateManyInput
+  lastTimeUsersChanged: String
 }
 
 input PartyUpdateManyMutationInput {
   name: String
   ownerUserId: String
   activeTrackId: String
-  requestedUserIds: PartyUpdaterequestedUserIdsInput
-  bannedUserIds: PartyUpdatebannedUserIdsInput
-  partyUserIds: PartyUpdatepartyUserIdsInput
-}
-
-input PartyUpdatepartyUserIdsInput {
-  set: [String!]
-}
-
-input PartyUpdaterequestedUserIdsInput {
-  set: [String!]
+  lastTimeUsersChanged: String
 }
 
 input PartyWhereInput {
@@ -254,6 +241,29 @@ input PartyWhereInput {
   queuedTracks_every: QueuedTrackWhereInput
   queuedTracks_some: QueuedTrackWhereInput
   queuedTracks_none: QueuedTrackWhereInput
+  requestedUserIds_every: UserNodeWhereInput
+  requestedUserIds_some: UserNodeWhereInput
+  requestedUserIds_none: UserNodeWhereInput
+  bannedUserIds_every: UserNodeWhereInput
+  bannedUserIds_some: UserNodeWhereInput
+  bannedUserIds_none: UserNodeWhereInput
+  partyUserIds_every: UserNodeWhereInput
+  partyUserIds_some: UserNodeWhereInput
+  partyUserIds_none: UserNodeWhereInput
+  lastTimeUsersChanged: String
+  lastTimeUsersChanged_not: String
+  lastTimeUsersChanged_in: [String!]
+  lastTimeUsersChanged_not_in: [String!]
+  lastTimeUsersChanged_lt: String
+  lastTimeUsersChanged_lte: String
+  lastTimeUsersChanged_gt: String
+  lastTimeUsersChanged_gte: String
+  lastTimeUsersChanged_contains: String
+  lastTimeUsersChanged_not_contains: String
+  lastTimeUsersChanged_starts_with: String
+  lastTimeUsersChanged_not_starts_with: String
+  lastTimeUsersChanged_ends_with: String
+  lastTimeUsersChanged_not_ends_with: String
   AND: [PartyWhereInput!]
   OR: [PartyWhereInput!]
   NOT: [PartyWhereInput!]
@@ -273,6 +283,9 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  userNode(where: UserNodeWhereUniqueInput!): UserNode
+  userNodes(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode]!
+  userNodesConnection(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserNodeConnection!
   node(id: ID!): Node
 }
 
@@ -505,6 +518,7 @@ type Subscription {
   party(where: PartySubscriptionWhereInput): PartySubscriptionPayload
   queuedTrack(where: QueuedTrackSubscriptionWhereInput): QueuedTrackSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  userNode(where: UserNodeSubscriptionWhereInput): UserNodeSubscriptionPayload
 }
 
 type User {
@@ -525,6 +539,180 @@ input UserCreateInput {
 type UserEdge {
   node: User!
   cursor: String!
+}
+
+type UserNode {
+  id: ID!
+  userId: String!
+}
+
+type UserNodeConnection {
+  pageInfo: PageInfo!
+  edges: [UserNodeEdge]!
+  aggregate: AggregateUserNode!
+}
+
+input UserNodeCreateInput {
+  userId: String!
+}
+
+input UserNodeCreateManyInput {
+  create: [UserNodeCreateInput!]
+  connect: [UserNodeWhereUniqueInput!]
+}
+
+type UserNodeEdge {
+  node: UserNode!
+  cursor: String!
+}
+
+enum UserNodeOrderByInput {
+  id_ASC
+  id_DESC
+  userId_ASC
+  userId_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserNodePreviousValues {
+  id: ID!
+  userId: String!
+}
+
+input UserNodeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  userId: String
+  userId_not: String
+  userId_in: [String!]
+  userId_not_in: [String!]
+  userId_lt: String
+  userId_lte: String
+  userId_gt: String
+  userId_gte: String
+  userId_contains: String
+  userId_not_contains: String
+  userId_starts_with: String
+  userId_not_starts_with: String
+  userId_ends_with: String
+  userId_not_ends_with: String
+  AND: [UserNodeScalarWhereInput!]
+  OR: [UserNodeScalarWhereInput!]
+  NOT: [UserNodeScalarWhereInput!]
+}
+
+type UserNodeSubscriptionPayload {
+  mutation: MutationType!
+  node: UserNode
+  updatedFields: [String!]
+  previousValues: UserNodePreviousValues
+}
+
+input UserNodeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserNodeWhereInput
+  AND: [UserNodeSubscriptionWhereInput!]
+  OR: [UserNodeSubscriptionWhereInput!]
+  NOT: [UserNodeSubscriptionWhereInput!]
+}
+
+input UserNodeUpdateDataInput {
+  userId: String
+}
+
+input UserNodeUpdateInput {
+  userId: String
+}
+
+input UserNodeUpdateManyDataInput {
+  userId: String
+}
+
+input UserNodeUpdateManyInput {
+  create: [UserNodeCreateInput!]
+  update: [UserNodeUpdateWithWhereUniqueNestedInput!]
+  upsert: [UserNodeUpsertWithWhereUniqueNestedInput!]
+  delete: [UserNodeWhereUniqueInput!]
+  connect: [UserNodeWhereUniqueInput!]
+  disconnect: [UserNodeWhereUniqueInput!]
+  deleteMany: [UserNodeScalarWhereInput!]
+  updateMany: [UserNodeUpdateManyWithWhereNestedInput!]
+}
+
+input UserNodeUpdateManyMutationInput {
+  userId: String
+}
+
+input UserNodeUpdateManyWithWhereNestedInput {
+  where: UserNodeScalarWhereInput!
+  data: UserNodeUpdateManyDataInput!
+}
+
+input UserNodeUpdateWithWhereUniqueNestedInput {
+  where: UserNodeWhereUniqueInput!
+  data: UserNodeUpdateDataInput!
+}
+
+input UserNodeUpsertWithWhereUniqueNestedInput {
+  where: UserNodeWhereUniqueInput!
+  update: UserNodeUpdateDataInput!
+  create: UserNodeCreateInput!
+}
+
+input UserNodeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  userId: String
+  userId_not: String
+  userId_in: [String!]
+  userId_not_in: [String!]
+  userId_lt: String
+  userId_lte: String
+  userId_gt: String
+  userId_gte: String
+  userId_contains: String
+  userId_not_contains: String
+  userId_starts_with: String
+  userId_not_starts_with: String
+  userId_ends_with: String
+  userId_not_ends_with: String
+  AND: [UserNodeWhereInput!]
+  OR: [UserNodeWhereInput!]
+  NOT: [UserNodeWhereInput!]
+}
+
+input UserNodeWhereUniqueInput {
+  id: ID
 }
 
 enum UserOrderByInput {

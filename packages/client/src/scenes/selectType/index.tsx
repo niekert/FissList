@@ -56,7 +56,7 @@ function SelectType({ history, parties }: IProps) {
             />
             {parties.length > 0 && (
               <Card>
-                <CardTitle>Existing parties</CardTitle>
+                <CardTitle>Your parties</CardTitle>
                 {parties.map(party => (
                   <Party
                     key={party!.id}

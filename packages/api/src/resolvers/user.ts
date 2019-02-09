@@ -11,7 +11,12 @@ async function me(root, args, context: Context, info): Promise<Me> {
   try {
     const user = await context.spotify.fetchCurrentUser();
     const parties = await context.prisma.parties({
-      where: { ownerUserId: user.id },
+      where: {
+        OR: [
+          { ownerUserId: user.id },
+          { partyUserIds_some: { userId: user.id } },
+        ],
+      },
       orderBy: 'createdAt_DESC',
     });
 

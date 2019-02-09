@@ -26,7 +26,8 @@
     "prisma-client-lib": "^1.23.0-test.3",
     "query-string": "^6.2.0",
     "serve-static": "^1.13.2",
-    "subscriptions-transport-ws": "^0.9.15"
+    "subscriptions-transport-ws": "^0.9.15",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "npm run serve",
@@ -34,6 +35,7 @@
     "serve": "node dist/index.js",
     "schema:download": "apollo schema:download --endpoint=http://localhost:4000",
     "types": "apollo codegen:generate --queries=blaa --schema=./schema.graphql --target=typescript",
+    "dev": "ts-node-dev src/index.ts",
     "watch-node": "dotenv -- nodemon dist/index.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "test": "jest --forceExit --coverage --verbose",
@@ -47,12 +49,14 @@
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "devDependencies": {
+    "@types/uuid": "^3.4.4",
     "babel-plugin-graphql-tag": "^1.6.0",
     "dotenv": "^6.1.0",
     "graphql-binding": "^2.2.6",
     "graphql-import": "^0.7.1",
     "prettier": "1.15.1",
     "ts-node": "^7.0.1",
+    "ts-node-dev": "^1.0.0-pre.32",
     "tslint": "^5.12.1",
     "typescript": "^3.1.6"
   }

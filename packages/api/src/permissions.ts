@@ -1,5 +1,5 @@
 import { SpotifyUser } from './types';
-import { Party } from './generated/prisma-client';
+import { Party, Prisma } from './generated/prisma-client';
 
 export enum Permissions {
   Admin = 'ADMIN',
@@ -8,19 +8,28 @@ export enum Permissions {
   None = 'NONE',
 }
 
-export const getPermissionForParty = (
+export const getPermissionForParty = async (
+  prisma: Prisma,
   party: Party,
   user: SpotifyUser,
-): Permissions => {
+): Promise<Permissions> => {
   if (party.ownerUserId === user.id) {
     return Permissions.Admin;
   }
 
-  if (party.partyUserIds && party.partyUserIds.includes(user.id)) {
+  const partyMembers = await prisma
+    .party({ id: party.id })
+    .partyUserIds({ where: { userId: user.id } });
+
+  if (partyMembers.length > 0) {
     return Permissions.Member;
   }
 
-  if (party.requestedUserIds && party.requestedUserIds.includes(user.id)) {
+  const requestedUserIds = await prisma
+    .party({ id: party.id })
+    .requestedUserIds({ where: { userId: user.id } });
+
+  if (requestedUserIds.length > 0) {
     return Permissions.Pending;
   }
 

@@ -1,5 +1,6 @@
+import { v4 as uuid } from 'uuid';
 import { Context, Paging, Savedtrack } from '../types';
-import { Party, QueuedTrack } from '../generated/prisma-client';
+import { Party, QueuedTrack, UserNode } from '../generated/prisma-client';
 import { ForbiddenError } from 'apollo-server';
 import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
@@ -11,14 +12,11 @@ const SAVED_MUSIC = 'saved';
 
 interface PartyResult {
   id: string;
-  partyUserIds: string[];
-  requestedUserIds?: string[];
   activeTrackId: string;
   ownerUserId: string;
   name: string;
   createdAt: string;
   updatedAt: string;
-  permission: string;
   queuedTracks?: QueuedTrack[];
 }
 
@@ -37,16 +35,11 @@ async function party(
 ): Promise<PartyResult> {
   const user = await context.spotify.fetchCurrentUser();
   const party = await context.prisma.party({ id: args.partyId });
-  const permission = getPermissionForParty(party, user);
 
   return {
     id: party.id,
     name: party.name,
-    permission: permission,
     activeTrackId: party.activeTrackId,
-    requestedUserIds:
-      permission === Permissions.Admin ? party.requestedUserIds : undefined,
-    partyUserIds: permission !== Permissions.None ? party.partyUserIds : [],
     ownerUserId: party.ownerUserId,
     createdAt: party.createdAt,
     updatedAt: party.updatedAt,
@@ -69,7 +62,6 @@ async function parties(
     name: party.name!,
     activeTrackIndex: 0,
     activeTrackId: party.activeTrackId,
-    permission: getPermissionForParty(party, user),
     ownerUserId: party.ownerUserId,
     partyUserIds: [],
     ownerUserID: party.ownerUserId,
@@ -141,7 +133,7 @@ async function addTracks(
     context.spotify.fetchCurrentUser(),
   ]);
 
-  const permission = getPermissionForParty(party, me);
+  const permission = await getPermissionForParty(context.prisma, party, me);
 
   if (![Permissions.Admin, Permissions.Member].includes(permission)) {
     throw new GraphQLError('Unauthorized to change the party');
@@ -210,9 +202,7 @@ async function partySubscription(
 ) {
   return await context.prisma.$subscribe
     .party({
-      node: { id: args.partyId },
-      updatedFields_contains_some: ['requestedUserIds', 'partyUserIds'],
-      mutation_in: ['CREATED', 'UPDATED'],
+      updatedFields_contains: 'lastTimeUsersChanged',
     })
     .node();
 }
@@ -223,7 +213,7 @@ async function deleteParty(_, args: { partyId: string }, context: Context) {
     context.prisma.party({ id: args.partyId }),
   ]);
 
-  const permission = getPermissionForParty(party, me);
+  const permission = await getPermissionForParty(context.prisma, party, me);
   if (permission !== Permissions.Admin) {
     throw new GraphQLError('Only the party admin can remove a party');
   }
@@ -239,17 +229,18 @@ async function requestPartyAccess(
   context: Context,
 ) {
   const me = await context.spotify.fetchCurrentUser();
-  const party = await context.prisma.party({ id: args.partyId });
-
-  const newRequestedMembers = [...party.requestedUserIds, me.id];
-  const uniqueMembers = Array.from(new Set(newRequestedMembers));
 
   return context.prisma.updateParty({
     where: { id: args.partyId },
     data: {
       requestedUserIds: {
-        set: uniqueMembers,
+        create: {
+          userId: me.id,
+        },
       },
+      // This is a hacky workaround for subscriptions to get picked up.
+      // see https://www.prisma.io/docs/prisma-graphql-api/reference/subscriptions-qwe3/#relation-subscriptions
+      lastTimeUsersChanged: uuid(),
     },
   });
 }
@@ -266,27 +257,50 @@ async function setPartyAccess(
     throw new ForbiddenError('Not authorized');
   }
 
-  const newRequestIds = party.requestedUserIds.filter(
-    userId => userId !== args.userId,
-  );
+  // Grant party access
+  if (args.grant) {
+    const [requesetedNode] = await context.prisma
+      .party({ id: args.partyId })
+      .requestedUserIds({ where: { userId: args.userId } });
 
-  const newMemberIds = args.grant
-    ? [...party.partyUserIds, args.userId]
-    : party.partyUserIds.filter(userId => userId !== args.userId);
+    return context.prisma.updateParty({
+      where: { id: args.partyId },
+      data: {
+        requestedUserIds: {
+          delete: {
+            id: requesetedNode.id,
+          },
+        },
+        partyUserIds: {
+          create: {
+            userId: args.userId,
+          },
+        },
+        // This is a hacky workaround for subscriptions to get picked up.
+        // see https://www.prisma.io/docs/prisma-graphql-api/reference/subscriptions-qwe3/#relation-subscriptions
+        lastTimeUsersChanged: uuid(),
+      },
+    });
+  }
 
-  const updatedParty = await context.prisma.updateParty({
+  // Remove party access
+  const [partyUserNode] = await context.prisma
+    .party({ id: args.partyId })
+    .partyUserIds({ where: { userId: args.userId } });
+
+  return context.prisma.updateParty({
     where: { id: args.partyId },
     data: {
-      requestedUserIds: {
-        set: newRequestIds,
-      },
       partyUserIds: {
-        set: newMemberIds,
+        delete: {
+          id: partyUserNode.id,
+        },
       },
+      // This is a hacky workaround for subscriptions to get picked up.
+      // see https://www.prisma.io/docs/prisma-graphql-api/reference/subscriptions-qwe3/#relation-subscriptions
+      lastTimeUsersChanged: uuid(),
     },
   });
-
-  return updatedParty;
 }
 
 async function updatePartyName(
@@ -353,17 +367,33 @@ export default {
   Party: {
     permission: async (root: Party, args, context: Context) => {
       const me = await context.spotify.fetchCurrentUser();
-      const permission = getPermissionForParty(root, me);
+      const permission = await getPermissionForParty(context.prisma, root, me);
 
       return permission;
+    },
+    async requestedUserIds(
+      root: Party,
+      args,
+      context: Context,
+    ): Promise<string[]> {
+      const requestedUsers = await context.prisma
+        .party({ id: root.id })
+        .requestedUserIds();
+
+      return requestedUsers.map(user => user.userId);
+    },
+    async partyUserIds(root: Party, args, context: Context): Promise<string[]> {
+      const partyUserIds = await context.prisma
+        .party({ id: root.id })
+        .partyUserIds();
+
+      return partyUserIds.map(user => user.userId);
     },
   },
   Subscription: {
     party: {
       subscribe: partySubscription,
-      resolve: payload => {
-        return payload;
-      },
+      resolve: (payload: Party): Party => payload,
     },
     partyTracksChanged: {
       resolve: (payload: TracksChangedPayload): TracksChangedPayload => {
