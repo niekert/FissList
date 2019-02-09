@@ -7,7 +7,7 @@
     "interface-name": false,
     "no-console": false
   },
-  "defaultSeverity": "error",
+  "defaultSeverity": "warning",
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
