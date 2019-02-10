@@ -22,6 +22,7 @@ export interface Player_player_item {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface Player_player_device {

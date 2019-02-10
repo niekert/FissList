@@ -22,6 +22,7 @@ export interface Search_search_tracks_items {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface Search_search_tracks {

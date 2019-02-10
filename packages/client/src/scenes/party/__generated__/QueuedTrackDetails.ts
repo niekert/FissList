@@ -22,6 +22,7 @@ export interface QueuedTrackDetails_queuedTracks_track {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface QueuedTrackDetails_queuedTracks {

@@ -2,15 +2,19 @@ import { UserInputError } from 'apollo-server';
 import { Context, Track } from '../types';
 import { sortQueuedTracks } from '../helpers';
 
+interface DetailedTrack extends Track {
+  isFavorited: boolean;
+}
+
 interface QueuedTrackDetails {
   id: string;
   trackId: string;
-  track: Track;
+  track: DetailedTrack;
   userVotes: string[];
 }
 
 interface TrackMap {
-  [trackId: string]: Track;
+  [trackId: string]: DetailedTrack;
 }
 
 async function fetchQueuedTracks(
@@ -33,16 +37,22 @@ async function fetchQueuedTracks(
   const sortedTracks = sortQueuedTracks(queuedPartyTracks, { offset, limit });
   const queuedTrackIds = sortedTracks.map(track => track.trackId);
 
+  const { data: favoritedTracks } = await context.spotify.fetchResource<
+    boolean[]
+  >(`/me/tracks/contains?ids=${queuedTrackIds.join(',')}`);
   const { data } = await context.spotify.fetchResource<{
     tracks: Track[];
   }>(`/tracks?ids=${queuedTrackIds.join(',')}`);
 
   const trackMap = data.tracks.reduce<TrackMap>(
-    (result, track) =>
+    (result, track, index) =>
       track
         ? {
             ...result,
-            [track.id]: track,
+            [track.id]: {
+              ...track,
+              isFavorited: favoritedTracks[index],
+            },
           }
         : result,
     {},
@@ -84,6 +94,25 @@ export default {
     },
     track,
   },
+  Track: {
+    async isFavorited(
+      root: { id: string; isFavorited: boolean },
+      args,
+      context: Context,
+    ) {
+      if (root.isFavorited !== undefined) {
+        return root.isFavorited;
+      }
+
+      const {
+        data: [isFavorited],
+      } = await context.spotify.fetchResource<boolean[]>(
+        `/me/tracks/contains?ids=${root.id}`,
+      );
+
+      return isFavorited;
+    },
+  },
   Party: {
     queuedTracks: (
       partyQuery: { id: string },
@@ -97,11 +126,11 @@ export default {
       _,
       context: Context,
     ): Promise<Track> {
-      const { data } = await context.spotify.fetchResource<Track>(
+      const { data: track } = await context.spotify.fetchResource<Track>(
         `/tracks/${root.activeTrackId}`,
       );
 
-      return data;
+      return track;
     },
   },
 };

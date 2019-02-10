@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { TrackInfo } from 'fragments/__generated__/TrackInfo';
 import posed, { PoseGroup } from 'react-pose';
+import FavoriteTrack from './FavoriteTrack';
 
 const transition = {
   type: 'spring',
@@ -32,7 +33,6 @@ const Wrapper = styled(PosedWrapper)`
   display: flex;
   flex: 1;
   will-change: transform;
-  overflow: hidden;
   flex: 1 0;
   position: absolute;
   max-width: 100%;
@@ -52,6 +52,7 @@ const Image = styled.img`
 const ContentWrapper = styled.div`
   display: flex;
   max-width: 100%;
+  overflow: hidden;
   flex-direction: column;
 `;
 
@@ -64,6 +65,7 @@ const Title = styled.span`
 
 const Artists = styled.span`
   color: ${props => props.theme.textColors.secondary};
+  line-height: 1.3;
   font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
@@ -71,7 +73,7 @@ const Artists = styled.span`
   text-overflow: ellipsis;
 `;
 
-function ActiveTrack({ name, artists, images, id }: TrackInfo) {
+function ActiveTrack({ name, artists, images, id, isFavorited }: TrackInfo) {
   return (
     <div
       css={css`
@@ -92,6 +94,7 @@ function ActiveTrack({ name, artists, images, id }: TrackInfo) {
       >
         <Wrapper key={id}>
           {/* todo get nicer image */}
+          <FavoriteTrack trackId={id} isFavorited={isFavorited || false} />
           {images && <Image src={images[0].url} />}
           <ContentWrapper>
             <Title>{name}</Title>

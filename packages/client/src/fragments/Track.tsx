@@ -14,5 +14,6 @@ export const TrackInfo = gql`
     id
     name
     uri
+    isFavorited
   }
 `;

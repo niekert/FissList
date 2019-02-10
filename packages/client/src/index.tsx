@@ -23,10 +23,6 @@ register();
 
 const history = createHistory();
 
-const PageLoader = styled(Spinner)`
-  min-height: 100vh;
-`;
-
 const authLink = setContext((_, { headers }) => {
   const accessKey = localStorage.getItem('accessToken');
 

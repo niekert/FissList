@@ -98,6 +98,7 @@ type Track {
   label: String!
   artists: [Artist!]!
   images: [Image!]
+  isFavorited: Boolean
 }
 
 type PlaylistTrack {
@@ -172,6 +173,7 @@ type Query {
   userPlaylists(offset: Int): PagedPlaylists
   track(trackId: String!): Track!
   search(query: String!): SearchResult!
+  favorited(trackId: String!): Boolean!
 }
 
 type Mutation {

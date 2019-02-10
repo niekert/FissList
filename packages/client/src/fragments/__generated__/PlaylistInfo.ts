@@ -22,6 +22,7 @@ export interface PlaylistInfo_tracks_items_track {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface PlaylistInfo_tracks_items {

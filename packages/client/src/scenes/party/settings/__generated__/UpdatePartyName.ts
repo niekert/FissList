@@ -24,6 +24,7 @@ export interface UpdatePartyName_updatePartyName_activeTrack {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface UpdatePartyName_updatePartyName {

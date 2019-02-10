@@ -22,4 +22,5 @@ export interface TrackInfo {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }

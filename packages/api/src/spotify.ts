@@ -146,7 +146,7 @@ export function makeHttpService(accessKey: string): HttpService {
 
       return {
         status: resp.status,
-        data: camelcase(data, { deep: true }),
+        data: Array.isArray(data) ? data : camelcase(data, { deep: true }),
       };
     });
   }

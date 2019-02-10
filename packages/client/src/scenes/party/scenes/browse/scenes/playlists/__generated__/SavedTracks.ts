@@ -22,6 +22,7 @@ export interface SavedTracks_savedTracks_items_track {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface SavedTracks_savedTracks_items {

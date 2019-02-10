@@ -24,6 +24,7 @@ export interface PartyInfo_activeTrack {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface PartyInfo {

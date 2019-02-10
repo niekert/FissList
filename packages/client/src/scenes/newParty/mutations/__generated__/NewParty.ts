@@ -24,6 +24,7 @@ export interface NewParty_createParty_activeTrack {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface NewParty_createParty {

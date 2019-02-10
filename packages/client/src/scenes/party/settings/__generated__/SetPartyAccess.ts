@@ -24,6 +24,7 @@ export interface SetPartyAccess_setPartyAccess_activeTrack {
   id: string;
   name: string;
   uri: string;
+  isFavorited: boolean | null;
 }
 
 export interface SetPartyAccess_setPartyAccess {

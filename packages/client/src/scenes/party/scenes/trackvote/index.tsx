@@ -4,6 +4,7 @@ import { FavoriteIcon } from 'icons';
 import { useTrackVoteMutation } from './mutation';
 import IconButton from 'components/IconButton';
 import posed, { PoseGroup } from 'react-pose';
+import FavoritePose from 'poses/FavoritePose';
 
 const transition = {
   type: 'spring',
@@ -84,15 +85,6 @@ function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
   const mutateTrackVote = useTrackVoteMutation();
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    if (isActive) {
-      const timeout = setTimeout(() => setIsActive(false), 250);
-      return () => clearTimeout(timeout);
-    }
-
-    return;
-  }, [isActive]);
-
   return (
     <Wrapper
       onClick={() => {
@@ -108,7 +100,7 @@ function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
           {voteCount}
         </VoteCount>
       </PoseGroup>
-      <PosedFavoriteIcon pose={isActive ? 'active' : 'idle'}>
+      <FavoritePose isActive={isActive} onPoseEnd={() => setIsActive(false)}>
         <IconButton
           size="extra-small"
           css={css`
@@ -117,7 +109,7 @@ function TrackVote({ isRequested, voteCount, queuedTrackId }: Props) {
         >
           <StyledFavoriteIcon isActive={isRequested} />
         </IconButton>
-      </PosedFavoriteIcon>
+      </FavoritePose>
     </Wrapper>
   );
 }
