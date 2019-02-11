@@ -17,7 +17,7 @@ import { PlayerContainer } from './scenes/player/context';
 import { PartyContext } from './context';
 import Player from './scenes/player';
 import JoinParty from './JoinParty';
-import { SettingsIcon } from 'icons';
+import { SettingsIcon, HistoryIcon } from 'icons';
 import PartySettings from './settings';
 import TracksQueue from './TracksQueue';
 import MemberActiveTrack from './MemberActiveTrack';
@@ -27,6 +27,7 @@ export { usePartyContext } from './context';
 export { PARTY_QUERY } from './queries';
 
 const AsyncBrowse = React.lazy(() => import('./scenes/browse'));
+const AsyncHistory = React.lazy(() => import('./scenes/history'));
 
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 0;
@@ -81,6 +82,7 @@ enum PlayerTabs {
   Queue = 'queue',
   Browse = 'browse',
   Settings = 'settings',
+  History = 'history',
 }
 
 // TODO: this is super hacky and ugly, lol
@@ -97,6 +99,10 @@ const getActivetab = (match: Match, location: Location) => {
 
   if (relativePath.includes('/settings')) {
     return PlayerTabs.Settings;
+  }
+
+  if (relativePath.includes('/history')) {
+    return PlayerTabs.History;
   }
 
   return PlayerTabs.Queue;
@@ -164,6 +170,20 @@ export default function Party({ match, location, history }: IProps) {
                   <Tabs activeTab={activeTab} onChange={onTabChange}>
                     <Tab name={PlayerTabs.Queue}>Queue</Tab>
                     <Tab name={PlayerTabs.Browse}>Browse</Tab>
+                    <Tab
+                      css={css`
+                        flex: 0;
+                        flex-basis: 50px;
+                      `}
+                      name={PlayerTabs.History}
+                    >
+                      <HistoryIcon
+                        css={css`
+                          width: 22px;
+                          height: 22px;
+                        `}
+                      />
+                    </Tab>
                     {data.party.permission === Permissions.ADMIN && (
                       <Tab
                         name={PlayerTabs.Settings}
@@ -195,6 +215,10 @@ export default function Party({ match, location, history }: IProps) {
                     <Route
                       path={`${match.path}/browse`}
                       component={AsyncBrowse}
+                    />
+                    <Route
+                      path={`${match.path}/history`}
+                      component={AsyncHistory}
                     />
                     {data.party.permission === Permissions.ADMIN && (
                       <Route

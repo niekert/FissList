@@ -52,23 +52,6 @@ const VoteCount = styled(PosedCounter)`
   margin-right: ${props => props.theme.spacing[1]};
 `;
 
-const favoriteTransition = {
-  type: 'spring',
-  stiffness: 220,
-  damping: 7,
-};
-
-const PosedFavoriteIcon = posed.div({
-  active: {
-    scale: 1.4,
-    transition: favoriteTransition,
-  },
-  idle: {
-    scale: 1,
-    transition: favoriteTransition,
-  },
-});
-
 const StyledFavoriteIcon = styled(FavoriteIcon)`
   cursor: pointer;
   width: 16px;
