@@ -83,6 +83,30 @@ async function track(
   return data;
 }
 
+async function favorite(
+  _,
+  args: { trackId: string; favorite: boolean },
+  context: Context,
+): Promise<Boolean> {
+  const url = `/me/tracks?ids=${args.trackId}`;
+  if (args.favorite) {
+    await context.spotify.fetchResource(url, {
+      method: 'PUT',
+      body: JSON.stringify({
+        ids: [args.trackId],
+      }),
+    });
+
+    return true;
+  }
+
+  const { status } = await context.spotify.fetchResource(url, {
+    method: 'DELETE',
+  });
+
+  return false;
+}
+
 export default {
   Query: {
     queuedTracks(
@@ -93,6 +117,9 @@ export default {
       return fetchQueuedTracks(args, context);
     },
     track,
+  },
+  Mutation: {
+    favorite,
   },
   Track: {
     async isFavorited(

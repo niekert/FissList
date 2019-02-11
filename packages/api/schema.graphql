@@ -187,6 +187,7 @@ type Mutation {
   setPartyAccess(partyId: String!, userId: String!, grant: Boolean!): Party
   playback(partyId: String!, playback: Playback!): String!
   trackVote(queuedTrackId: String!): Boolean!
+  favorite(trackId: String!, favorite: Boolean!): Boolean!
 }
 
 type Subscription {

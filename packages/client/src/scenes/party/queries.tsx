@@ -10,9 +10,9 @@ import {
   QueuedTrackDetailsVariables,
 } from './__generated__/QueuedTrackDetails';
 
-export { QueuedTrackDetails };
+export { QueuedTrackDetails, GetPartyById, GetPartyByIdVariables };
 
-export const GET_PARTY = gql`
+export const PARTY_QUERY = gql`
   query GetPartyById($partyId: String!) {
     party(partyId: $partyId) {
       ...PartyInfo
@@ -52,7 +52,7 @@ export function useQueuedTracks(partyId: string) {
 }
 
 export function usePartyQuery(partyId: string) {
-  return useQuery<GetPartyById, GetPartyByIdVariables>(GET_PARTY, {
+  return useQuery<GetPartyById, GetPartyByIdVariables>(PARTY_QUERY, {
     errorPolicy: 'all',
     variables: {
       partyId,

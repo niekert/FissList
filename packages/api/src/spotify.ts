@@ -133,21 +133,28 @@ export function makeHttpService(accessKey: string): HttpService {
         };
       }
 
-      const data = await resp.json();
+      try {
+        const data = await resp.json();
 
-      if (resp.status === 401) {
-        throw new GraphQLError('Unauthorized request');
+        if (resp.status === 401) {
+          throw new GraphQLError('Unauthorized request');
+        }
+
+        // TODO Also other status codes
+        if (resp.status === 400) {
+          throw new GraphQLError('Invalid requests: ' + data.error.message);
+        }
+        return {
+          status: resp.status,
+          data: Array.isArray(data) ? data : camelcase(data, { deep: true }),
+        };
+      } catch (err) {
+        // HACKY AF
+        return {
+          status: resp.status,
+          data: null,
+        };
       }
-
-      // TODO Also other status codes
-      if (resp.status === 400) {
-        throw new GraphQLError('Invalid requests: ' + data.error.message);
-      }
-
-      return {
-        status: resp.status,
-        data: Array.isArray(data) ? data : camelcase(data, { deep: true }),
-      };
     });
   }
 

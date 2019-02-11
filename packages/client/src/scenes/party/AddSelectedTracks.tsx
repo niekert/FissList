@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelectedTracks } from 'context/SelectedTracks';
 import Button from 'components/Button';
 import posed, { PoseGroup } from 'react-pose';
-import { GET_PARTY } from './queries';
+import { PARTY_QUERY } from './queries';
 import AddTracksMutation from './mutations/AddTracksMutation';
 import styled from 'styled-components';
 import IconButton from 'components/IconButton';
@@ -56,7 +56,7 @@ function AddSelectedTracks({ partyId }: { partyId: string }) {
       onCompleted={commitTracks}
       refetchQueries={[
         {
-          query: GET_PARTY,
+          query: PARTY_QUERY,
           variables: {
             partyId,
           },

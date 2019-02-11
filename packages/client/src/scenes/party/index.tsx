@@ -24,7 +24,7 @@ import MemberActiveTrack from './MemberActiveTrack';
 import { Permissions } from 'globalTypes';
 
 export { usePartyContext } from './context';
-export { GET_PARTY } from './queries';
+export { PARTY_QUERY } from './queries';
 
 const AsyncBrowse = React.lazy(() => import('./scenes/browse'));
 
