@@ -106,6 +106,9 @@ async function createParty(
   return context.prisma.createParty({
     name,
     ownerUserId: user.id,
+    previouslyPlayedTrackIds: {
+      set: [],
+    },
     activeTrackId: firstTrackId,
     queuedTracks: {
       create: queuedTrackIds.map(trackId => ({
