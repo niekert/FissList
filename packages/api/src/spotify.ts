@@ -129,6 +129,10 @@ export function makeHttpService(accessKey: string): HttpService {
         throw new AuthenticationError('Unauthenticated.');
       }
 
+      if (resp.status === 429) {
+        throw new GraphQLError('Too many requests. Rate limited :(');
+      }
+
       if (resp.status === 204) {
         return {
           data: null,
