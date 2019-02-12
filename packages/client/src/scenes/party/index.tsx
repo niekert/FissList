@@ -115,7 +115,6 @@ const getActivetab = (match: Match, location: Location) => {
 
 export default function Party({ match, location, history }: IProps) {
   const { data, errors } = usePartyQuery(match.params.partyId);
-  console.log('data', errors);
 
   const onTabChange = tab => {
     if (tab === PlayerTabs.Queue) {

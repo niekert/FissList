@@ -16,10 +16,20 @@ import createHistory from 'history/createBrowserHistory';
 import { register } from './serviceworker';
 import InitialLoader from 'InitialLoader';
 import Theme from 'theme';
+import { init as initAnalytics } from 'analytics';
 
 register();
 
+initAnalytics();
+
 const history = createHistory();
+
+history.listen(location => {
+  if (window.ga) {
+    window.ga('set', 'page', location.pathname + location.search);
+    window.ga('send', 'pageview');
+  }
+});
 
 const getKeys = () => ({
   accessKey: localStorage.getItem('accessToken'),
