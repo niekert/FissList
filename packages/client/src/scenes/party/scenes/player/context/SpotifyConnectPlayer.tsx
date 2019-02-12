@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { usePlayerQuery } from './usePlayerQuery';
-import { useSetActiveDeviceMutation, usePlaybackMutation } from './mutations';
+import {
+  useSetActiveDeviceMutation,
+  useSkipMutation,
+  usePlayPauseMutation,
+} from './mutations';
 import { usePartyContext } from 'scenes/party';
 import PlayerContext from './PlayerContext';
 import { Playback } from 'globalTypes';
@@ -11,18 +15,14 @@ interface IProps {
   children: React.ReactNode;
 }
 
-const REFETCH_INTERVAL_MS = 200;
-
 export function PlayerContainer({ children }: IProps) {
   const player = usePlayerQuery();
   const party = usePartyContext();
   const queuedTracks = useQueuedTracks(party.id);
   const { setNextActiveTrack } = useChangedTracks();
-  const [refetchTimeout, setRefetchTimeout] = React.useState<
-    NodeJS.Timeout | undefined
-  >(undefined);
   const setActiveDevice = useSetActiveDeviceMutation();
-  const mutatePlayback = usePlaybackMutation();
+  const skipMutation = useSkipMutation();
+  const playPauseMutation = usePlayPauseMutation();
 
   const handleActiveDevice = async (deviceId: string) => {
     await setActiveDevice({
@@ -33,43 +33,16 @@ export function PlayerContainer({ children }: IProps) {
   };
 
   const startPlayback = React.useCallback(async () => {
-    await mutatePlayback({
-      variables: {
-        partyId: party.id,
-        playback: Playback.PLAY,
-      },
-    });
-
-    setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
-  }, [setRefetchTimeout]);
+    playPauseMutation(Playback.PLAY, party.id);
+  }, []);
 
   const pausePlayback = React.useCallback(() => {
-    mutatePlayback({
-      variables: {
-        partyId: party.id,
-        playback: Playback.PAUSE,
-      },
-    });
-
-    setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
-  }, [setRefetchTimeout]);
+    playPauseMutation(Playback.PAUSE, party.id);
+  }, []);
 
   React.useEffect(() => {
     return () => {
-      if (refetchTimeout) {
-        return clearTimeout(refetchTimeout);
-      }
-    };
-  }, [refetchTimeout]);
-
-  React.useEffect(() => {
-    return () => {
-      mutatePlayback({
-        variables: {
-          partyId: party.id,
-          playback: Playback.PAUSE,
-        },
-      });
+      playPauseMutation(Playback.PAUSE, party.id);
     };
   }, []);
 
@@ -79,14 +52,7 @@ export function PlayerContainer({ children }: IProps) {
       setNextActiveTrack(nextInQueue.trackId);
     }
 
-    await mutatePlayback({
-      variables: {
-        partyId: party.id,
-        playback: Playback.SKIP,
-      },
-    });
-
-    setRefetchTimeout(setTimeout(() => player.refetch(), REFETCH_INTERVAL_MS));
+    await skipMutation(party.id);
   };
 
   return (

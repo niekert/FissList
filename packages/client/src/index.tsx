@@ -8,7 +8,7 @@ import { split, from, Observable } from 'apollo-link';
 import { API_HOST, WS_SUBSCRIPTION_HOST } from 'app-constants';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
-import { ApolloProvider, graphql } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { onError } from 'apollo-link-error';
 import App from './App';

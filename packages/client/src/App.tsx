@@ -9,6 +9,7 @@ import SelectType from 'scenes/selectType';
 import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
 import InitialLoader from 'InitialLoader';
+import NotFound from 'components/NotFound';
 
 const AsyncNewParty = React.lazy(() => import('scenes/newParty'));
 const AsyncJoinparty = React.lazy(() => import('scenes/joinParty'));
@@ -48,11 +49,13 @@ function App({ history }: { history: any }) {
                 <Route path="/join" component={AsyncJoinparty} />
                 <Route path="/party/:partyId" component={AsyncParty} />
                 <Route
-                  path=""
+                  path="/"
+                  exact={true}
                   render={props => (
                     <SelectType {...props} parties={me.data.me!.parties} />
                   )}
                 />
+                <Route path="*" component={NotFound} />
               </Switch>
             )}
           </React.Suspense>

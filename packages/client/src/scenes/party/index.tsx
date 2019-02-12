@@ -22,6 +22,7 @@ import PartySettings from './settings';
 import TracksQueue from './TracksQueue';
 import MemberActiveTrack from './MemberActiveTrack';
 import { Permissions } from 'globalTypes';
+import NotFound from 'components/NotFound';
 
 export { usePartyContext } from './context';
 export { PARTY_QUERY } from './queries';
@@ -113,7 +114,8 @@ const getActivetab = (match: Match, location: Location) => {
 };
 
 export default function Party({ match, location, history }: IProps) {
-  const { data } = usePartyQuery(match.params.partyId);
+  const { data, errors } = usePartyQuery(match.params.partyId);
+  console.log('data', errors);
 
   const onTabChange = tab => {
     if (tab === PlayerTabs.Queue) {
@@ -128,6 +130,10 @@ export default function Party({ match, location, history }: IProps) {
     // TODO: This 140 is hacky af, need to get player height or something?
     window.scrollTo(0, Math.min(window.scrollY, PLAYER_HEIGHT_PX));
   }, [activeTab]);
+
+  if (errors) {
+    return <NotFound />;
+  }
 
   if (!data || !data.party) {
     return (

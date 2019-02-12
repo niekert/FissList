@@ -1,10 +1,10 @@
 import { v4 as uuid } from 'uuid';
 import { Context, Paging, Savedtrack } from '../types';
 import { Party, QueuedTrack, UserNode } from '../generated/prisma-client';
-import { ForbiddenError } from 'apollo-server';
+import { ForbiddenError, UserInputError } from 'apollo-server';
 import { withFilter } from 'graphql-subscriptions';
 import pubsub, { PubsubEvents } from '../pubsub';
-import { GraphQLError } from 'graphql';
+import { GraphQLError, graphql } from 'graphql';
 import { Playlist } from '../spotify';
 import { Permissions, getPermissionForParty } from '../permissions';
 
@@ -33,21 +33,29 @@ async function party(
   args: { partyId: string },
   context: Context,
 ): Promise<PartyResult> {
-  const user = await context.spotify.fetchCurrentUser();
-  const party = await context.prisma.party({ id: args.partyId });
+  try {
+    const user = await context.spotify.fetchCurrentUser();
+    const party = await context.prisma.party({ id: args.partyId });
 
-  if (!party) {
-    throw new GraphQLError('Party not found');
+    if (!party) {
+      throw new GraphQLError('Party not found');
+    }
+
+    return {
+      id: party.id,
+      name: party.name,
+      activeTrackId: party.activeTrackId,
+      ownerUserId: party.ownerUserId,
+      createdAt: party.createdAt,
+      updatedAt: party.updatedAt,
+    };
+  } catch (err) {
+    if (err.message === 'Party not found') {
+      throw new UserInputError(`Party with id ${args.partyId} does not exist`);
+    }
+
+    throw new GraphQLError(`Could not load party because ${err.message}`);
   }
-
-  return {
-    id: party.id,
-    name: party.name,
-    activeTrackId: party.activeTrackId,
-    ownerUserId: party.ownerUserId,
-    createdAt: party.createdAt,
-    updatedAt: party.updatedAt,
-  };
 }
 
 async function parties(

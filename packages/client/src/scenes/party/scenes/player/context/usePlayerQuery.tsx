@@ -27,9 +27,7 @@ export interface PlayerQueryResult extends ApolloQueryResult<Player> {
 }
 
 export function usePlayerQuery(): PlayerQueryResult {
-  const player = useQuery<Player>(PLAYER_QUERY, {
-    pollInterval: 15000,
-  });
+  const player = useQuery<Player>(PLAYER_QUERY);
 
   return {
     data: player.data,

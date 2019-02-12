@@ -56,5 +56,8 @@ export function usePartyQuery(partyId: string) {
     variables: {
       partyId,
     },
+    // Suspending here crashes the page.
+    suspend: false,
+    errorPolicy: 'all',
   });
 }
