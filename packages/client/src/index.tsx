@@ -12,8 +12,6 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { onError } from 'apollo-link-error';
 import App from './App';
-import Spinner from 'components/Spinner';
-import styled from 'styled-components';
 import createHistory from 'history/createBrowserHistory';
 import { register } from './serviceworker';
 import InitialLoader from 'InitialLoader';
