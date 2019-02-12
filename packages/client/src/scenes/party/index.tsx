@@ -26,8 +26,12 @@ import { Permissions } from 'globalTypes';
 export { usePartyContext } from './context';
 export { PARTY_QUERY } from './queries';
 
-const AsyncBrowse = React.lazy(() => import('./scenes/browse'));
-const AsyncHistory = React.lazy(() => import('./scenes/history'));
+const AsyncBrowse = React.lazy(() =>
+  import('./scenes/browse').then(module => ({ default: module.Browse })),
+);
+const AsyncHistory = React.lazy(() =>
+  import('./scenes/browse').then(module => ({ default: module.History })),
+);
 
 // FIXME: Remove this ugly hardcode
 const PLAYER_HEIGHT_PX = 0;

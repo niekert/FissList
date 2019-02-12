@@ -25,7 +25,7 @@ async function me(root, args, context: Context, info): Promise<Me> {
       parties: { ids: parties.map(userParty => userParty.id) },
     };
   } catch (err) {
-    throw new AuthenticationError('Unauthenticated');
+    throw new AuthenticationError(`Unauthenticated: ${err.message}`);
   }
 }
 

@@ -24,6 +24,7 @@ type Party {
   ownerUserId: String!
   activeTrackId: String!
   queuedTracks: [QueuedTrack!]!
+  previouslyPlayedTrackIds: [String!]!
   requestedUserIds: [UserNode!]! @relation(name: "RequestedUserIds")
   bannedUserIds: [UserNode!]! @relation(name: "BannedUserIds")
   partyUserIds: [UserNode!]! @relation(name: "PartyUserIds")

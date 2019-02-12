@@ -74,6 +74,7 @@ type Party {
   ownerUserId: String!
   activeTrackId: String!
   queuedTracks(where: QueuedTrackWhereInput, orderBy: QueuedTrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QueuedTrack!]
+  previouslyPlayedTrackIds: [String!]!
   requestedUserIds(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode!]
   bannedUserIds(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode!]
   partyUserIds(where: UserNodeWhereInput, orderBy: UserNodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserNode!]
@@ -91,10 +92,15 @@ input PartyCreateInput {
   ownerUserId: String!
   activeTrackId: String!
   queuedTracks: QueuedTrackCreateManyInput
+  previouslyPlayedTrackIds: PartyCreatepreviouslyPlayedTrackIdsInput
   requestedUserIds: UserNodeCreateManyInput
   bannedUserIds: UserNodeCreateManyInput
   partyUserIds: UserNodeCreateManyInput
   lastTimeUsersChanged: String
+}
+
+input PartyCreatepreviouslyPlayedTrackIdsInput {
+  set: [String!]
 }
 
 type PartyEdge {
@@ -126,6 +132,7 @@ type PartyPreviousValues {
   updatedAt: DateTime!
   ownerUserId: String!
   activeTrackId: String!
+  previouslyPlayedTrackIds: [String!]!
   lastTimeUsersChanged: String
 }
 
@@ -152,6 +159,7 @@ input PartyUpdateInput {
   ownerUserId: String
   activeTrackId: String
   queuedTracks: QueuedTrackUpdateManyInput
+  previouslyPlayedTrackIds: PartyUpdatepreviouslyPlayedTrackIdsInput
   requestedUserIds: UserNodeUpdateManyInput
   bannedUserIds: UserNodeUpdateManyInput
   partyUserIds: UserNodeUpdateManyInput
@@ -162,7 +170,12 @@ input PartyUpdateManyMutationInput {
   name: String
   ownerUserId: String
   activeTrackId: String
+  previouslyPlayedTrackIds: PartyUpdatepreviouslyPlayedTrackIdsInput
   lastTimeUsersChanged: String
+}
+
+input PartyUpdatepreviouslyPlayedTrackIdsInput {
+  set: [String!]
 }
 
 input PartyWhereInput {
