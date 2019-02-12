@@ -115,7 +115,6 @@ export function makeHttpService(accessKey: string): HttpService {
     path: string,
     options: any = {},
   ): Promise<{ status: Number; data: T }> {
-    console.log(`fetched ${path} with status ${status}`);
     return fetch(`${BASE_URL}${path}`, {
       ...options,
       headers: {
@@ -126,6 +125,7 @@ export function makeHttpService(accessKey: string): HttpService {
       console.log(
         `fetched ${path.substring(0, 50)} with status ${resp.status}`,
       );
+
       if (resp.status === 401) {
         throw new AuthenticationError('Unauthenticated.');
       }
