@@ -8,7 +8,7 @@ import { Route, Router, Switch } from 'react-router-dom';
 import SelectType from 'scenes/selectType';
 import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
-import InitialLoader from 'InitialLoader';
+import Spinner from 'components/Spinner';
 
 const AsyncNewParty = React.lazy(() => import('scenes/newParty'));
 const AsyncJoinparty = React.lazy(() => import('scenes/joinParty'));
@@ -35,7 +35,7 @@ function App({ history }: { history: any }) {
         value={me.data.me ? me.data.me.user : undefined}
       >
         <Router history={history}>
-          <React.Suspense fallback={<InitialLoader />}>
+          <React.Suspense fallback={<Spinner />}>
             <Route path="/auth" component={AuthCallback} />
 
             <GlobalStyle />
