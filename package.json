@@ -11,6 +11,6 @@
     "node": "11.x.x"
   },
   "scripts": {
-    "heroku-postbuild": "yarn workspace api build && yarn workspace client build && mkdir -p packages/api/dist/www && cp -r packages/client/build/* packages/api/dist/www"
+    "heroku-postbuild": "yarn workspace api build"
   }
 }
