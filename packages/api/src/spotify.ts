@@ -115,6 +115,7 @@ export function makeHttpService(accessKey: string): HttpService {
     path: string,
     options: any = {},
   ): Promise<{ status: Number; data: T }> {
+    console.log(`fetched ${path} with status ${status}`);
     return fetch(`${BASE_URL}${path}`, {
       ...options,
       headers: {
