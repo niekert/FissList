@@ -2,9 +2,9 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode, GraphQLSchema } from 'graphql';
-import { makePrismaClientClass, BaseClientOptions } from 'prisma-client-lib';
-import { typeDefs } from './prisma-schema';
+import { DocumentNode, GraphQLSchema } from "graphql";
+import { makePrismaClientClass, BaseClientOptions } from "prisma-client-lib";
+import { typeDefs } from "./prisma-schema";
 
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
@@ -28,7 +28,7 @@ export interface Prisma {
   $exists: Exists;
   $graphql: <T = any>(
     query: string,
-    variables?: { [key: string]: any },
+    variables?: { [key: string]: any }
   ) => Promise<T>;
 
   /**
@@ -45,7 +45,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<Party>;
   partiesConnection: (
     args?: {
@@ -56,7 +56,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => PartyConnectionPromise;
   queuedTrack: (where: QueuedTrackWhereUniqueInput) => QueuedTrackPromise;
   queuedTracks: (
@@ -68,7 +68,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<QueuedTrack>;
   queuedTracksConnection: (
     args?: {
@@ -79,7 +79,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => QueuedTrackConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
@@ -91,7 +91,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<User>;
   usersConnection: (
     args?: {
@@ -102,7 +102,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => UserConnectionPromise;
   userNode: (where: UserNodeWhereUniqueInput) => UserNodePromise;
   userNodes: (
@@ -114,7 +114,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => FragmentableArray<UserNode>;
   userNodesConnection: (
     args?: {
@@ -125,7 +125,7 @@ export interface Prisma {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => UserNodeConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
@@ -135,70 +135,70 @@ export interface Prisma {
 
   createParty: (data: PartyCreateInput) => PartyPromise;
   updateParty: (
-    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput },
+    args: { data: PartyUpdateInput; where: PartyWhereUniqueInput }
   ) => PartyPromise;
   updateManyParties: (
-    args: { data: PartyUpdateManyMutationInput; where?: PartyWhereInput },
+    args: { data: PartyUpdateManyMutationInput; where?: PartyWhereInput }
   ) => BatchPayloadPromise;
   upsertParty: (
     args: {
       where: PartyWhereUniqueInput;
       create: PartyCreateInput;
       update: PartyUpdateInput;
-    },
+    }
   ) => PartyPromise;
   deleteParty: (where: PartyWhereUniqueInput) => PartyPromise;
   deleteManyParties: (where?: PartyWhereInput) => BatchPayloadPromise;
   createQueuedTrack: (data: QueuedTrackCreateInput) => QueuedTrackPromise;
   updateQueuedTrack: (
-    args: { data: QueuedTrackUpdateInput; where: QueuedTrackWhereUniqueInput },
+    args: { data: QueuedTrackUpdateInput; where: QueuedTrackWhereUniqueInput }
   ) => QueuedTrackPromise;
   updateManyQueuedTracks: (
     args: {
       data: QueuedTrackUpdateManyMutationInput;
       where?: QueuedTrackWhereInput;
-    },
+    }
   ) => BatchPayloadPromise;
   upsertQueuedTrack: (
     args: {
       where: QueuedTrackWhereUniqueInput;
       create: QueuedTrackCreateInput;
       update: QueuedTrackUpdateInput;
-    },
+    }
   ) => QueuedTrackPromise;
   deleteQueuedTrack: (where: QueuedTrackWhereUniqueInput) => QueuedTrackPromise;
   deleteManyQueuedTracks: (
-    where?: QueuedTrackWhereInput,
+    where?: QueuedTrackWhereInput
   ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput },
+    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
   ) => UserPromise;
   updateManyUsers: (
-    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput },
+    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }
   ) => BatchPayloadPromise;
   upsertUser: (
     args: {
       where: UserWhereUniqueInput;
       create: UserCreateInput;
       update: UserUpdateInput;
-    },
+    }
   ) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
   createUserNode: (data: UserNodeCreateInput) => UserNodePromise;
   updateUserNode: (
-    args: { data: UserNodeUpdateInput; where: UserNodeWhereUniqueInput },
+    args: { data: UserNodeUpdateInput; where: UserNodeWhereUniqueInput }
   ) => UserNodePromise;
   updateManyUserNodes: (
-    args: { data: UserNodeUpdateManyMutationInput; where?: UserNodeWhereInput },
+    args: { data: UserNodeUpdateManyMutationInput; where?: UserNodeWhereInput }
   ) => BatchPayloadPromise;
   upsertUserNode: (
     args: {
       where: UserNodeWhereUniqueInput;
       create: UserNodeCreateInput;
       update: UserNodeUpdateInput;
-    },
+    }
   ) => UserNodePromise;
   deleteUserNode: (where: UserNodeWhereUniqueInput) => UserNodePromise;
   deleteManyUserNodes: (where?: UserNodeWhereInput) => BatchPayloadPromise;
@@ -212,16 +212,16 @@ export interface Prisma {
 
 export interface Subscription {
   party: (
-    where?: PartySubscriptionWhereInput,
+    where?: PartySubscriptionWhereInput
   ) => PartySubscriptionPayloadSubscription;
   queuedTrack: (
-    where?: QueuedTrackSubscriptionWhereInput,
+    where?: QueuedTrackSubscriptionWhereInput
   ) => QueuedTrackSubscriptionPayloadSubscription;
   user: (
-    where?: UserSubscriptionWhereInput,
+    where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
   userNode: (
-    where?: UserNodeSubscriptionWhereInput,
+    where?: UserNodeSubscriptionWhereInput
   ) => UserNodeSubscriptionPayloadSubscription;
 }
 
@@ -234,52 +234,52 @@ export interface ClientConstructor<T> {
  */
 
 export type QueuedTrackOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'trackId_ASC'
-  | 'trackId_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "trackId_ASC"
+  | "trackId_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type UserNodeOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'userId_ASC'
-  | 'userId_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "userId_ASC"
+  | "userId_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type PartyOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  | 'ownerUserId_ASC'
-  | 'ownerUserId_DESC'
-  | 'activeTrackId_ASC'
-  | 'activeTrackId_DESC'
-  | 'lastTimeUsersChanged_ASC'
-  | 'lastTimeUsersChanged_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "ownerUserId_ASC"
+  | "ownerUserId_DESC"
+  | "activeTrackId_ASC"
+  | "activeTrackId_DESC"
+  | "lastTimeUsersChanged_ASC"
+  | "lastTimeUsersChanged_DESC";
 
 export type UserOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC';
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
-export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type PartyWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
@@ -524,6 +524,7 @@ export interface PartyCreateInput {
   ownerUserId: String;
   activeTrackId: String;
   queuedTracks?: QueuedTrackCreateManyInput;
+  previouslyPlayedTrackIds?: PartyCreatepreviouslyPlayedTrackIdsInput;
   requestedUserIds?: UserNodeCreateManyInput;
   bannedUserIds?: UserNodeCreateManyInput;
   partyUserIds?: UserNodeCreateManyInput;
@@ -544,6 +545,10 @@ export interface QueuedTrackCreateuserVotesInput {
   set?: String[] | String;
 }
 
+export interface PartyCreatepreviouslyPlayedTrackIdsInput {
+  set?: String[] | String;
+}
+
 export interface UserNodeCreateManyInput {
   create?: UserNodeCreateInput[] | UserNodeCreateInput;
   connect?: UserNodeWhereUniqueInput[] | UserNodeWhereUniqueInput;
@@ -558,6 +563,7 @@ export interface PartyUpdateInput {
   ownerUserId?: String;
   activeTrackId?: String;
   queuedTracks?: QueuedTrackUpdateManyInput;
+  previouslyPlayedTrackIds?: PartyUpdatepreviouslyPlayedTrackIdsInput;
   requestedUserIds?: UserNodeUpdateManyInput;
   bannedUserIds?: UserNodeUpdateManyInput;
   partyUserIds?: UserNodeUpdateManyInput;
@@ -661,6 +667,10 @@ export interface QueuedTrackUpdateManyDataInput {
   userVotes?: QueuedTrackUpdateuserVotesInput;
 }
 
+export interface PartyUpdatepreviouslyPlayedTrackIdsInput {
+  set?: String[] | String;
+}
+
 export interface UserNodeUpdateManyInput {
   create?: UserNodeCreateInput[] | UserNodeCreateInput;
   update?:
@@ -740,6 +750,7 @@ export interface PartyUpdateManyMutationInput {
   name?: String;
   ownerUserId?: String;
   activeTrackId?: String;
+  previouslyPlayedTrackIds?: PartyUpdatepreviouslyPlayedTrackIdsInput;
   lastTimeUsersChanged?: String;
 }
 
@@ -828,6 +839,7 @@ export interface Party {
   updatedAt: DateTimeOutput;
   ownerUserId: String;
   activeTrackId: String;
+  previouslyPlayedTrackIds: String[];
   lastTimeUsersChanged?: String;
 }
 
@@ -847,8 +859,9 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
+  previouslyPlayedTrackIds: () => Promise<String[]>;
   requestedUserIds: <T = FragmentableArray<UserNode>>(
     args?: {
       where?: UserNodeWhereInput;
@@ -858,7 +871,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   bannedUserIds: <T = FragmentableArray<UserNode>>(
     args?: {
@@ -869,7 +882,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   partyUserIds: <T = FragmentableArray<UserNode>>(
     args?: {
@@ -880,7 +893,7 @@ export interface PartyPromise extends Promise<Party>, Fragmentable {
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   lastTimeUsersChanged: () => Promise<String>;
 }
@@ -903,8 +916,9 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
+  previouslyPlayedTrackIds: () => Promise<AsyncIterator<String[]>>;
   requestedUserIds: <T = Promise<AsyncIterator<UserNodeSubscription>>>(
     args?: {
       where?: UserNodeWhereInput;
@@ -914,7 +928,7 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   bannedUserIds: <T = Promise<AsyncIterator<UserNodeSubscription>>>(
     args?: {
@@ -925,7 +939,7 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   partyUserIds: <T = Promise<AsyncIterator<UserNodeSubscription>>>(
     args?: {
@@ -936,7 +950,7 @@ export interface PartySubscription
       before?: String;
       first?: Int;
       last?: Int;
-    },
+    }
   ) => T;
   lastTimeUsersChanged: () => Promise<AsyncIterator<String>>;
 }
@@ -1274,6 +1288,7 @@ export interface PartyPreviousValues {
   updatedAt: DateTimeOutput;
   ownerUserId: String;
   activeTrackId: String;
+  previouslyPlayedTrackIds: String[];
   lastTimeUsersChanged?: String;
 }
 
@@ -1286,6 +1301,7 @@ export interface PartyPreviousValuesPromise
   updatedAt: () => Promise<DateTimeOutput>;
   ownerUserId: () => Promise<String>;
   activeTrackId: () => Promise<String>;
+  previouslyPlayedTrackIds: () => Promise<String[]>;
   lastTimeUsersChanged: () => Promise<String>;
 }
 
@@ -1298,6 +1314,7 @@ export interface PartyPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   ownerUserId: () => Promise<AsyncIterator<String>>;
   activeTrackId: () => Promise<AsyncIterator<String>>;
+  previouslyPlayedTrackIds: () => Promise<AsyncIterator<String[]>>;
   lastTimeUsersChanged: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1475,21 +1492,21 @@ export type Long = string;
 
 export const models = [
   {
-    name: 'Party',
-    embedded: false,
+    name: "Party",
+    embedded: false
   },
   {
-    name: 'QueuedTrack',
-    embedded: false,
+    name: "QueuedTrack",
+    embedded: false
   },
   {
-    name: 'User',
-    embedded: false,
+    name: "User",
+    embedded: false
   },
   {
-    name: 'UserNode',
-    embedded: false,
-  },
+    name: "UserNode",
+    embedded: false
+  }
 ];
 
 /**
@@ -1499,6 +1516,6 @@ export const models = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://localhost:4467`,
+  endpoint: `http://localhost:4467`
 });
 export const prisma = new Prisma();

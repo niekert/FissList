@@ -17,6 +17,23 @@ interface TrackMap {
   [trackId: string]: DetailedTrack;
 }
 
+async function fetchDetailedTracks(
+  trackIds: string[],
+  context: Context,
+): Promise<DetailedTrack[]> {
+  const { data: favoritedTracks } = await context.spotify.fetchResource<
+    boolean[]
+  >(`/me/tracks/contains?ids=${trackIds.join(',')}`);
+  const { data: tracks } = await context.spotify.fetchResource<{
+    tracks: Track[];
+  }>(`/tracks?ids=${trackIds.join(',')}`);
+
+  return tracks.tracks.map((track, index) => ({
+    ...track,
+    isFavorited: favoritedTracks[index],
+  }));
+}
+
 async function fetchQueuedTracks(
   {
     partyId,
@@ -37,22 +54,14 @@ async function fetchQueuedTracks(
   const sortedTracks = sortQueuedTracks(queuedPartyTracks, { offset, limit });
   const queuedTrackIds = sortedTracks.map(track => track.trackId);
 
-  const { data: favoritedTracks } = await context.spotify.fetchResource<
-    boolean[]
-  >(`/me/tracks/contains?ids=${queuedTrackIds.join(',')}`);
-  const { data } = await context.spotify.fetchResource<{
-    tracks: Track[];
-  }>(`/tracks?ids=${queuedTrackIds.join(',')}`);
+  const detailedTracks = await fetchDetailedTracks(queuedTrackIds, context);
 
-  const trackMap = data.tracks.reduce<TrackMap>(
-    (result, track, index) =>
+  const trackMap = detailedTracks.reduce<TrackMap>(
+    (result, track) =>
       track
         ? {
             ...result,
-            [track.id]: {
-              ...track,
-              isFavorited: favoritedTracks[index],
-            },
+            [track.id]: track,
           }
         : result,
     {},
@@ -107,6 +116,21 @@ async function favorite(
   return false;
 }
 
+async function previousTracks(
+  _,
+  {
+    partyId,
+    offset = 0,
+    limit = 50,
+  }: { partyId: string; offset?: number; limit?: number },
+  context: Context,
+): Promise<DetailedTrack[]> {
+  const party = await context.prisma.party({ id: partyId });
+  const trackIds = party.previouslyPlayedTrackIds.slice(offset, offset + limit);
+
+  return fetchDetailedTracks(trackIds, context);
+}
+
 export default {
   Query: {
     queuedTracks(
@@ -117,6 +141,7 @@ export default {
       return fetchQueuedTracks(args, context);
     },
     track,
+    previousTracks,
   },
   Mutation: {
     favorite,
