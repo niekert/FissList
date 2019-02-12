@@ -53,7 +53,6 @@ export function useQueuedTracks(partyId: string) {
 
 export function usePartyQuery(partyId: string) {
   return useQuery<GetPartyById, GetPartyByIdVariables>(PARTY_QUERY, {
-    suspend: false,
     variables: {
       partyId,
     },
