@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+import { json } from 'body-parser';
 import { URLSearchParams } from 'url';
 import { prisma, Prisma } from './generated/prisma-client';
 import { createServer } from 'http';
@@ -37,6 +39,8 @@ app.use(
     origin: ['http://localhost:3001', 'https://pampaplay.netlify.com'],
   }),
 );
+
+app.use(json());
 
 app.use('/static', express.static(path.resolve(__dirname, 'www/static')));
 app.use('/public', express.static(path.resolve(__dirname, 'www/public')));
@@ -80,6 +84,33 @@ app.get('/authorize', (req, res) => {
   );
 });
 
+app.post('/refresh', async (req, res) => {
+  const authorization = Buffer.from(
+    `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`,
+  ).toString('base64');
+
+  console.log('attempting to refresh', req.body);
+
+  const body = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: req.body.refreshToken,
+  });
+
+  const resp = await fetch(`https://accounts.spotify.com/api/token`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${authorization}`,
+    },
+    body,
+  });
+
+  const data = await resp.json();
+
+  res.status(resp.status);
+  res.json(data);
+});
+
 app.get('/auth-callback', async (req, res) => {
   const { code } = req.query;
 
@@ -108,8 +139,7 @@ app.get('/auth-callback', async (req, res) => {
       process.env.CLIENT_HOST +
         `/auth?token=${authResp.access_token}&refreshToken=${
           authResp.refresh_token
-        }
-    `,
+        }`,
     );
   } catch (err) {
     throw new Error('Something went wrong lol');

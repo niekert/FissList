@@ -10,6 +10,7 @@
     "@types/node-fetch": "^2.1.2",
     "apollo-server": "^2.2.2",
     "apollo-server-express": "^2.2.2",
+    "body-parser": "^1.18.3",
     "camelcase-keys": "^5.0.0",
     "concurrently": "^4.0.1",
     "express": "^4.16.4",
@@ -49,6 +50,7 @@
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "devDependencies": {
+    "@types/body-parser": "^1.17.0",
     "@types/uuid": "^3.4.4",
     "babel-plugin-graphql-tag": "^1.6.0",
     "dotenv": "^6.1.0",

@@ -4,11 +4,11 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloClient } from 'apollo-client';
 import { getMainDefinition } from 'apollo-utilities';
-import { split, from } from 'apollo-link';
+import { split, from, Observable } from 'apollo-link';
 import { API_HOST, WS_SUBSCRIPTION_HOST } from 'app-constants';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, graphql } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { onError } from 'apollo-link-error';
 import App from './App';
@@ -21,8 +21,13 @@ register();
 
 const history = createHistory();
 
+const getKeys = () => ({
+  accessKey: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken'),
+});
+
 const authLink = setContext((_, { headers }) => {
-  const accessKey = localStorage.getItem('accessToken');
+  const { accessKey } = getKeys();
 
   return {
     headers: {
@@ -33,7 +38,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const getConnectionParams = () => {
-  const accessKey = localStorage.getItem('accessToken');
+  const { accessKey } = getKeys();
 
   return {
     Authorization: `Bearer ${accessKey}`,
@@ -58,12 +63,51 @@ const link = split(
   }),
   from([
     authLink,
-    onError(({ graphQLErrors }) => {
-      if (graphQLErrors) {
-        // const hasAuthError = graphQLErrors.some(
-        //   err => !!err.extensions && err.extensions.code === 'UNAUTHENTICATED',
-        // );
+    onError(({ graphQLErrors, operation, forward }) => {
+      if (!graphQLErrors || !graphQLErrors.length) {
+        return;
       }
+
+      const { accessKey, refreshToken } = getKeys();
+      const [error] = graphQLErrors;
+
+      if (error.message !== 'Unauthenticated.' || !accessKey || !refreshToken) {
+        return;
+      }
+
+      return new Observable(observer => {
+        fetch(`${API_HOST}/refresh`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({ refreshToken }),
+        })
+          .then(resp => resp.json())
+          .then(data => {
+            localStorage.setItem('accessToken', data.access_token);
+
+            operation.setContext(() => ({
+              headers: {
+                // Switch out old access token for new one
+                authorization: `Bearer ${data.access_token}` || null,
+              },
+            }));
+          })
+          .then(() => {
+            const subscriber = {
+              next: observer.next.bind(observer),
+              error: observer.error.bind(observer),
+              complete: observer.complete.bind(observer),
+            };
+
+            // Retry last failed request
+            forward(operation).subscribe(subscriber);
+          })
+          .catch(refreshError => {
+            observer.error(refreshError);
+          });
+      });
     }),
     new HttpLink({
       uri: `${API_HOST}/graphql`,
