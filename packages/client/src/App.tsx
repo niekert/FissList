@@ -9,6 +9,7 @@ import SelectType from 'scenes/selectType';
 import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
 import Spinner from 'components/Spinner';
+import InitialLoader from 'InitialLoader';
 
 const AsyncNewParty = React.lazy(() => import('scenes/newParty'));
 const AsyncJoinparty = React.lazy(() => import('scenes/joinParty'));
@@ -26,10 +27,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const PageLoader = styled(Spinner)`
-  min-height: 100vh;
-`;
-
 function App({ history }: { history: any }) {
   const me = useGetMe();
 
@@ -39,7 +36,7 @@ function App({ history }: { history: any }) {
         value={me.data.me ? me.data.me.user : undefined}
       >
         <Router history={history}>
-          <React.Suspense fallback={<PageLoader />}>
+          <React.Suspense fallback={<InitialLoader />}>
             <Route path="/auth" component={AuthCallback} />
 
             <GlobalStyle />
