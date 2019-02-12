@@ -71,7 +71,12 @@ const link = split(
       const { accessKey, refreshToken } = getKeys();
       const [error] = graphQLErrors;
 
-      if (error.message !== 'Unauthenticated.' || !accessKey || !refreshToken) {
+      if (
+        !error.extensions ||
+        error.extensions.code !== 'UNAUTHENTICATED' ||
+        !accessKey ||
+        !refreshToken
+      ) {
         return;
       }
 
