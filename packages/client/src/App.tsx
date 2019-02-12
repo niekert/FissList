@@ -26,6 +26,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const PageLoader = styled(Spinner)`
+  min-height: 100vh;
+`;
+
 function App({ history }: { history: any }) {
   const me = useGetMe();
 
@@ -35,7 +39,7 @@ function App({ history }: { history: any }) {
         value={me.data.me ? me.data.me.user : undefined}
       >
         <Router history={history}>
-          <React.Suspense fallback={<Spinner />}>
+          <React.Suspense fallback={<PageLoader />}>
             <Route path="/auth" component={AuthCallback} />
 
             <GlobalStyle />
