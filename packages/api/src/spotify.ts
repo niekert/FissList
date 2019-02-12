@@ -122,6 +122,9 @@ export function makeHttpService(accessKey: string): HttpService {
         ...options.headers,
       },
     }).then(async resp => {
+      console.log(
+        `fetched ${path.substring(0, 50)} with status ${resp.status}`,
+      );
       if (resp.status === 401) {
         throw new AuthenticationError('Unauthenticated.');
       }
