@@ -31,7 +31,7 @@ export interface GetPartyById_party {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrack: GetPartyById_party_activeTrack;
+  activeTrack: GetPartyById_party_activeTrack | null;
   activeTrackId: string;
   requestedUserIds: string[];
   ownerUserId: string;

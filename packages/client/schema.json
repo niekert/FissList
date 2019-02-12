@@ -691,13 +691,9 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Track",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "Track",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

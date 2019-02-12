@@ -31,7 +31,7 @@ export interface NewParty_createParty {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrack: NewParty_createParty_activeTrack;
+  activeTrack: NewParty_createParty_activeTrack | null;
   activeTrackId: string;
   requestedUserIds: string[];
   ownerUserId: string;

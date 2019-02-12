@@ -34,7 +34,7 @@ function History({ match }: RouteComponentProps<{ partyId: string }>) {
     variables: {
       partyId: match.params.partyId,
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
   });
 
   return (

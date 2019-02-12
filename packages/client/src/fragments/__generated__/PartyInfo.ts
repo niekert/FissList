@@ -31,7 +31,7 @@ export interface PartyInfo {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrack: PartyInfo_activeTrack;
+  activeTrack: PartyInfo_activeTrack | null;
   activeTrackId: string;
   requestedUserIds: string[];
   ownerUserId: string;

@@ -45,7 +45,7 @@ export function useFavoriteTrack(trackId: string, favorite: boolean) {
             party: {
               ...partyQuery.party,
               activeTrack: {
-                ...partyQuery.party.activeTrack,
+                ...partyQuery.party.activeTrack!,
                 isFavorited: data!.favorite,
               },
             },

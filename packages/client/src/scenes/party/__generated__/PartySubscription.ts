@@ -31,7 +31,7 @@ export interface PartySubscription_party {
   id: string;
   name: string;
   permission: Permissions;
-  activeTrack: PartySubscription_party_activeTrack;
+  activeTrack: PartySubscription_party_activeTrack | null;
   activeTrackId: string;
   requestedUserIds: string[];
   ownerUserId: string;
