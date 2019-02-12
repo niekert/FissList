@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
 import { RouteComponentProps } from 'react-router';
 import { TrackInfo } from 'fragments';
+import styled from 'styled-components';
 import {
   PreviouslyPlayedTracks,
   PreviouslyPlayedTracksVariables,
@@ -19,6 +20,12 @@ const PREVIOUSLY_PLAYED_TRACKS_QUERY = gql`
   ${TrackInfo}
 `;
 
+const SectionHeader = styled.h3`
+  margin: 0;
+  line-height: 2;
+  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
+`;
+
 function History({ match }: RouteComponentProps<{ partyId: string }>) {
   const previousTracks = useQuery<
     PreviouslyPlayedTracks,
@@ -27,9 +34,15 @@ function History({ match }: RouteComponentProps<{ partyId: string }>) {
     variables: {
       partyId: match.params.partyId,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
-  return <TrackSelectList tracks={previousTracks.data.previousTracks} />;
+  return (
+    <>
+      <SectionHeader>Previously played</SectionHeader>
+      <TrackSelectList tracks={previousTracks.data.previousTracks} />
+    </>
+  );
 }
 
 export default History;
