@@ -178,9 +178,13 @@ export default {
       _,
       context: Context,
     ): Promise<Track> {
-      const { data: track } = await context.spotify.fetchResource<Track>(
-        `/tracks/${root.activeTrackId}`,
-      );
+      const { data: track, status } = await context.spotify.fetchResource<
+        Track
+      >(`/tracks/${root.activeTrackId}`);
+
+      if (status !== 200) {
+        console.error('failed fetching active trck', track);
+      }
 
       return track;
     },

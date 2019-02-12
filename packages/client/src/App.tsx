@@ -8,7 +8,6 @@ import { Route, Router, Switch } from 'react-router-dom';
 import SelectType from 'scenes/selectType';
 import { AuthCallback } from './scenes/auth';
 import Landing from 'scenes/landing';
-import Spinner from 'components/Spinner';
 import InitialLoader from 'InitialLoader';
 
 const AsyncNewParty = React.lazy(() => import('scenes/newParty'));
