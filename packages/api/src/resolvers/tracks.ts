@@ -21,6 +21,10 @@ async function fetchDetailedTracks(
   trackIds: string[],
   context: Context,
 ): Promise<DetailedTrack[]> {
+  if (trackIds.length === 0) {
+    return [];
+  }
+
   const { data: favoritedTracks } = await context.spotify.fetchResource<
     boolean[]
   >(`/me/tracks/contains?ids=${trackIds.join(',')}`);
@@ -127,6 +131,8 @@ async function previousTracks(
 ): Promise<DetailedTrack[]> {
   const party = await context.prisma.party({ id: partyId });
   const trackIds = party.previouslyPlayedTrackIds.slice(offset, offset + limit);
+
+  console.log('trackIds', trackIds);
 
   return fetchDetailedTracks(trackIds, context);
 }
