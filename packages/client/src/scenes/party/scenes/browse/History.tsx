@@ -3,12 +3,13 @@ import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
 import { RouteComponentProps } from 'react-router';
 import { TrackInfo } from 'fragments';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   PreviouslyPlayedTracks,
   PreviouslyPlayedTracksVariables,
 } from './__generated__/PreviouslyPlayedTracks';
 import { TrackSelectList } from './TrackSelectList';
+import { Button } from 'components/Form';
 
 const PREVIOUSLY_PLAYED_TRACKS_QUERY = gql`
   query PreviouslyPlayedTracks($partyId: String!, $offset: Int, $limit: Int) {
@@ -39,7 +40,16 @@ function History({ match }: RouteComponentProps<{ partyId: string }>) {
 
   return (
     <>
-      <SectionHeader>Previously played</SectionHeader>
+      <div
+        css={css`
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        `}
+      >
+        <SectionHeader>Previously played</SectionHeader>
+        <Button>Create playlist</Button>
+      </div>
       <TrackSelectList tracks={previousTracks.data.previousTracks} />
     </>
   );
