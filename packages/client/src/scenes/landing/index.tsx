@@ -17,17 +17,16 @@ const Intro = styled.p`
 
 const IphoneBezel = styled.img`
   z-index: 1;
-  margin: 0;
   position: relative;
 `;
 
 const Screen = styled.div`
   position: absolute;
   max-width: 100%;
-  top: 5%;
+  top: 3%;
   left: 13%;
   max-width: 100%;
-  bottom: 14%;
+  bottom: 10%;
   right: 13%;
 `;
 
@@ -41,6 +40,7 @@ const PosedPhone = posed.div({
   enter: {
     transform: 'translateY(0px)',
     opacity: 1,
+    delay: 400,
     transition: {
       type: 'spring',
     },
@@ -100,7 +100,7 @@ function Landing() {
               <video
                 css={css`
                   max-width: 100%;
-                  max-height: 100%;
+                  height: 100%;
                 `}
                 src={demo}
                 autoPlay={true}
