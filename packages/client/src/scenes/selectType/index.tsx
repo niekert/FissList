@@ -58,6 +58,7 @@ function SelectType({ history, parties }: IProps) {
               <Card
                 css={css`
                   padding: 0;
+                  background: ${props => props.theme.colors.primary};
                 `}
               >
                 <CardTitle

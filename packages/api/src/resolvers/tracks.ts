@@ -162,13 +162,7 @@ export default {
         return root.isFavorited;
       }
 
-      const {
-        data: [isFavorited],
-      } = await context.spotify.fetchResource<boolean[]>(
-        `/me/tracks/contains?ids=${root.id}`,
-      );
-
-      return isFavorited;
+      return false;
     },
   },
   Party: {
