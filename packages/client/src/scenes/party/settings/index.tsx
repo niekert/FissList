@@ -14,10 +14,10 @@ const ContentWrapper = styled.div`
 
 interface Props extends RouteComponentProps<{ partyId: string }> {
   partyName: string;
-  requestedUserCount: number;
+  requestedUsersCount: number;
 }
 
-function PartySettings({ match, partyName, requestedUserCount }: Props) {
+function PartySettings({ match, partyName, requestedUsersCount }: Props) {
   const { partyId } = match.params;
 
   return (
@@ -36,7 +36,7 @@ function PartySettings({ match, partyName, requestedUserCount }: Props) {
           <AccordionItem
             id="members"
             title="Party members"
-            activityCount={requestedUserCount}
+            activityCount={requestedUsersCount}
           >
             <PartyMembers />
           </AccordionItem>

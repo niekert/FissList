@@ -58,7 +58,7 @@ const DEFAULT_PREVIEW_Y_OFFSET_PX = 100;
 
 function Landing() {
   const animationFrame = React.useRef<number>(-1);
-  const [scrollY, setScrollY] = React.useState(0);
+  const [scrollY, setScrollY] = React.useState(window.scrollY);
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
@@ -86,8 +86,8 @@ function Landing() {
     <Page>
       <Title>PampaPlay</Title>
       <Intro>
-        PampaPlay allows you to create party playlists that your party guests
-        control.
+        Create shared party playlists where your guests decide what is played
+        next
       </Intro>
       <SpotifyConnect />
 

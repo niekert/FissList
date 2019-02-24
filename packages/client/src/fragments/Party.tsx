@@ -10,9 +10,8 @@ export const PartyInfo = gql`
       ...TrackInfo
     }
     activeTrackId
-    requestedUserIds
+    requestedUsersCount
     ownerUserId
-    partyUserIds
     userCount
     updatedAt
   }

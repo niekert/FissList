@@ -14,10 +14,11 @@ import {
   JoinPartyRequestVariables,
 } from './__generated__/JoinPartyRequest';
 import { Permissions } from 'globalTypes';
+import { Label, Input } from 'components/Form';
 
 const JOIN_PARTY_REQUEST = gql`
-  mutation JoinPartyRequest($partyId: String!) {
-    requestPartyAccess(partyId: $partyId) {
+  mutation JoinPartyRequest($partyId: String!, $displayName: String!) {
+    requestPartyAccess(partyId: $partyId, displayName: $displayName) {
       id
     }
   }
@@ -41,15 +42,19 @@ interface Props {
 }
 
 function JoinPartyForm({ partyId }: Props) {
+  const [displayName, setDisplayName] = React.useState('');
   const { mutate, isSuccess, isLoading } = useStateMutation<
     JoinPartyRequest,
     JoinPartyRequestVariables
   >(JOIN_PARTY_REQUEST);
 
-  const requestAccess = () => {
+  const requestAccess = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     mutate({
       variables: {
         partyId,
+        displayName,
       },
     });
   };
@@ -75,13 +80,37 @@ function JoinPartyForm({ partyId }: Props) {
                 to request access
               </Text>
 
-              <Button
-                type="button"
-                isLoading={isLoading}
-                onClick={requestAccess}
+              <form
+                onSubmit={requestAccess}
+                css={css`
+                  display: flex;
+                  flex-direction: column;
+                `}
               >
-                Request to join
-              </Button>
+                <Label hasMargin={true}>
+                  Your name:
+                  <Input
+                    type="text"
+                    value={displayName}
+                    onChange={e => setDisplayName(e.target.value)}
+                    required={true}
+                    css={css`
+                      display: block;
+                      font-weight: 500;
+                    `}
+                  />
+                </Label>
+
+                <Button
+                  type="submit"
+                  isLoading={isLoading}
+                  css={css`
+                    text-align: center;
+                  `}
+                >
+                  Request to join
+                </Button>
+              </form>
             </Page>
           ) : (
             <Page>

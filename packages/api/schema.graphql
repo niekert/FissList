@@ -79,11 +79,10 @@ type Party {
   ownerUserId: String!
   activeTrackId: String!
   activeTrack: Track
-  requestedUserIds: [String!]!
-  partyUserIds: [String!]!
   queuedTracks: [QueuedTrack!]!
   updatedAt: String!
   userCount: Int!
+  requestedUsersCount: Int!
 }
 
 type Artist {
@@ -162,6 +161,16 @@ type PlayStateChange {
   isPlaying: Boolean
 }
 
+type User {
+  userId: String!
+  displayName: String!
+}
+
+type PartyMembers {
+  requestedUsers: [User!]!
+  partyMembers: [User!]!
+}
+
 type Query {
   me: Me
   queuedTracks(partyId: String!, offset: Int, limit: Int): [QueuedTrack!]!
@@ -175,6 +184,7 @@ type Query {
   search(query: String!): SearchResult!
   favorited(trackId: String!): Boolean!
   previousTracks(partyId: String!, offset: Int, limit: Int): [Track!]!
+  partyMembers(partyId: String!): PartyMembers!
 }
 
 type Mutation {
@@ -184,11 +194,12 @@ type Mutation {
   deleteParty(partyId: String): Boolean
   updatePartyName(partyId: String!, name: String!): Party
   setActiveDevice(deviceId: String): Boolean
-  requestPartyAccess(partyId: String!, userId: String): Party
+  requestPartyAccess(partyId: String!, displayName: String!): Party
   setPartyAccess(partyId: String!, userId: String!, grant: Boolean!): Party
   playback(partyId: String!, playback: Playback!): String!
   trackVote(queuedTrackId: String!): Boolean!
   favorite(trackId: String!, favorite: Boolean!): Boolean!
+  transferOwnership(partyId: String!, newUserId: String!): Boolean!
 }
 
 type Subscription {

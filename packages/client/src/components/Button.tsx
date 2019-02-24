@@ -31,6 +31,7 @@ const Loading = styled(Spinner)`
 `;
 
 const Content = styled.div<{ isHidden: boolean }>`
+  flex: 1;
   visibility: ${props => (props.isHidden ? 'hidden' : 'visible')};
 `;
 

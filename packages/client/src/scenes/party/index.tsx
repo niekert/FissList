@@ -202,17 +202,16 @@ export default function Party({ match, location, history }: IProps) {
                         `}
                       >
                         <SettingsTabIcon />
-                        {data.party.requestedUserIds &&
-                          data.party.requestedUserIds.length > 0 && (
-                            <UnreadBadge
-                              css={css`
-                                position: absolute;
-                                top: 2px;
-                                right: 8px;
-                              `}
-                              count={data.party.requestedUserIds.length}
-                            />
-                          )}
+                        {data.party.requestedUsersCount > 0 && (
+                          <UnreadBadge
+                            css={css`
+                              position: absolute;
+                              top: 2px;
+                              right: 8px;
+                            `}
+                            count={data.party.requestedUsersCount}
+                          />
+                        )}
                       </Tab>
                     )}
                   </Tabs>
@@ -235,11 +234,7 @@ export default function Party({ match, location, history }: IProps) {
                         render={props => (
                           <PartySettings
                             {...props}
-                            requestedUserCount={
-                              data.party.requestedUserIds
-                                ? data.party.requestedUserIds.length
-                                : 0
-                            }
+                            requestedUsersCount={data.party.requestedUsersCount}
                             partyName={data.party.name}
                           />
                         )}

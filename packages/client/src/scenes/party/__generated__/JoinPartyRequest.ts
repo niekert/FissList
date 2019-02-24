@@ -15,4 +15,5 @@ export interface JoinPartyRequest {
 
 export interface JoinPartyRequestVariables {
   partyId: string;
+  displayName: string;
 }

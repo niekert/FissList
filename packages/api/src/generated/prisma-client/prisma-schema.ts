@@ -557,6 +557,7 @@ type UserEdge {
 type UserNode {
   id: ID!
   userId: String!
+  displayName: String!
 }
 
 type UserNodeConnection {
@@ -567,6 +568,7 @@ type UserNodeConnection {
 
 input UserNodeCreateInput {
   userId: String!
+  displayName: String!
 }
 
 input UserNodeCreateManyInput {
@@ -584,6 +586,8 @@ enum UserNodeOrderByInput {
   id_DESC
   userId_ASC
   userId_DESC
+  displayName_ASC
+  displayName_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -593,6 +597,7 @@ enum UserNodeOrderByInput {
 type UserNodePreviousValues {
   id: ID!
   userId: String!
+  displayName: String!
 }
 
 input UserNodeScalarWhereInput {
@@ -624,6 +629,20 @@ input UserNodeScalarWhereInput {
   userId_not_starts_with: String
   userId_ends_with: String
   userId_not_ends_with: String
+  displayName: String
+  displayName_not: String
+  displayName_in: [String!]
+  displayName_not_in: [String!]
+  displayName_lt: String
+  displayName_lte: String
+  displayName_gt: String
+  displayName_gte: String
+  displayName_contains: String
+  displayName_not_contains: String
+  displayName_starts_with: String
+  displayName_not_starts_with: String
+  displayName_ends_with: String
+  displayName_not_ends_with: String
   AND: [UserNodeScalarWhereInput!]
   OR: [UserNodeScalarWhereInput!]
   NOT: [UserNodeScalarWhereInput!]
@@ -649,14 +668,17 @@ input UserNodeSubscriptionWhereInput {
 
 input UserNodeUpdateDataInput {
   userId: String
+  displayName: String
 }
 
 input UserNodeUpdateInput {
   userId: String
+  displayName: String
 }
 
 input UserNodeUpdateManyDataInput {
   userId: String
+  displayName: String
 }
 
 input UserNodeUpdateManyInput {
@@ -672,6 +694,7 @@ input UserNodeUpdateManyInput {
 
 input UserNodeUpdateManyMutationInput {
   userId: String
+  displayName: String
 }
 
 input UserNodeUpdateManyWithWhereNestedInput {
@@ -719,6 +742,20 @@ input UserNodeWhereInput {
   userId_not_starts_with: String
   userId_ends_with: String
   userId_not_ends_with: String
+  displayName: String
+  displayName_not: String
+  displayName_in: [String!]
+  displayName_not_in: [String!]
+  displayName_lt: String
+  displayName_lte: String
+  displayName_gt: String
+  displayName_gte: String
+  displayName_contains: String
+  displayName_not_contains: String
+  displayName_starts_with: String
+  displayName_not_starts_with: String
+  displayName_ends_with: String
+  displayName_not_ends_with: String
   AND: [UserNodeWhereInput!]
   OR: [UserNodeWhereInput!]
   NOT: [UserNodeWhereInput!]

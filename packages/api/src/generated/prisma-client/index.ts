@@ -248,6 +248,8 @@ export type UserNodeOrderByInput =
   | "id_DESC"
   | "userId_ASC"
   | "userId_DESC"
+  | "displayName_ASC"
+  | "displayName_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -364,6 +366,20 @@ export interface UserNodeWhereInput {
   userId_not_starts_with?: String;
   userId_ends_with?: String;
   userId_not_ends_with?: String;
+  displayName?: String;
+  displayName_not?: String;
+  displayName_in?: String[] | String;
+  displayName_not_in?: String[] | String;
+  displayName_lt?: String;
+  displayName_lte?: String;
+  displayName_gt?: String;
+  displayName_gte?: String;
+  displayName_contains?: String;
+  displayName_not_contains?: String;
+  displayName_starts_with?: String;
+  displayName_not_starts_with?: String;
+  displayName_ends_with?: String;
+  displayName_not_ends_with?: String;
   AND?: UserNodeWhereInput[] | UserNodeWhereInput;
   OR?: UserNodeWhereInput[] | UserNodeWhereInput;
   NOT?: UserNodeWhereInput[] | UserNodeWhereInput;
@@ -556,6 +572,7 @@ export interface UserNodeCreateManyInput {
 
 export interface UserNodeCreateInput {
   userId: String;
+  displayName: String;
 }
 
 export interface PartyUpdateInput {
@@ -695,6 +712,7 @@ export interface UserNodeUpdateWithWhereUniqueNestedInput {
 
 export interface UserNodeUpdateDataInput {
   userId?: String;
+  displayName?: String;
 }
 
 export interface UserNodeUpsertWithWhereUniqueNestedInput {
@@ -732,6 +750,20 @@ export interface UserNodeScalarWhereInput {
   userId_not_starts_with?: String;
   userId_ends_with?: String;
   userId_not_ends_with?: String;
+  displayName?: String;
+  displayName_not?: String;
+  displayName_in?: String[] | String;
+  displayName_not_in?: String[] | String;
+  displayName_lt?: String;
+  displayName_lte?: String;
+  displayName_gt?: String;
+  displayName_gte?: String;
+  displayName_contains?: String;
+  displayName_not_contains?: String;
+  displayName_starts_with?: String;
+  displayName_not_starts_with?: String;
+  displayName_ends_with?: String;
+  displayName_not_ends_with?: String;
   AND?: UserNodeScalarWhereInput[] | UserNodeScalarWhereInput;
   OR?: UserNodeScalarWhereInput[] | UserNodeScalarWhereInput;
   NOT?: UserNodeScalarWhereInput[] | UserNodeScalarWhereInput;
@@ -744,6 +776,7 @@ export interface UserNodeUpdateManyWithWhereNestedInput {
 
 export interface UserNodeUpdateManyDataInput {
   userId?: String;
+  displayName?: String;
 }
 
 export interface PartyUpdateManyMutationInput {
@@ -778,10 +811,12 @@ export interface UserUpdateManyMutationInput {
 
 export interface UserNodeUpdateInput {
   userId?: String;
+  displayName?: String;
 }
 
 export interface UserNodeUpdateManyMutationInput {
   userId?: String;
+  displayName?: String;
 }
 
 export interface PartySubscriptionWhereInput {
@@ -984,11 +1019,13 @@ export interface QueuedTrackSubscription
 export interface UserNode {
   id: ID_Output;
   userId: String;
+  displayName: String;
 }
 
 export interface UserNodePromise extends Promise<UserNode>, Fragmentable {
   id: () => Promise<ID_Output>;
   userId: () => Promise<String>;
+  displayName: () => Promise<String>;
 }
 
 export interface UserNodeSubscription
@@ -996,6 +1033,7 @@ export interface UserNodeSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   userId: () => Promise<AsyncIterator<String>>;
+  displayName: () => Promise<AsyncIterator<String>>;
 }
 
 export interface PartyConnection {}
@@ -1437,6 +1475,7 @@ export interface UserNodeSubscriptionPayloadSubscription
 export interface UserNodePreviousValues {
   id: ID_Output;
   userId: String;
+  displayName: String;
 }
 
 export interface UserNodePreviousValuesPromise
@@ -1444,6 +1483,7 @@ export interface UserNodePreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   userId: () => Promise<String>;
+  displayName: () => Promise<String>;
 }
 
 export interface UserNodePreviousValuesSubscription
@@ -1451,6 +1491,7 @@ export interface UserNodePreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   userId: () => Promise<AsyncIterator<String>>;
+  displayName: () => Promise<AsyncIterator<String>>;
 }
 
 /*

@@ -33,9 +33,8 @@ export interface PartySubscription_party {
   permission: Permissions;
   activeTrack: PartySubscription_party_activeTrack | null;
   activeTrackId: string;
-  requestedUserIds: string[];
+  requestedUsersCount: number;
   ownerUserId: string;
-  partyUserIds: string[];
   userCount: number;
   updatedAt: string;
 }

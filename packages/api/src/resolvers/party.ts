@@ -240,7 +240,7 @@ async function deleteParty(_, args: { partyId: string }, context: Context) {
 
 async function requestPartyAccess(
   _,
-  args: { partyId: string },
+  args: { partyId: string; displayName: string },
   context: Context,
 ) {
   const me = await context.spotify.fetchCurrentUser();
@@ -251,6 +251,7 @@ async function requestPartyAccess(
       requestedUserIds: {
         create: {
           userId: me.id,
+          displayName: args.displayName,
         },
       },
       // This is a hacky workaround for subscriptions to get picked up.
@@ -289,6 +290,7 @@ async function setPartyAccess(
         partyUserIds: {
           create: {
             userId: args.userId,
+            displayName: requesetedNode.displayName,
           },
         },
         // This is a hacky workaround for subscriptions to get picked up.
@@ -362,10 +364,30 @@ async function trackVote(
   return !isUpvoted;
 }
 
+async function partyMembers(
+  _: any,
+  args: { partyId: string },
+  context: Context,
+): Promise<{
+  requestedUsers: UserNode[];
+  partyMembers: UserNode[];
+}> {
+  const [requestedUsers, partyMembers] = await Promise.all([
+    await context.prisma.party({ id: args.partyId }).requestedUserIds(),
+    await context.prisma.party({ id: args.partyId }).partyUserIds(),
+  ]);
+
+  return {
+    requestedUsers,
+    partyMembers,
+  };
+}
+
 export default {
   Query: {
     parties,
     party,
+    partyMembers,
   },
   Mutation: {
     createParty,
@@ -386,23 +408,16 @@ export default {
 
       return permission;
     },
-    async requestedUserIds(
+    async requestedUsersCount(
       root: Party,
       args,
       context: Context,
-    ): Promise<string[]> {
+    ): Promise<number> {
       const requestedUsers = await context.prisma
         .party({ id: root.id })
         .requestedUserIds();
 
-      return requestedUsers.map(user => user.userId);
-    },
-    async partyUserIds(root: Party, args, context: Context): Promise<string[]> {
-      const partyUserIds = await context.prisma
-        .party({ id: root.id })
-        .partyUserIds();
-
-      return partyUserIds.map(user => user.userId);
+      return requestedUsers.length;
     },
     async userCount(root: Party, args, context: Context): Promise<number> {
       const partyUserIds = await context.prisma

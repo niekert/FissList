@@ -36,15 +36,14 @@ function SelectType({ history, parties }: IProps) {
       {/* TODO: Rename app title and use logo */}
       <Title>PampaPlay</Title>
       <IntroText textAlign="center">
-        PampaPlay helps you play the best music during parties by letting your
-        guests decide the songs that will play next.
+        Create parties where your guests decide the music that is played next.
       </IntroText>
       <PartyOptions>
         <PoseGroup animateOnMount={true}>
           <PosedListItem key="main-group">
             <OptionCard
               title="🔊 Start a new party"
-              body="Create a new party playlist that your friends can request songs for"
+              body="Create a new party that your friends can join and request songs for"
               cta={'Start party'}
               onClick={() => history.push('/new')}
             />
