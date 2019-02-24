@@ -1,5 +1,9 @@
 import { useQuery } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
+import {
+  PartyMembersQuery,
+  PartyMembersQueryVariables,
+} from './__generated__/PartyMembersQuery';
 
 export const PARTY_MEMBERS_QUERY = gql`
   query PartyMembersQuery($partyId: String!) {
@@ -17,5 +21,8 @@ export const PARTY_MEMBERS_QUERY = gql`
 `;
 
 export function usePartyMembersQuery(partyId: string) {
-  return useQuery(PARTY_MEMBERS_QUERY, { variables: partyId });
+  return useQuery<PartyMembersQuery, PartyMembersQueryVariables>(
+    PARTY_MEMBERS_QUERY,
+    { variables: { partyId } },
+  );
 }

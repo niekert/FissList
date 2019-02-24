@@ -1,6 +1,5 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
-import { usePartyContext } from '../context';
 import IconButton from 'components/IconButton';
 import { CheckmarkIcon, CloseIcon } from 'icons';
 import { useMutation } from 'react-apollo-hooks';
@@ -16,6 +15,8 @@ import {
   SetPartyAccess,
   SetPartyAccessVariables,
 } from './__generated__/SetPartyAccess';
+import { usePartyMembersQuery } from './userPartyMembersQuery';
+import { usePartyContext } from '../context';
 
 // tslint:disable-next-line
 const RejectButton = styled(IconButton).attrs({
@@ -42,8 +43,10 @@ const SET_PARTY_ACCESS = gql`
   ${PartyInfo}
 `;
 
-export default function PartyNameForm() {
+export default function PartyMembers({ partyId }: { partyId: string }) {
   const party = usePartyContext();
+  const { data } = usePartyMembersQuery(partyId);
+
   const setAccessMutation = useMutation<
     SetPartyAccess,
     SetPartyAccessVariables
@@ -53,18 +56,8 @@ export default function PartyNameForm() {
     setAccessMutation({
       variables: {
         userId,
-        partyId: party.id,
+        partyId,
         grant: true,
-      },
-      optimisticResponse: {
-        setPartyAccess: {
-          __typename: 'Party',
-          ...party,
-          requestedUserIds: party.requestedUserIds!.filter(
-            requestedUserId => requestedUserId !== userId,
-          ),
-          partyUserIds: [...(party.partyUserIds || []), userId],
-        },
       },
     });
   };
@@ -76,18 +69,6 @@ export default function PartyNameForm() {
         partyId: party.id,
         grant: false,
       },
-      optimisticResponse: {
-        setPartyAccess: {
-          __typename: 'Party',
-          ...party,
-          requestedUserIds: party.requestedUserIds!.filter(
-            requestedUserId => requestedUserId !== userId,
-          ),
-          partyMemberIds: party.partyUserIds!.filter(
-            requestedUserId => requestedUserId !== userId,
-          ),
-        },
-      },
     });
   };
 
@@ -98,55 +79,53 @@ export default function PartyNameForm() {
           Party owner
         </ActionListGroupTitle>
         <ActionListItem key="admin" label={party.ownerUserId} />
-        {party.requestedUserIds &&
-          party.requestedUserIds.length && [
-            <ActionListGroupTitle key="requested-members">
-              Requested access
-            </ActionListGroupTitle>,
-            ...party.requestedUserIds!.map(userId => (
-              <ActionListItem
-                key={`requested-${userId}`}
-                label={userId}
-                actions={
-                  <>
-                    <RejectButton onClick={() => onRejectAccess(userId)}>
-                      <CloseIcon />
-                    </RejectButton>
-                    <IconButton
-                      type="button"
-                      size="small"
-                      withBackground={true}
-                      onClick={() => onGrantAccess(userId)}
-                      css={css`
-                        background: ${props =>
-                          transparentize(0.75, props.theme.colors.success)};
-                        color: ${props => props.theme.colors.success};
-                      `}
-                    >
-                      <CheckmarkIcon />
-                    </IconButton>
-                  </>
-                }
-              />
-            )),
-          ]}
-        {party.partyUserIds &&
-          party.partyUserIds.length && [
-            <ActionListGroupTitle key="activeMembers">
-              Active members
-            </ActionListGroupTitle>,
-            ...party.partyUserIds!.map(userId => (
-              <ActionListItem
-                key={`active-${userId}`}
-                label={userId}
-                actions={
+        {data.partyMembers.requestedUsers.length && [
+          <ActionListGroupTitle key="requested-members">
+            Requested access
+          </ActionListGroupTitle>,
+          ...data.partyMembers.requestedUsers.map(({ userId, displayName }) => (
+            <ActionListItem
+              key={`requested-${userId}`}
+              label={displayName}
+              actions={
+                <>
                   <RejectButton onClick={() => onRejectAccess(userId)}>
                     <CloseIcon />
                   </RejectButton>
-                }
-              />
-            )),
-          ]}
+                  <IconButton
+                    type="button"
+                    size="small"
+                    withBackground={true}
+                    onClick={() => onGrantAccess(userId)}
+                    css={css`
+                      background: ${props =>
+                        transparentize(0.75, props.theme.colors.success)};
+                      color: ${props => props.theme.colors.success};
+                    `}
+                  >
+                    <CheckmarkIcon />
+                  </IconButton>
+                </>
+              }
+            />
+          )),
+        ]}
+        {data.partyMembers.partyMembers.length && [
+          <ActionListGroupTitle key="activeMembers">
+            Active members
+          </ActionListGroupTitle>,
+          ...data.partyMembers.partyMembers.map(({ userId, displayName }) => (
+            <ActionListItem
+              key={`active-${userId}`}
+              label={displayName}
+              actions={
+                <RejectButton onClick={() => onRejectAccess(userId)}>
+                  <CloseIcon />
+                </RejectButton>
+              }
+            />
+          )),
+        ]}
       </ActionList>
     </form>
   );

@@ -38,7 +38,7 @@ function PartySettings({ match, partyName, requestedUsersCount }: Props) {
             title="Party members"
             activityCount={requestedUsersCount}
           >
-            <PartyMembers />
+            <PartyMembers partyId={partyId} />
           </AccordionItem>
           <AccordionItem id="partyName" title="Party configuration">
             <PartyNameForm partyId={partyId} partyName={partyName} />
