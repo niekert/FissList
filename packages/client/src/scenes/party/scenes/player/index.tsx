@@ -90,40 +90,38 @@ export default function Player({ partyId }: Props) {
 
   return (
     <>
-      {player && (
-        <PoseGroup animateOnMount={true}>
-          <PlayerWrapper key="playerwrapper">
-            {playbackState && (
-              <TrackProgressLine
-                duration={playbackState.duration}
-                position={playbackState.position}
-                paused={playbackState.paused}
-              />
-            )}
-            <div
-              css={css`
-                display: flex;
-                overflow: hidden;
-                padding: ${props => props.theme.spacing[1]} 0
-                  ${props => props.theme.spacing[1]}
-                  ${props => props.theme.spacing[2]};
-              `}
-            >
-              <ActiveTrackContainer partyId={partyId} />
+      <PoseGroup animateOnMount={true}>
+        <PlayerWrapper key="playerwrapper">
+          {playbackState && (
+            <TrackProgressLine
+              duration={playbackState.duration}
+              position={playbackState.position}
+              paused={playbackState.paused}
+            />
+          )}
+          <div
+            css={css`
+              display: flex;
+              overflow: hidden;
+              padding: ${props => props.theme.spacing[1]} 0
+                ${props => props.theme.spacing[1]}
+                ${props => props.theme.spacing[2]};
+            `}
+          >
+            <ActiveTrackContainer partyId={partyId} />
 
-              <TrackNavigation
-                isPlaying={isPlaying}
-                onNext={playerContext!.skipTrack}
-                onPlayPause={
-                  isPlaying
-                    ? playerContext!.pausePlayback
-                    : playerContext!.startPlayback
-                }
-              />
-            </div>
-          </PlayerWrapper>
-        </PoseGroup>
-      )}
+            <TrackNavigation
+              isPlaying={isPlaying}
+              onNext={playerContext!.skipTrack}
+              onPlayPause={
+                isPlaying
+                  ? playerContext!.pausePlayback
+                  : playerContext!.startPlayback
+              }
+            />
+          </div>
+        </PlayerWrapper>
+      </PoseGroup>
     </>
   );
 }

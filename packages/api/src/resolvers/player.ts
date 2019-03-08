@@ -46,7 +46,7 @@ export async function setActiveDevice(
   args: { deviceId: string },
   context: Context,
 ) {
-  const { status } = await context.spotify.fetchResource('/me/player', {
+  const { status, data } = await context.spotify.fetchResource('/me/player', {
     method: 'PUT',
     body: JSON.stringify({
       device_ids: [args.deviceId],
@@ -54,6 +54,9 @@ export async function setActiveDevice(
   });
 
   if (status !== 204) {
+    if (status === 500) {
+      console.log('failed because', data);
+    }
     throw new GraphQLError(`Failed setting active device (status ${status})`);
   }
 
