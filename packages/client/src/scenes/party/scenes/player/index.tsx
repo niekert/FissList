@@ -39,7 +39,7 @@ export default function Player({ partyId }: Props) {
   ] = usePrevState(false);
   const playerContext = usePlayer();
   const didConnectRef = React.useRef<boolean>(false);
-  const { deviceId: webSdkDeviceId } = useSpotifyWebSdk({
+  const { deviceId: webSdkDeviceId, isReady } = useSpotifyWebSdk({
     name: 'PampaPlay',
     getOAuthToken: () =>
       Promise.resolve(localStorage.getItem('accessToken') as string),
@@ -66,23 +66,31 @@ export default function Player({ partyId }: Props) {
     },
   });
 
-  React.useEffect(() => {
-    if (!startedTrackPlayback && prevTrackPlayback) {
-      // Skip to the next one
-      playerContext!.skipTrack();
-    }
-  }, [startedTrackPlayback, prevTrackPlayback]);
+  React.useEffect(
+    () => {
+      if (!startedTrackPlayback && prevTrackPlayback) {
+        // Skip to the next one
+        playerContext!.skipTrack();
+      }
+    },
+    [startedTrackPlayback, prevTrackPlayback],
+  );
 
-  React.useEffect(() => {
-    // Always make the web sdk device leading
-    if (webSdkDeviceId) {
-      playerContext!.setActiveDevice(webSdkDeviceId);
+  React.useEffect(
+    () => {
+      // Always make the web sdk device leading
+      console.log('webSdkDevice', webSdkDeviceId, isReady);
 
-      const timeout = setTimeout(() => playerContext!.refetch(), 500);
-      return () => clearTimeout(timeout);
-    }
-    return;
-  }, [webSdkDeviceId]);
+      if (webSdkDeviceId && isReady) {
+        playerContext!.setActiveDevice(webSdkDeviceId);
+
+        const timeout = setTimeout(() => playerContext!.refetch(), 500);
+        return () => clearTimeout(timeout);
+      }
+      return;
+    },
+    [webSdkDeviceId, isReady],
+  );
 
   const { player } = playerContext!.data;
 

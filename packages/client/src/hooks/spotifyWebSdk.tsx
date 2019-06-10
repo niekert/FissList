@@ -68,34 +68,41 @@ export function useSpotifyWebSdk({
     }
   }, []);
 
-  React.useEffect(() => {
-    if (isReady) {
-      playerRef.current!.connect();
-    }
-  }, [isReady]);
+  React.useEffect(
+    () => {
+      if (isReady) {
+        playerRef.current!.connect();
+      }
+    },
+    [isReady],
+  );
 
-  React.useEffect(() => {
-    const player = playerRef.current!;
-    if (isReady) {
-      player.addListener('account_error', accountError);
-      player.addListener('ready', handleReady);
-      player.addListener('initialization_error', accountError);
-      player.addListener('authentication_error', accountError);
-      player.addListener('not_ready', accountError);
-      player.addListener('player_state_changed', onPlayerStateChanged);
+  React.useEffect(
+    () => {
+      const player = playerRef.current!;
+      if (isReady) {
+        player.addListener('account_error', accountError);
+        player.addListener('ready', handleReady);
+        player.addListener('initialization_error', accountError);
+        player.addListener('authentication_error', accountError);
+        player.addListener('not_ready', accountError);
+        player.addListener('player_state_changed', onPlayerStateChanged);
 
-      return () => {
-        player.removeListener('account_error', accountError);
-        player.removeListener('ready', handleReady);
-        player.removeListener('player_state_changed', onPlayerStateChanged);
-      };
-    }
+        return () => {
+          player.removeListener('account_error', accountError);
+          player.removeListener('ready', handleReady);
+          player.removeListener('player_state_changed', onPlayerStateChanged);
+        };
+      }
 
-    return;
-  }, [isReady, onPlayerStateChanged]);
+      return;
+    },
+    [isReady, onPlayerStateChanged],
+  );
 
   return {
     player: playerRef.current,
     deviceId,
+    isReady,
   };
 }
