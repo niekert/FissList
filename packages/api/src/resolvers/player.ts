@@ -47,6 +47,7 @@ export async function setActiveDevice(
   context: Context,
 ) {
   const { status, data } = await context.spotify.fetchResource('/me/player', {
+    retries: 10,
     method: 'PUT',
     body: JSON.stringify({
       device_ids: [args.deviceId],

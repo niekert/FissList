@@ -11,7 +11,8 @@ interface Props {
 }
 
 const FavoriteIconButton = styled(IconButton)`
-  margin-right ${props => props.theme.spacing[2]};
+  margin-right: ${props => props.theme.spacing[2]};
+  pointer-events: all;
 `;
 
 function FavoriteTrack({ isFavorited, trackId }: Props) {

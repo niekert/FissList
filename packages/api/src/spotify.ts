@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 import { SpotifyUser } from './types';
 import { GraphQLError, graphql } from 'graphql';
-import { HttpService } from './types';
 import * as camelcase from 'camelcase-keys';
 import { AuthenticationError } from 'apollo-server';
 
@@ -93,7 +92,7 @@ export const scopes: string = [
 const ACCOUNTS_BASE_URL = 'https://accounts.spotify.com/api';
 const BASE_URL = 'https://api.spotify.com/v1';
 
-export function makeHttpService(accessKey: string): HttpService {
+export function makeHttpService(accessKey: string) {
   function fetchAccountResource<T>(
     path: string,
     options: any = {},
@@ -111,9 +110,45 @@ export function makeHttpService(accessKey: string): HttpService {
       });
   }
 
+  interface FetchRetriesOptions extends Record<string, any> {
+    retries: number;
+  }
+
+  async function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function fetchWithRetries<T>(
+    path: string,
+    fetchOptions: FetchRetriesOptions = { retries: 5 },
+    retriedCount = 0,
+  ): Promise<{ status: Number; data: T }> {
+    const { retries, options } = fetchOptions;
+
+    console.log('fetching with retries', retriedCount, retries);
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const resp = await fetchResource<T>(path, options);
+        console.log('REsolved with resp', resp);
+        resolve(resp);
+      } catch (err) {
+        if (retriedCount === retries) {
+          reject(err);
+          return;
+        }
+
+        await wait((retriedCount + 1) * 1000);
+
+        return fetchWithRetries(path, fetchOptions, retriedCount + 1);
+      }
+    });
+  }
+
   function fetchResource<T>(
     path: string,
     options: any = {},
+    retry = 0,
   ): Promise<{ status: Number; data: T }> {
     return fetch(`${BASE_URL}${path}`, {
       ...options,
@@ -175,5 +210,6 @@ export function makeHttpService(accessKey: string): HttpService {
     fetchAccountResource,
     fetchResource,
     fetchCurrentUser,
+    fetchWithRetries,
   };
 }

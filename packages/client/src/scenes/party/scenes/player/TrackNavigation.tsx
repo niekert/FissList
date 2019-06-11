@@ -8,8 +8,10 @@ const PlayerNavigation = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding-right: ${props => props.theme.spacing[2]};
-  z-index: 1;
+  z-index: 11;
+  pointer-events: all;
   position: relative;
+  flex-shrink: 0;
   margin-left: auto;
   background: white;
 `;
