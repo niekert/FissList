@@ -60,7 +60,7 @@
     "react-apollo": "^2.2.4",
     "react-apollo-hooks": "^0.2.1",
     "react-confetti": "^2.3.0",
-    "react-dev-utils": "^6.1.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "16.8.0-alpha.0",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "4.6.5",
