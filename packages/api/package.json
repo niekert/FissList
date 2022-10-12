@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node-fetch": "^2.1.2",
-    "apollo-server": "^2.2.2",
+    "apollo-server": "^2.25.4",
     "apollo-server-express": "^2.2.2",
     "body-parser": "^1.18.3",
     "camelcase-keys": "^5.0.0",
